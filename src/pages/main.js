@@ -19,7 +19,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import LogoDrawer from './Logo';
 
-const KakaoMain = () => {
+const Main = () => {
   const [open, setOpen] = useState(false); // 좌측 메뉴 상태
   const [menuOpen, setMenuOpen] = useState(false); // 킥보드 메뉴의 상태
   const [zoomLevel, setZoomLevel] = useState(2);
@@ -31,6 +31,13 @@ const KakaoMain = () => {
 
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen); 
+  };
+
+  // 대여하기 버튼 클릭 시 동작
+  const handleRent = () => {
+    // 대여 관련 동작 구현
+    console.log("대여하기 버튼 클릭됨");
+    // 여기서 원하는 동작을 수행하도록 코드를 추가하세요.
   };
 
   useEffect(() => {
@@ -58,9 +65,9 @@ const KakaoMain = () => {
         LogoMarker.setMap(newMap);
 
         // 클릭 이벤트 리스너 추가
-      window.kakao.maps.event.addListener(LogoMarker, 'click', function() {
-        handleMenuToggle(); // 메뉴 토글 핸들러 호출
-      });
+        window.kakao.maps.event.addListener(LogoMarker, 'click', function() {
+          handleMenuToggle(); // 메뉴 토글 핸들러 호출
+        });
 
         const markerPosition = new window.kakao.maps.LatLng(37.380833, 126.928333);
         const marker = new window.kakao.maps.Marker({
@@ -90,7 +97,7 @@ const KakaoMain = () => {
   return (
     <div>
       <CssBaseline />
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#2d2c28;' }}>
+      <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#2d2c28;' }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2 }}>
@@ -119,20 +126,21 @@ const KakaoMain = () => {
       </Drawer>
       <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} /> 
       <Box id="map" className="map"></Box>
-      <img src={LogoImage} alt="Logo" onClick={handleMenuToggle} />
-      <Box sx={{ position: 'fixed', bottom: '85%', right: '0.7vw', backgroundColor: '#2d2c28;', width:'2vw', padding: 1, borderRadius: '10%', zIndex: 3 }}>
-        <Typography variant="body2" sx={{ color:'#FFFFF5;' ,fontWeight: 'bold', textAlign: 'center', justifyContent: 'center' }}>{zoomLevel}</Typography>
-      </Box>
-      <Box sx={{position: 'fixed', bottom: '85%', right: '3.5vw', zIndex: 3}}>
-        <Button variant="contained" color="primary" className="zoom-button" style={{ borderTopLefttRadius: '10%', borderBottomLeftRadius: '10%', borderTopRightRadius: '0%', borderBottomRightRadius: '0%', backgroundColor: '#2d2c28', minWidth: '2vw' }} onClick={() => setZoomLevel(zoomLevel + 1)}>
+      <Box sx={{position: 'fixed', bottom: '85%', right: '1vw', zIndex: 3}}>
+        <Button variant="contained" color="primary" className="zoom-button" style={{ borderTopLefttRadius: '10%', borderBottomLeftRadius: '10%', borderTopRightRadius: '0%', borderBottomRightRadius: '0%', backgroundColor: '#2d2c28', minWidth: '2vw', Height:'2vh' }} onClick={() => setZoomLevel(zoomLevel + 1)}>
           <AddIcon />
         </Button>
         <Button variant="contained" color="primary" className="zoom-button" style={{ borderTopRightRadius: '10%', borderBottomRightRadius: '10%', borderBottomLeftRadius: '0%', borderTopLeftRadius: '0%', backgroundColor: '#2d2c28', minWidth: '2vw'}} onClick={() => setZoomLevel(zoomLevel - 1)}>
           <RemoveIcon />
         </Button>
       </Box>
+      <Box sx={{position: 'fixed', bottom: '3%', left: '50%', transform: 'translate(-50%)', zIndex: 9999}}>
+        <Button className="Rent-Button" variant="contained" color="primary" onClick={handleRent} style={{ right:'1px', backgroundColor: '#2d2c28', color: '#ffffff', height:'10vh', width:'700px'}} >
+        <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold' }}>대여하기</Typography>
+        </Button>
+      </Box>
     </div>
   );
 };
 
-export default KakaoMain;
+export default Main;
