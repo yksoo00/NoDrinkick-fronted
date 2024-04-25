@@ -1,0 +1,129 @@
+@keyframes loadEffect1 {
+  from {
+    opacity: 0;
+    transform: scale(1);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.text-container {
+  margin-top: 50px; 
+}
+
+.back-image{
+  position: absolute;
+  width:1200px;
+  height: 785px;
+  margin-top: 50%;
+  left: 10%; 
+  margin-top: -600px;
+  z-index: -3; 
+  opacity: 0.7;
+}
+
+.container {
+    position: relative; 
+  }
+  
+  .background-shape {
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    width: 500px; 
+    height: 500px;
+    background-color: #2d2c28;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 5);
+    border-radius: 10px; 
+    z-index: -1; 
+    opacity: 0.85;
+    animation: fadeIn 5s ease;
+    animation: fadeOut 5s ease;
+  }
+
+.MainPage hr {
+    display: none;
+  }
+
+.text{
+  color:#FFFFFF;
+  font-size: 15px;
+  font-family: 'Pretendard-SemiBold'; 
+}
+.logo {
+  color:#FFFFFF;
+    font-size: 45px; 
+    font-family: 'Pretendard-Black'; 
+    animation: 0.7s ease-in-out loadEffect1;
+  }
+
+.MainPage
+{
+    font-size: 45px; 
+    left: 50%; 
+    color: #FFFFFF;
+    text-align: center;
+    font-family: 'Pretendard-Black'; 
+    margin-top: 200px; 
+  }
+
+.login-button {
+    box-shadow: none;
+    text-transform: none;
+    font-size: 16px;
+    padding: 6px 12px;
+    width:300px;
+    height:50px;
+    border: 2px solid;
+    color: #344A53;
+    line-height: 1.5;
+    background-color: #FFFFFF;
+    border-color:  #000000;
+    font-family: 'Pretendard-Bold';
+    opacity: 0.95;
+  }
+
+.register-button {
+    box-shadow: none;
+    text-transform: none;
+    font-size: 16px;
+    padding: 6px 12px;
+    width:300px;
+    height:50px;
+    border: 2px solid;
+    color: #344A53;
+    line-height: 1.5;
+    background-color: #FFFFFF;
+    border-color:  #000000;
+    font-family: 'Pretendard-Bold';
+    opacity: 0.95;
+  }
+  
+  .login-button:hover,
+  .login-button:focus,
+  .register-button:hover,
+  .register-button:focus {
+    background-color:  #e4eb27;
+    border-color:  #000000;
+    box-shadow: none;
+  }
+  
+  .login-button:active
+  .register-button:active {
+    box-shadow: none;
+    background-color:  #5B5A63;
+    border-color:  #5B5A63;
+  }
+  
+  .login-button:focus
+  .register-button:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.5);
+  }
+
+  .login-button,
+.register-button {
+  border-radius: 3px;
+}
