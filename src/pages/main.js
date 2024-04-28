@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { KakaoMap, Marker } from 'react-kakao-maps';
-import LogoImage from '../images/Logo.png';
-import '../css/main.css'; 
+import LogoImage from '../assets/Logo.png';
+import '../styles/main.css'; 
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';

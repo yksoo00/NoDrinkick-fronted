@@ -1,20 +1,29 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Home from './component/home';
-import MyPage from './component/myPage';
-import LoginForm from './component/loginform';
-import AddMemberForm from './component/addMemberForm';
-import Main from './component/main'
+import Home from './pages/home';
+import myPage from './pages/myPage';
+import LoginForm from './pages/loginform';
+import AddMemberForm from './pages/addMemberForm';
+import Main from './pages/main'
+
+
+
+
+
+
+
 
 function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/mypage" component={MyPage} />
-        <Route path="/login" component={LoginForm} />
-        <Route path="/members/add" component={AddMemberForm} />
+       
+        <Route path="/myPage" component={myPage} />
         <Route path="/main" component={Main} />
-        <Route path="/" component={Home} />
+        <Route path="/home" component={Home} />
+        <Route path="/LoginForm" component={LoginForm} />
+        <Route path="/AddMemberForm" component={AddMemberForm} />
+        <Route path="/" component={Main} />
       </Switch>
     </Router>
   );

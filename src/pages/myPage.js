@@ -1,50 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function MyPage({ member }) {
-  const handleDelete = async () => {
-    try {
-      await axios.get('/members/delete');
-      // 회원 탈퇴 후 로그아웃 및 메인페이지로 이동
-      window.location.href = '/login/logout';
-    } catch (error) {
-      console.error('회원 탈퇴 실패:', error);
-    }
-  };
+function UserList() {
+  const [users, setUsers] = useState([]); // 사용자 데이터 상태 관리
+
+  useEffect(() => {
+    // 컴포넌트가 마운트되었을 때 API 호출
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://localhost:8080/notices');
+        setUsers(response.data); // API로부터 받은 데이터로 상태 업데이트
+      } catch (error) {
+        console.error("API 에러:", error);
+      }
+    };
+
+    fetchData();
+  }, []); // 빈 배열을 넘겨주어 컴포넌트 마운트 시 단 한 번만 실행되도록 함
 
   return (
-    <div className="container" style={{ maxWidth: '600px' }}>
-      <div className="py-5 text-center">
-        <h2>마이 페이지</h2>
-      </div>
-      {member && member.imagePath ? (
-        <img src={member.imagePath} alt="Member Image" width="300" height="350" />
-      ) : (
-        <form id="imageForm" encType="multipart/form-data" action="/upload" method="post">
-          <input type="file" id="imageFile" name="imageFile" />
-          <button type="submit">사진 등록</button>
-        </form>
-      )}
-      <hr className="my-4" />
-      <h4 className="mb-3">이름: {member.name}</h4>
-      <hr className="my-4" />
-      <h4 className="mb-3">아이디: {member.loginId}</h4>
-      <hr className="my-4" />
-      <h4 className="mb-3">전화번호: {member.phoneNum}</h4>
-      <hr className="my-4" />
-      <h4 className="mb-3">이메일: {member.email}</h4>
-      <hr className="my-4" />
-      <h4 className="mb-3">운전면허 인증 여부: {member.license ? '인증됨' : '인증되지 않음'}</h4>
-      <hr className="my-4" />
-      <div className="container" style={{ maxWidth: '600px' }}>
-        <button className="w-100 btn btn-secondary btn-lg" onClick={() => { window.location.href = '/'; }}>돌아가기</button>
-      </div>
-      <hr className="my-4" />
-      <div className="container" style={{ maxWidth: '300px' }}>
-        <button className="w-100 btn btn-secondary btn-lg" onClick={handleDelete}>회원 탈퇴</button>
-      </div>
+    <div>
+      <h1>사용자 목록</h1>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>{user.name}</li> // 각 사용자 이름을 리스트 아이템으로 렌더링
+        ))}
+      </ul>
     </div>
   );
 }
 
-export default MyPage;
+export default UserList;
