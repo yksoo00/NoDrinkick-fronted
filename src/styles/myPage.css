@@ -1,0 +1,31 @@
+.page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f2f2f2;
+}
+
+.logo {
+  font-size: 2.5rem;
+  color: #fffffff3;
+  font-family: 'Arial', sans-serif; /* 글자체 변경 */
+  margin-top: 2rem;
+}
+
+.user-list-container {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 40rem;
+  text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.my-page-title {
+  font-size: 2rem; /* 마이페이지 텍스트 사이즈 조정 */
+  color: #555; /* 텍스트 색상 변경 */
+  font-family: 'Arial', sans-serif; /* 글자체 변경 */
+  margin-bottom: 1.5rem; /* 마진 추가 */
+}
