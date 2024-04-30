@@ -1,41 +1,76 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
-function AddMemberForm() {
-  return (
-    <div className="container">
-      <div className="py-5 text-center">
-        <h2>회원 가입</h2>
-      </div>
-      <h4 className="mb-3">회원 정보 입력</h4>
-      <form action="" method="post">
+function SignUpPage() {
+    const [userInfo, setUserInfo] = useState({
+        name: '',
+        username: '',
+        password: '',
+        phoneNum: '',
+        email: '',
+        license: false, // 운전면허 인증 유무 기본값은 false로 설정
+        imagePath: ''
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUserInfo({
+            ...userInfo,
+            [name]: value
+        });
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:8080/members/add', userInfo);
+            console.log('회원가입 성공:', response.data);
+            window.location.href = '/home'
+        } catch (error) {
+            console.error('회원가입 에러:', error.response.data);
+            // 에러 처리 로직
+        }
+    }
+
+    return (
         <div>
-          <label htmlFor="">로그인 ID</label>
-          <input type="text" id="loginId" name="loginId" className="form-control" />
-
-          <label htmlFor="name">이름</label>
-          <input type="text" id="name" name="name" className="form-control" />
-
-          <label htmlFor="password">비밀번호</label>
-          <input type="password" id="password" name="password" className="form-control" />
-
-          <label htmlFor="phoneNum">전화번호</label>
-          <input type="text" id="phoneNum" name="phoneNum" className="form-control" />
-
-          <label htmlFor="email">이메일</label>
-          <input type="text" id="email" name="email" className="form-control" />
+            <h2>회원가입</h2>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label>이름:</label>
+                    <input type="text" name="name" value={userInfo.name} onChange={handleChange} required />
+                </div>
+                <div>
+                    <label>아이디:</label>
+                    <input type="text" name="username" value={userInfo.username} onChange={handleChange} required />
+                </div>
+                <div>
+                    <label>비밀번호:</label>
+                    <input type="password" name="password" value={userInfo.password} onChange={handleChange} required />
+                </div>
+                <div>
+                    <label>전화번호:</label>
+                    <input type="text" name="phoneNum" value={userInfo.phoneNum} onChange={handleChange} required />
+                </div>
+                <div>
+                    <label>이메일:</label>
+                    <input type="email" name="email" value={userInfo.email} onChange={handleChange} />
+                </div>
+                <div>
+                    <label>운전면허 인증 유무:</label>
+                    <select name="license" value={userInfo.license} onChange={handleChange}>
+                        <option value="false">미인증</option>
+                        <option value="true">인증</option>
+                    </select>
+                </div>
+                <div>
+                    <label>사용자 얼굴 사진 경로:</label>
+                    <input type="text" name="imagePath" value={userInfo.imagePath} onChange={handleChange} />
+                </div>
+                <button type="submit">회원가입</button>
+            </form>
         </div>
-        <hr className="my-4" />
-        <div className="row">
-          <div className="col">
-            <button className="w-100 btn btn-primary btn-lg" type="submit">회원 가입</button>
-          </div>
-          <div className="col">
-            <button className="w-100 btn btn-secondary btn-lg" onClick={() => { window.location.href = '/'; }} type="button">취소</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  );
+    );
 }
 
-export default AddMemberForm;
+export default SignUpPage;

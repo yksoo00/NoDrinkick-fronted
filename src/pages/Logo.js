@@ -5,8 +5,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Typography from '@mui/material/Typography';
 import ClearIcon from '@mui/icons-material/Clear';
 import BellIcon from '@mui/icons-material/Notifications';
-import KickBoardImage from '../images/KickBoard.png';
-import '../css/Logo.css'; 
+import KickBoardImage from '../assets/Logo.png';
+import '../styles/Logo.css'; 
 
 function BellButton({ onClick }) {
   return (

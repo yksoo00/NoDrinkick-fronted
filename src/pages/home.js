@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import '../App.css';
-import AImage from '../images/Logo.png';
-import BImage from '../images/Logo.png';
-import BackImage from '../images/Main.png';
-import '../css/home.css'; 
+import '../styles/App.css';
+import AImage from '../assets/Logo.png';
+import BImage from '../assets/Logo.png';
+import BackImage from '../assets/Main.png';
+import '../styles/home.css'; 
 
 function Home() {
   const [showImage, setShowImage] = useState(true);
