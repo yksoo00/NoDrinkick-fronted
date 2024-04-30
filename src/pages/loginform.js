@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import login from 'C:/NoDrinkick-fronted/src/services/loginService.js';
+import login from '../services/loginService.js';
 
 const LoginForm = () => {
   const [loginId, setLoginId] = useState('');
@@ -12,6 +12,7 @@ const LoginForm = () => {
     try {
       const token = await login(loginId, password); // 로그인 함수 호출
       console.log('로그인 성공');
+      window.location.href = '/main'; 
       // 로그인 성공 후 리다이렉트 또는 다른 작업 수행
     } catch (error) {
       console.error('로그인 에러:', error);
@@ -50,7 +51,7 @@ const LoginForm = () => {
         <hr className="my-4" />
         <div className="row">
           <div className="col">
-            <button className="w-100 btn btn-primary btn-lg" type="submit" onClick={() => window.location.href = 'main'}>
+            <button className="w-100 btn btn-primary btn-lg" type="submit" >
               로그인
             </button>
           </div>

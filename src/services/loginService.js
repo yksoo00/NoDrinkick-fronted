@@ -6,8 +6,8 @@ const login = async (username, password) => {
     formData.append('username', username);
     formData.append('password', password);
 
-    const response = await axios.post('/login', formData);
-    const { token } = response.data;
+    const response = await axios.post('http://localhost:8080/login', formData);
+    let token = response.headers['authorization'];
 
     // 토큰을 로컬 스토리지, 메모리, 쿠키 등에 저장
     localStorage.setItem('jwtToken', token);

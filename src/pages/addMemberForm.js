@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import addMembers from '../services/addMembers';
 
 function SignUpPage() {
     const [userInfo, setUserInfo] = useState({
@@ -8,7 +8,7 @@ function SignUpPage() {
         password: '',
         phoneNum: '',
         email: '',
-        license: false, // 운전면허 인증 유무 기본값은 false로 설정
+        license: false,
         imagePath: ''
     });
 
@@ -23,11 +23,11 @@ function SignUpPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/add', userInfo);
-            console.log('회원가입 성공:', response.data);
-            // 회원가입 성공 후 로직 (예: 로그인 페이지로 리디렉션)
+            const response = await addMembers(userInfo);
+            console.log('회원가입 성공:', response);
+            window.location.href = '/home';
         } catch (error) {
-            console.error('회원가입 에러:', error.response.data);
+            console.error('회원가입 에러:', error);
             // 에러 처리 로직
         }
     }
