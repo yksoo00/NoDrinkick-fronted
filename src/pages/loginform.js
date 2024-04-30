@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import login from 'C:/NoDrinkick-fronted/src/services/loginService.js';
+import login from '../services/loginService.js';
 
 const LoginForm = () => {
   const [loginId, setLoginId] = useState('');
@@ -50,7 +50,7 @@ const LoginForm = () => {
         <hr className="my-4" />
         <div className="row">
           <div className="col">
-            <button className="w-100 btn btn-primary btn-lg" type="submit" onClick={() => window.location.href = 'main'}>
+            <button className="w-100 btn btn-primary btn-lg" type="submit" onClick={() => window.location.href = '/main'}>
               로그인
             </button>
           </div>

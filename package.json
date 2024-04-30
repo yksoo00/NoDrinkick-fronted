@@ -1,4 +1,5 @@
 {
+  
   "name": "front",
   "version": "0.1.0",
   "private": true,
@@ -11,14 +12,18 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.8",
+    "formik": "^2.4.6",
     "react": "^18.3.0",
     "react-dom": "^18.2.0",
     "react-kakao-maps": "^0.0.13",
     "react-router-dom": "^5.3.4",
     "react-scripts": "5.0.1",
     "serialport": "^12.0.0",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^1.4.0"
   },
+  "proxy": "http://localhost:8080",
+
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

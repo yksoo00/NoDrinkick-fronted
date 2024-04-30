@@ -4,14 +4,8 @@ import Home from './pages/home';
 import myPage from './pages/myPage';
 import LoginForm from './pages/loginform';
 import AddMemberForm from './pages/addMemberForm';
-import Main from './pages/main'
-
-
-
-
-
-
-
+import Main from './pages/main';
+import AddEmergency from './pages/addEmergency';
 
 function App() {
   return (
@@ -23,7 +17,9 @@ function App() {
         <Route path="/home" component={Home} />
         <Route path="/LoginForm" component={LoginForm} />
         <Route path="/AddMemberForm" component={AddMemberForm} />
+        <Route path="/AddEmergency" component={AddEmergency} />
         <Route path="/" component={Main} />
+
       </Switch>
     </Router>
   );

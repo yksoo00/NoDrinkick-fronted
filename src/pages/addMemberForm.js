@@ -23,9 +23,9 @@ function SignUpPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/add', userInfo);
+            const response = await axios.post('http://localhost:8080/members/add', userInfo);
             console.log('회원가입 성공:', response.data);
-            // 회원가입 성공 후 로직 (예: 로그인 페이지로 리디렉션)
+            window.location.href = '/home'
         } catch (error) {
             console.error('회원가입 에러:', error.response.data);
             // 에러 처리 로직
