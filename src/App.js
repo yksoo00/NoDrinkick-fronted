@@ -6,6 +6,7 @@ import LoginForm from './pages/loginform';
 import AddMemberForm from './pages/addMemberForm';
 import Main from './pages/main';
 import AddEmergency from './pages/addEmergency';
+import Bluetooth from './pages/Bluetooth';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/LoginForm" component={LoginForm} />
         <Route path="/AddMemberForm" component={AddMemberForm} />
         <Route path="/AddEmergency" component={AddEmergency} />
+        <Route path="/Bluetooth" component={Bluetooth} />
         <Route path="/" component={Main} />
 
       </Switch>
