@@ -1,57 +1,50 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-function EmergencyContactForm() {
-    const [contactInfo, setContactInfo] = useState({
+const SaveForm = () => {
+    const [formData, setFormData] = useState({
         name: '',
         phoneNum: '',
         voiceMessage: '',
+        countryCode: '+82' // 기본 국가 코드를 한국(+82)으로 설정
     });
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setContactInfo({
-            ...contactInfo,
-            [name]: value
-        });
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const formatPhoneNumber = (phoneNumber) => {
+        // 국내 전화번호 형식(010-xxxx-xxxx)을 국제 전화번호 형식(+8210xxxxxxx)으로 변경
+        return phoneNumber.replace(/^0/, formData.countryCode);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // 입력 값 검증 로직 추가 가능
-        try {
-            const response = await axios.post('http://localhost:8080/emergency-contacts', contactInfo);
-            if (response && response.data) {
-                console.log('Emergency contact added successfully:', response.data);
-            }
-        } catch (error) {
-            console.error('Error adding emergency contact:', error);
-        }
-        
-    };
-    
-    
-    return (
-        <div>
-            <h2>비상연락망 추가</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>이름:</label>
-                    <input type="text" name="name" value={contactInfo.name} onChange={handleChange} required />
-                </div>
-                <div>
-                    <label>전화번호:</label>
-                    <input type="text" name="phoneNum" value={contactInfo.phoneNum} onChange={handleChange} required />
-                </div>
-                <div>
-                    <label>음성 메시지:</label>
-                    <input type="text" name="voiceMessage" value={contactInfo.voiceMessage} onChange={handleChange} />
-                </div>
-               
-                <button type="submit">추가하기</button>
-            </form>
-        </div>
-    );
-}
 
-export default EmergencyContactForm;
+        // 전화번호 형식 변환
+        const formattedPhoneNum = formatPhoneNumber(formData.phoneNum);
+
+        try {
+            // 변환된 전화번호를 포함하여 서버에 데이터 전송
+            await axios.post('/emergency-contacts', { ...formData, phoneNum: formattedPhoneNum });
+            alert('저장되었습니다!');
+            // 폼 리셋
+            setFormData({ name: '', phoneNum: '', voiceMessage: '', countryCode: '+82' });
+        } catch (error) {
+            console.error(error);
+            alert('저장에 실패했습니다.');
+        }
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="이름" required />
+            {/* 전화번호 입력 */}
+            <input type="text" name="phoneNum" value={formData.phoneNum} onChange={handleChange} placeholder="전화번호" required />
+            <textarea name="voiceMessage" value={formData.voiceMessage} onChange={handleChange} placeholder="메세지 내용" required />
+            <button type="submit">저장하기</button>
+        </form>
+    );
+};
+
+export default SaveForm;
