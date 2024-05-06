@@ -23,15 +23,9 @@ function SignUpPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-<<<<<<< HEAD
-            const response = await addMembers(userInfo);
-            console.log('회원가입 성공:', response);
-            window.location.href = '/home';
-=======
             const response = await axios.post('http://localhost:8080/members/add', userInfo);
             console.log('회원가입 성공:', response.data);
             window.location.href = '/home'
->>>>>>> dev-yeon,seo
         } catch (error) {
             console.error('회원가입 에러:', error);
             // 에러 처리 로직
