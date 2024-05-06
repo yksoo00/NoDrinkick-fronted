@@ -12,11 +12,10 @@ const LoginForm = () => {
     try {
       const token = await login(loginId, password); // 로그인 함수 호출
       console.log('로그인 성공');
-      window.location.href = '/main'; 
-      // 로그인 성공 후 리다이렉트 또는 다른 작업 수행
+      window.location.href = '/main';
     } catch (error) {
       console.error('로그인 에러:', error);
-      // 에러 처리 로직 추가
+      alert('로그인에 실패했습니다. 계정 정보를 확인해주세요.');
     }
   };
 
@@ -51,9 +50,13 @@ const LoginForm = () => {
         <hr className="my-4" />
         <div className="row">
           <div className="col">
+<<<<<<< HEAD
             <button className="w-100 btn btn-primary btn-lg" type="submit" >
               로그인
             </button>
+=======
+          <button className="w-100 btn btn-primary btn-lg" type="submit">로그인</button>
+>>>>>>> dev-yeon,seo
           </div>
           <div className="col">
             <button
