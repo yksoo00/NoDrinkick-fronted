@@ -1,20 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
-function SendMessageButton() {
-    const sendMessageToAll = async () => {
-        try {
-            const response = await axios.post('/emergency-contacts/sendSNS');
-            alert(response.data);
-        } catch (error) {
-            alert("메시지 전송 중 오류가 발생했습니다: " + error.response.data);
-        }
-    };
-
-    return (
-        <button onClick={sendMessageToAll}>모든 연락처에 메시지 전송</button>
-    );
-}
+import sendMessageToAll from '../services/Emergency.js';
 
 function EmergencyContactsList() {
     const [contacts, setContacts] = useState([]);
@@ -32,10 +18,19 @@ function EmergencyContactsList() {
         }
     };
 
+    const handleSendMessage = async () => {
+        try {
+            await sendMessageToAll();
+            fetchContacts(); // 메시지를 보낸 후에 연락처 목록을 다시 불러옴
+        } catch (error) {
+            console.error("메시지 전송 중 오류가 발생했습니다.", error);
+        }
+    };
+
     return (
         <div>
             <h2>비상 연락망 목록</h2>
-            <SendMessageButton />
+            <button onClick={handleSendMessage}>모든 연락처에 메시지 전송</button>
             <ul>
                 {contacts.map(contact => (
                     <li key={contact.id}>
