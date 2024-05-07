@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
+
 import axios from 'axios'; // axios를 import합니다.
 import { Link } from 'react-router-dom';
+
 const Bluetooth = () => {
   const [bluetoothData, setBluetoothData] = useState([]);
   const [ws, setWs] = useState(null);
 
   useEffect(() => {
+
     const fetchData = async () => {
       try {
         // axios.get을 사용하여 API를 호출합니다.
@@ -32,6 +35,8 @@ const Bluetooth = () => {
     setWs(newWs);
   }, []);
 
+
+
   const sendNumber = () => {
     if (ws && ws.readyState === WebSocket.OPEN) {
       ws.send('1');
@@ -43,6 +48,7 @@ const Bluetooth = () => {
   return (
     <div>
       <h1>블루투스 데이터 목록</h1>
+
       <ul>
         {bluetoothData.map((item, index) => (
           <li key={index}>
@@ -52,6 +58,7 @@ const Bluetooth = () => {
       </li>
   ))}
 </ul>
+
       <button onClick={sendNumber}>번호 1 보내기</button>
     </div>
   );
