@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import '../styles/addEmergency.css';
 import axios from 'axios';
+
+import BackImage from '../assets/Main2.png'; // 이미지를 가져옵니다.
+
 import addEmergencyContact from '../services/addEmergency.js';
+
 
 function AddEmergency() {
     const [formData, setFormData] = useState({
@@ -38,21 +42,25 @@ function AddEmergency() {
         <div className="background1">
             <div className="container1">
                 <h3>비상연락망 추가</h3>
-                <form onSubmit={handleSubmit}>
+
+      <form1 onSubmit={handleSubmit}>
                     <div>
-                        <label>이름:</label>
-                        <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+                        <label1>이름:</label1>
+                        <input type="text" name="name" value={contactInfo.name} onChange={handleChange} required />
                     </div>
                     <div>
-                        <label>전화번호:</label>
-                        <input type="text" name="phoneNum" value={formData.phoneNum} onChange={handleChange} required />
+                        <label1>전화번호:</label1>
+                        <input type="text" name="phoneNum" value={contactInfo.phoneNum} onChange={handleChange} required />
                     </div>
                     <div>
-                        <label>메시지:</label>
-                        <input type="text" name="voiceMessage" value={formData.voiceMessage} onChange={handleChange} />
+                        <label1>메시지:</label1>
+                        <input type="text" name="voiceMessage" value={contactInfo.voiceMessage} onChange={handleChange} />
                     </div>
-                    <button type="submit">추가하기</button>
-                </form>
+                
+                    <button1 type="submit">추가하기</button1>
+                </form1>
+
+
             </div>
         </div>
     );
