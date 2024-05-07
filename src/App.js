@@ -9,6 +9,10 @@ import AddEmergency from './pages/addEmergency';
 import notice from './pages/notice';
 import use from './pages/use';
 
+import Emergency from './pages/Emergency';
+import Bluetooth from './pages/Bluetooth';
+import BluetoothDetail from './pages/BluetoothDetails';
+
 function App() {
   return (
     <Router>
@@ -22,7 +26,12 @@ function App() {
         <Route path="/AddEmergency" component={AddEmergency} />
         <Route path="/notice" component={notice} />
         <Route path="/use" component={use} />
-        <Route path="/" component={Main} />
+        <Route path="/Emergency" component={Emergency} />
+        <Route path="/Bluetooth" component={Bluetooth} />
+        <Route path="/detail/:deviceId" component={BluetoothDetail} />
+        <Route path="/" component={Home} />
+
+
 
       </Switch>
     </Router>

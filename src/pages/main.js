@@ -50,6 +50,7 @@ const Main = () => {
         path = '/addEmergency';
         break;
       case '비상연락망':
+
         path = '/addEmergency';
         break;
       case '이용약관':
@@ -64,6 +65,7 @@ const Main = () => {
       case '이용기록':
         path = '/usagerecord';
         break;                         
+
       // 다른 페이지에 대한 경로도 이곳에 추가할 수 있습니다.
       default:
         path = '/';
