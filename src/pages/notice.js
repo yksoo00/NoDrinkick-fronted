@@ -1,47 +1,65 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import '../styles/notice.css';
 
 const Notices = () => {
   const [notices, setNotices] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  // 공지사항 목록 조회
   const fetchNotices = async () => {
     const response = await axios.get('/notices');
     setNotices(response.data);
   };
 
-  // 공지사항 조회
-  const fetchNotice = async (memberId) => {
-    const response = await axios.get(`/notices/${memberId}`);
-    console.log(response.data);
+  const searchNotices = async () => {
+    if (!searchTerm) {
+      fetchNotices();
+    } else {
+      const response = await axios.get(`/notices/search?query=${searchTerm}`);
+      setNotices(response.data);
+    }
   };
 
-  // 공지사항 생성
+  const handleCreate = async () => {
+    const title = prompt("공지사항 제목을 입력하세요");
+    const content = prompt("공지사항 내용을 입력하세요");
+    if (title && content) {
+      await createNotice({ title, content });
+    }
+  };
+
   const createNotice = async (notice) => {
     await axios.post('/notices', notice);
-    fetchNotices(); // 목록 갱신
+    fetchNotices();
   };
 
-  // 공지사항 수정
-  const updateNotice = async (memberId, notice) => {
-    await axios.put(`/notices/${memberId}`, notice);
-    fetchNotices(); // 목록 갱신
+  const handleDelete = async (noticeId) => {
+    await deleteNotice(noticeId);
   };
 
-  // 공지사항 삭제
-  const deleteNotice = async (memberId) => {
-    await axios.delete(`/notices/${memberId}`);
-    fetchNotices(); // 목록 갱신
+  const deleteNotice = async (noticeId) => {
+    await axios.delete(`/notices/${noticeId}`);
+    fetchNotices();
   };
 
   useEffect(() => {
     fetchNotices();
   }, []);
 
-  // 간단한 UI 예제
   return (
     <div>
-      <h1>공지사항 목록</h1>
+      <h1 className="h10">공지사항 목록</h1>
+      <div className="search-bar">
+        <input 
+          type="text"
+          className="search-input" 
+          placeholder="검색어" 
+          value={searchTerm} 
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <button className="button5" onClick={searchNotices}>검색</button>
+      </div>
+      <button className="button6" onClick={handleCreate}>공지사항 추가</button>
       <ul>
         {notices.map(notice => (
           <li key={notice.id}>{notice.title}</li>
@@ -49,6 +67,7 @@ const Notices = () => {
       </ul>
     </div>
   );
-};
+
+}
 
 export default Notices;

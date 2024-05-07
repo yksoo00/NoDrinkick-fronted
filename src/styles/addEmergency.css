@@ -11,7 +11,7 @@
 }
 
 .container1 {
-    max-width: 400px;
+    max-width: 300px;
     margin: 150px auto 50px; /* 컨테이너 위치 조정 */
     padding: 20px;
     border: 3px solid #fffcfc;

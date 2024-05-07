@@ -32,10 +32,10 @@ function TermsOfUse() {
     <div className="terms-container">
       <h6>이용약관</h6>
       <div className="buttons-container">
-        <button onClick={() => fetchSectionContent(1)}>1조</button>
-        <button onClick={() => fetchSectionContent(2)}>2조</button>
-        <button onClick={() => fetchSectionContent(3)}>3조</button>
-        <button onClick={() => fetchSectionContent(4)}>4조</button>
+        <button onClick={() => fetchSectionContent(1)}>①</button>
+        <button onClick={() => fetchSectionContent(2)}>②</button>
+        <button onClick={() => fetchSectionContent(3)}>③</button>
+        <button onClick={() => fetchSectionContent(4)}>④</button>
       </div>
       {selectedSection && (
         <div className="section-content">
