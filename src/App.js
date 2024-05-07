@@ -10,6 +10,7 @@ import Emergency from './pages/Emergency';
 import Bluetooth from './pages/Bluetooth';
 import BluetoothDetail from './pages/BluetoothDetails';
 
+
 function App() {
   return (
     <Router>
@@ -30,5 +31,6 @@ function App() {
     </Router>
   );
 }
+//확인확인
 
 export default App;
