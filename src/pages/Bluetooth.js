@@ -1,34 +1,33 @@
 import React, { useState, useEffect } from 'react';
 
+import axios from 'axios'; // axios를 import합니다.
+import { Link } from 'react-router-dom';
+
 const Bluetooth = () => {
   const [bluetoothData, setBluetoothData] = useState([]);
   const [ws, setWs] = useState(null);
 
   useEffect(() => {
-    // 기존 블루투스 데이터 가져오기 코드
-    const fetchData = async () => {   try {
-      const response = await fetch('http://localhost:8080/bluetooth-data');
-      if (!response.ok) { 
-        throw new Error('네트워크 응답이 올바르지 않습니다.');
+
+    const fetchData = async () => {
+      try {
+        // axios.get을 사용하여 API를 호출합니다.
+        const response = await axios.get('http://localhost:8080/bluetooth-data');
+        // axios는 기본적으로 response.data에 실제 데이터를 저장합니다.
+        setBluetoothData(response.data);
+      } catch (error) {
+        console.error('데이터를 불러오는 중 문제가 발생했습니다:', error);
       }
-      const data = await response.json();
-      setBluetoothData(data);
-    } catch (error) {
-      console.error('데이터를 불러오는 중 문제가 발생했습니다:', error);
-    }};
+    };
 
     fetchData();
 
-    // WebSocket 연결 설정
-    const newWs = new WebSocket('ws://192.168.149.197:8765'); // 라즈베리파이 WebSocket 서버 주소
+    const newWs = new WebSocket('ws://192.168.39.197:8765');
 
-    // 연결이 성공적으로 열린 경우 실행될 이벤트 핸들러
     newWs.onopen = () => {
       console.log("WebSocket 연결 성공");
-      // 연결이 성공적으로 완료되었으므로, 여기에서 필요한 초기 설정 작업을 수행할 수 있습니다.
     };
 
-    // 메시지 수신 이벤트 핸들러
     newWs.onmessage = (event) => {
       console.log("서버로부터 받은 메시지:", event.data);
     };
@@ -36,7 +35,8 @@ const Bluetooth = () => {
     setWs(newWs);
   }, []);
 
-  // 번호 1 보내기 이벤트 핸들러
+
+
   const sendNumber = () => {
     if (ws && ws.readyState === WebSocket.OPEN) {
       ws.send('1');
@@ -48,7 +48,17 @@ const Bluetooth = () => {
   return (
     <div>
       <h1>블루투스 데이터 목록</h1>
-      {/* 데이터 보여주는 UI 코드 */}
+
+      <ul>
+        {bluetoothData.map((item, index) => (
+          <li key={index}>
+            <Link to={`/detail/${item.deviceId}`}>
+          장치 ID: {item.deviceId}, 데이터: {item.data}, 받은 시간: {item.receivedAt}
+        </Link>
+      </li>
+  ))}
+</ul>
+
       <button onClick={sendNumber}>번호 1 보내기</button>
     </div>
   );

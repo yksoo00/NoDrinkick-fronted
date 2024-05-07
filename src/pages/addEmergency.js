@@ -1,57 +1,61 @@
 import React, { useState } from 'react';
+import '../styles/addEmergency.css';
 import axios from 'axios';
+import addEmergencyContact from '../services/addEmergency.js';
 
-function EmergencyContactForm() {
-    const [contactInfo, setContactInfo] = useState({
+function AddEmergency() {
+    const [formData, setFormData] = useState({
         name: '',
         phoneNum: '',
         voiceMessage: '',
+        countryCode: '+82'
     });
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setContactInfo({
-            ...contactInfo,
-            [name]: value
-        });
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const formatPhoneNumber = (phoneNumber) => {
+        return phoneNumber.replace(/^0/, formData.countryCode);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // 입력 값 검증 로직 추가 가능
+
+        const formattedPhoneNum = formatPhoneNumber(formData.phoneNum);
+
         try {
-            const response = await axios.post('http://localhost:8080/emergency-contacts', contactInfo);
-            if (response && response.data) {
-                console.log('Emergency contact added successfully:', response.data);
-            }
+            await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum });
+            alert('저장되었습니다!');
+            setFormData({ name: '', phoneNum: '', voiceMessage: '', countryCode: '+82' });
         } catch (error) {
-            console.error('Error adding emergency contact:', error);
+            console.error('비상 연락망 추가 에러:', error);
+            alert('저장에 실패했습니다.');
         }
-        
     };
-    
-    
+
     return (
-        <div>
-            <h2>비상연락망 추가</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>이름:</label>
-                    <input type="text" name="name" value={contactInfo.name} onChange={handleChange} required />
-                </div>
-                <div>
-                    <label>전화번호:</label>
-                    <input type="text" name="phoneNum" value={contactInfo.phoneNum} onChange={handleChange} required />
-                </div>
-                <div>
-                    <label>음성 메시지:</label>
-                    <input type="text" name="voiceMessage" value={contactInfo.voiceMessage} onChange={handleChange} />
-                </div>
-               
-                <button type="submit">추가하기</button>
-            </form>
+        <div className="background1">
+            <div className="container1">
+                <h3>비상연락망 추가</h3>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label>이름:</label>
+                        <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+                    </div>
+                    <div>
+                        <label>전화번호:</label>
+                        <input type="text" name="phoneNum" value={formData.phoneNum} onChange={handleChange} required />
+                    </div>
+                    <div>
+                        <label>메시지:</label>
+                        <input type="text" name="voiceMessage" value={formData.voiceMessage} onChange={handleChange} />
+                    </div>
+                    <button type="submit">추가하기</button>
+                </form>
+            </div>
         </div>
     );
 }
 
-export default EmergencyContactForm;
+export default AddEmergency;
