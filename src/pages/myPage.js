@@ -14,18 +14,28 @@ function UserList() {
         console.error("API 에러:", error);
       }
     };
-
     fetchData();
-  }, []); // 빈 배열을 넘겨주어 컴포넌트 마운트 시 단 한 번만 실행되도록 함
+  }, []);
+
+  // 돌아가기 버튼 클릭 핸들러
+  const handleBackButtonClick = () => {
+    // 이전 페이지로 돌아가는 로직을 여기에 구현합니다.
+    // 예: window.history.back();
+  };
 
   return (
     <div>
-      <h1>사용자 목록</h1>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>{user.name}</li> // 각 사용자 이름을 리스트 아이템으로 렌더링
-        ))}
-      </ul>
+      {users.map((user) => (
+        <div key={user.id}>
+          <img src={user.profilePicture} alt="프로필 사진" /> {/* 사진 */}
+          <p>이름: {user.name}</p> {/* 이름 */}
+          <p>아이디: {user.id}</p> {/* 아이디 */}
+          <p>전화번호: {user.phone}</p> {/* 전화번호 */}
+          <p>이메일: {user.email}</p> {/* 이메일 */}
+          <p>운전면허 인증 여부: {user.licenseVerified ? '인증됨' : '미인증'}</p> {/* 운전면허 인증 여부 */}
+        </div>
+      ))}
+      <button onClick={handleBackButtonClick}>돌아가기</button> {/* 돌아가기 버튼 */}
     </div>
   );
 }

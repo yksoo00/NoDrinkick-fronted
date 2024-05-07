@@ -19,7 +19,6 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove'; 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import LogoDrawer from './Logo';
-
 const Main = () => {
   const [open, setOpen] = useState(false); // 좌측 메뉴 상태
   const [menuOpen, setMenuOpen] = useState(false); // 킥보드 메뉴의 상태
@@ -31,11 +30,9 @@ const Main = () => {
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen); 
   };
-
   // 대여하기 버튼 클릭 시 동작
   const handleRent = () => {
     // 대여 관련 동작 구현
@@ -53,8 +50,22 @@ const Main = () => {
         path = '/addEmergency';
         break;
       case '비상연락망':
-        path = '/Emergency';
+
+        path = '/addEmergency';
         break;
+      case '이용약관':
+        path = '/use';
+        break;
+      case '공지사항':
+        path = '/notice';
+        break;
+      case '설정':
+        path = '/set';
+        break;
+      case '이용기록':
+        path = '/usagerecord';
+        break;                         
+
       // 다른 페이지에 대한 경로도 이곳에 추가할 수 있습니다.
       default:
         path = '/';
@@ -68,7 +79,6 @@ const Main = () => {
     script.async = true;
     script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=a8890b2115cdd425f5e165d52a1aa021&autoload=false`;
     document.head.appendChild(script);
-
     script.onload = () => {
       window.kakao.maps.load(() => {
         const container = document.getElementById('map');
@@ -77,7 +87,6 @@ const Main = () => {
           level: zoomLevel
         };
         const newMap = new window.kakao.maps.Map(container, options);
-
         const LogoPosition = new window.kakao.maps.LatLng(37.38131763, 126.9288372);
         const LogoImageSize = new window.kakao.maps.Size(50, 50);
         const LogoMarkerImage = new window.kakao.maps.MarkerImage(LogoImage, LogoImageSize);
@@ -86,37 +95,30 @@ const Main = () => {
           image: LogoMarkerImage,
         });
         LogoMarker.setMap(newMap);
-
         // 클릭 이벤트 리스너 추가
         window.kakao.maps.event.addListener(LogoMarker, 'click', function() {
           handleMenuToggle(); // 메뉴 토글 핸들러 호출
         });
-
         const markerPosition = new window.kakao.maps.LatLng(37.380833, 126.928333);
         const marker = new window.kakao.maps.Marker({
           position: markerPosition
         });
         marker.setMap(newMap);
-
         setMap(newMap);
-
         window.kakao.maps.event.addListener(newMap, 'zoom_changed', function() {
           setZoomLevel(newMap.getLevel());
         });
       });
     };
-
     return () => {
       document.head.removeChild(script);
     };
   }, []);
-
   useEffect(() => {
     if (map) {
       map.setLevel(zoomLevel);
     }
   }, [map, zoomLevel]);
-
   return (
     <div>
       <CssBaseline />
@@ -166,5 +168,4 @@ const Main = () => {
     </div>
   );
 };
-
 export default Main;
