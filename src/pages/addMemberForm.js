@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import addMembers from '../services/addMembers';
+import addMembers from '../services/addMembers.js'; // addMembers 함수 import
 
 function SignUpPage() {
     const [userInfo, setUserInfo] = useState({
@@ -23,7 +23,8 @@ function SignUpPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/members/add', userInfo);
+            // addMembers 함수를 호출하여 HTTP POST 요청 보내기
+            const response = await addMembers(userInfo); // addMembers 함수 사용
             console.log('회원가입 성공:', response.data);
             window.location.href = '/home'
         } catch (error) {

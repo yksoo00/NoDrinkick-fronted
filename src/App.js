@@ -9,6 +9,7 @@ import AddEmergency from './pages/addEmergency';
 import Emergency from './pages/Emergency';
 import Bluetooth from './pages/Bluetooth';
 
+
 function App() {
   return (
     <Router>

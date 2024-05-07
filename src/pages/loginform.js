@@ -50,13 +50,7 @@ const LoginForm = () => {
         <hr className="my-4" />
         <div className="row">
           <div className="col">
-<<<<<<< HEAD
-            <button className="w-100 btn btn-primary btn-lg" type="submit" >
-              로그인
-            </button>
-=======
           <button className="w-100 btn btn-primary btn-lg" type="submit">로그인</button>
->>>>>>> dev-yeon,seo
           </div>
           <div className="col">
             <button
