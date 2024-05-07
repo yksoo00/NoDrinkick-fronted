@@ -6,7 +6,6 @@ const SaveForm = () => {
         name: '',
         phoneNum: '',
         voiceMessage: '',
-        countryCode: '+82' // 기본 국가 코드를 한국(+82)으로 설정
     });
 
     const handleChange = (e) => {
