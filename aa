@@ -1,0 +1,240 @@
+[33mcommit f1efb8680c83365bd16069d1263e327b79c2868b[m[33m ([m[1;36mHEAD -> [m[1;32mji[m[33m)[m
+Author: JiHoon <wlgns5041@naver.com>
+Date:   Tue May 7 20:42:36 2024 +0900
+
+    최종main
+
+[33mcommit 8715ca0d43f2172fa25fe60e9bf03b1f465a1ebb[m[33m ([m[1;31morigin/park3[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/ji[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Merge: bed72b1 30d1579
+Author: kjskjs0225 <132901377+kjskjs0225@users.noreply.github.com>
+Date:   Tue May 7 16:52:58 2024 +0900
+
+    Merge pull request #9 from yksoo00/park3
+    
+    Park3
+
+[33mcommit 30d15796a49de5ce6394a123c51c072d975c72b7[m
+Merge: 10de4a0 a7d6e4a
+Author: yksoo00 <132903799+yksoo00@users.noreply.github.com>
+Date:   Tue May 7 16:44:43 2024 +0900
+
+    Merge pull request #8 from kjskjs0225/park3
+    
+    Park3
+
+[33mcommit a7d6e4ac0803124828888748152a5e92a169fcb6[m
+Merge: d1ffcf9 10de4a0
+Author: yksoo00 <132903799+yksoo00@users.noreply.github.com>
+Date:   Tue May 7 16:44:34 2024 +0900
+
+    Merge branch 'park3' into park3
+
+[33mcommit 10de4a034d8928ce5c770dc3a8ba5e8b2b9ccc17[m
+Merge: b706fdd bed72b1
+Author: yksoo00 <132903799+yksoo00@users.noreply.github.com>
+Date:   Tue May 7 16:41:52 2024 +0900
+
+    Merge pull request #7 from yksoo00/main
+    
+    ㅇㅇ
+
+[33mcommit d1ffcf91b95a77ef566c9f897fc4fa47ecebb2c5[m
+Author: kjskjs0225 <132901377+kjskjs0225@users.noreply.github.com>
+Date:   Tue May 7 16:35:19 2024 +0900
+
+    merge
+
+[33mcommit bed72b1876b8b518b6d058fcd93be29f2a2013e0[m
+Merge: 54d78d2 0d34dd0
+Author: yksoo00 <132903799+yksoo00@users.noreply.github.com>
+Date:   Tue May 7 16:33:30 2024 +0900
+
+    Merge pull request #6 from yksoo00/dev-yeon,seo
+    
+    Dev yeon,seo
+
+[33mcommit 0d34dd043b7a55b8b304b636f14ef16c65e3a3e8[m
+Merge: d971c0b 54d78d2
+Author: yksoo00 <132903799+yksoo00@users.noreply.github.com>
+Date:   Tue May 7 16:33:22 2024 +0900
+
+    Merge branch 'main' into dev-yeon,seo
+
+[33mcommit d971c0bc1ec6b3ceb05a810c3c1dbcba2189b395[m
+Merge: 414a49f 165a9d6
+Author: yksoo <yksoo00@naver.com>
+Date:   Tue May 7 16:16:47 2024 +0900
+
+    Merge remote-tracking branch 'origin/park2' into dev-yeon,seo
+
+[33mcommit 414a49fcc4863756c918eb133d3ba0edaa436757[m
+Author: yksoo <yksoo00@naver.com>
+Date:   Tue May 7 16:14:38 2024 +0900
+
+    블루투스
+
+[33mcommit 165a9d655916dc030e48054817d47e206e5921cc[m
+Merge: 630afa8 b706fdd
+Author: Hyeongseok0410 <taeinzz0410@gmail.com>
+Date:   Tue May 7 16:03:58 2024 +0900
+
+    Merge remote-tracking branch 'origin/park3' into park2
+
+[33mcommit 630afa87057f22f6d8ff8fc97c6e536b623dad53[m
+Merge: 0bfd697 306b558
+Author: Hyeongseok0410 <taeinzz0410@gmail.com>
+Date:   Tue May 7 14:42:50 2024 +0900
+
+    Merge branch 'main' into park2
+
+[33mcommit 0bfd6979e82ef8e640fa98cdcef23ea431b63e4d[m
+Author: Hyeongseok0410 <taeinzz0410@gmail.com>
+Date:   Tue May 7 13:48:53 2024 +0900
+
+    오늘함
+
+[33mcommit c97d9522b5bb2e096124e4190887953fb0c7347c[m
+Author: Hyeongseok0410 <taeinzz0410@gmail.com>
+Date:   Tue May 7 13:41:14 2024 +0900
+
+    수정
+
+[33mcommit 503963405a019cca993612713be678c081556620[m
+Author: kjskjs0225 <132901377+kjskjs0225@users.noreply.github.com>
+Date:   Tue May 7 13:04:30 2024 +0900
+
+    수정
+
+[33mcommit ca6afd7215f388032b262a746e9e6ff546b7802c[m
+Author: Hyeongseok0410 <taeinzz0410@gmail.com>
+Date:   Tue May 7 00:40:39 2024 +0900
+
+            modified:   src/pages/addMemberForm.js
+            modified:   src/services/loginService.js
+
+[33mcommit 9738c3beeb20722936d74fda374cb8765cbd63bb[m
+Merge: e02f950 c8a9024
+Author: Hyeongseok0410 <taeinzz0410@gmail.com>
+Date:   Tue May 7 00:40:15 2024 +0900
+
+    https://github.com/yksoo00/NoDrinkick-fronted.git
+
+[33mcommit c8a90249b4f5de53e23c6af271738f28b28c5386[m
+Author: yksoo <yksoo00@naver.com>
+Date:   Mon May 6 00:23:14 2024 +0900
+
+    수정
+
+[33mcommit 54d78d267a5e29e8931f44c8f1434d93aa707857[m
+Merge: b706fdd 69f6232
+Author: yksoo00 <132903799+yksoo00@users.noreply.github.com>
+Date:   Thu May 2 02:47:27 2024 +0900
+
+    Merge pull request #4 from yksoo00/dev-yeon,seo
+    
+    Dev yeon,seo
+
+[33mcommit 69f6232bd1518f963385cb94d48db35382bbd30b[m
+Author: yksoo <yksoo00@naver.com>
+Date:   Thu May 2 02:44:57 2024 +0900
+
+    토큰부분재수정및블루투스추가
+
+[33mcommit ee40ba35d60274e9ff9509dd8b819c495b0609cc[m
+Author: yksoo <yksoo00@naver.com>
+Date:   Wed May 1 17:41:02 2024 +0900
+
+    블루투ㅡ
+
+[33mcommit 7569d8c751e9a481b8c68a6e13bcaa59ee6962a6[m
+Author: kjskjs0225 <132901377+kjskjs0225@users.noreply.github.com>
+Date:   Tue Apr 30 20:17:16 2024 +0900
+
+    수정
+
+[33mcommit e02f95056758e19df01caae4e3fa063b28d17fb4[m
+Author: Hyeongseok0410 <taeinzz0410@gmail.com>
+Date:   Tue Apr 30 20:08:26 2024 +0900
+
+    수정
+
+[33mcommit b706fdd6f8bfb9049a303193a1505290d24121b5[m[33m ([m[1;31morigin/KIM[m[33m)[m
+Merge: 306b558 a4b808e
+Author: yksoo00 <132903799+yksoo00@users.noreply.github.com>
+Date:   Tue Apr 30 15:17:42 2024 +0900
+
+    Merge pull request #3 from yksoo00/dev-yeon,seo
+    
+    Dev yeon,seo
+
+[33mcommit a4b808e052ef5bd48905561d532e3c7069bdba06[m
+Author: yksoo <yksoo00@naver.com>
+Date:   Tue Apr 30 15:16:31 2024 +0900
+
+    토큰완성
+
+[33mcommit e0546da8ca2c71f0eceac00c94f021bcb547ae82[m
+Author: Hyeongseok0410 <taeinzz0410@gmail.com>
+Date:   Tue Apr 30 03:10:33 2024 +0900
+
+    수정
+
+[33mcommit 959b6e89ef501f920cb1105cabae69c5f84e4e44[m
+Author: yksoo <yksoo00@naver.com>
+Date:   Mon Apr 29 02:25:24 2024 +0900
+
+    수정완료
+
+[33mcommit 306b55894985fc680477edff38aa0ae2bb87d179[m
+Merge: 9b28529 4364acc
+Author: yksoo00 <132903799+yksoo00@users.noreply.github.com>
+Date:   Fri Apr 26 01:57:33 2024 +0900
+
+    Merge pull request #2 from yksoo00/dev-yeon,seo
+    
+    Dev yeon,seo
+
+[33mcommit 4364accd699b0df8f70c3dfcf4d457506770265b[m
+Author: yksoo <yksoo00@naver.com>
+Date:   Fri Apr 26 01:55:09 2024 +0900
+
+    지훈이꺼까지 추가
+
+[33mcommit a9f7d3f6447b4deab56ecde318b13671a7d143bb[m
+Author: yksoo <yksoo00@naver.com>
+Date:   Fri Apr 26 01:48:49 2024 +0900
+
+            modified:   src/App.js
+
+[33mcommit 9b28529cc97534e1983f3ac94e4309d0def268ce[m
+Merge: ca3791a 07bc2d7
+Author: yksoo00 <132903799+yksoo00@users.noreply.github.com>
+Date:   Thu Apr 25 23:19:42 2024 +0900
+
+    Merge pull request #1 from yksoo00/dev-yeon,seo
+    
+    Dev yeon,seo
+
+[33mcommit 07bc2d729cd6b8dac4136a2196414b138fc35ecb[m
+Author: yksoo <yksoo00@naver.com>
+Date:   Thu Apr 25 23:17:52 2024 +0900
+
+    폴더 수정 및 폴더 안에 뭐가 들어가야할지 readme파일 넣어놨음
+
+[33mcommit 6a68dd113cf4e9b98280759756fe1d6c701e25e6[m
+Author: yksoo <yksoo00@naver.com>
+Date:   Thu Apr 25 23:11:24 2024 +0900
+
+    '수정'
+
+[33mcommit ca3791abea724ba6fcd5150794864c6649fa5c75[m
+Author: yksoo <yksoo00@naver.com>
+Date:   Thu Apr 25 22:19:12 2024 +0900
+
+    하이
+
+[33mcommit 4d3811cffae5c1c3f304ebd0be6033e13d882a83[m
+Author: yksoo <yksoo00@naver.com>
+Date:   Thu Apr 25 18:28:21 2024 +0900
+
+    first commit
