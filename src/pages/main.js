@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { KakaoMap, Marker } from 'react-kakao-maps';
-import { useHistory } from 'react-router-dom';
 import LogoImage from '../assets/Logo.png';
 import '../styles/main.css'; 
 import CssBaseline from '@mui/material/CssBaseline';
@@ -19,25 +18,22 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove'; 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import LogoDrawer from './Logo';
+import { useHistory } from 'react-router-dom';
+
 const Main = () => {
   const [open, setOpen] = useState(false); // 좌측 메뉴 상태
   const [menuOpen, setMenuOpen] = useState(false); // 킥보드 메뉴의 상태
   const [zoomLevel, setZoomLevel] = useState(2);
   const [map, setMap] = useState(null);
 
-  const history = useHistory();
-
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const history = useHistory();
+
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen); 
-  };
-  // 대여하기 버튼 클릭 시 동작
-  const handleRent = () => {
-    // 대여 관련 동작 구현
-    console.log("대여하기 버튼 클릭됨");
-    // 여기서 원하는 동작을 수행하도록 코드를 추가하세요.
   };
 
   const handleClickPage = (pageName) => {
@@ -74,11 +70,19 @@ const Main = () => {
     history.push(path);
   };
 
+  // 대여하기 버튼 클릭 시 동작
+  const handleRent = () => {
+    // 대여 관련 동작 구현
+    console.log("대여하기 버튼 클릭됨");
+    // 여기서 원하는 동작을 수행하도록 코드를 추가하세요.
+  };
+
   useEffect(() => {
     const script = document.createElement('script');
     script.async = true;
     script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=a8890b2115cdd425f5e165d52a1aa021&autoload=false`;
     document.head.appendChild(script);
+
     script.onload = () => {
       window.kakao.maps.load(() => {
         const container = document.getElementById('map');
@@ -87,6 +91,7 @@ const Main = () => {
           level: zoomLevel
         };
         const newMap = new window.kakao.maps.Map(container, options);
+
         const LogoPosition = new window.kakao.maps.LatLng(37.38131763, 126.9288372);
         const LogoImageSize = new window.kakao.maps.Size(50, 50);
         const LogoMarkerImage = new window.kakao.maps.MarkerImage(LogoImage, LogoImageSize);
@@ -95,30 +100,37 @@ const Main = () => {
           image: LogoMarkerImage,
         });
         LogoMarker.setMap(newMap);
+
         // 클릭 이벤트 리스너 추가
         window.kakao.maps.event.addListener(LogoMarker, 'click', function() {
           handleMenuToggle(); // 메뉴 토글 핸들러 호출
         });
+
         const markerPosition = new window.kakao.maps.LatLng(37.380833, 126.928333);
         const marker = new window.kakao.maps.Marker({
           position: markerPosition
         });
         marker.setMap(newMap);
+
         setMap(newMap);
+
         window.kakao.maps.event.addListener(newMap, 'zoom_changed', function() {
           setZoomLevel(newMap.getLevel());
         });
       });
     };
+
     return () => {
       document.head.removeChild(script);
     };
   }, []);
+
   useEffect(() => {
     if (map) {
       map.setLevel(zoomLevel);
     }
   }, [map, zoomLevel]);
+
   return (
     <div>
       <CssBaseline />
@@ -139,7 +151,7 @@ const Main = () => {
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
       >
-        <List>
+         <List>
           {['마이페이지', '설정', '이용기록', '공지사항', '이용약관', '비상연락망'].map((text, index) => (
             <ListItem button key={text} sx={{ paddingTop: index === 0 ? 9 : 2, paddingBottom: 2, display: 'flex', justifyContent: 'center' }} onClick={() => handleClickPage(text)}>
               <Typography variant="body1" sx={{ fontFamily: 'Pretendard-Black', textAlign: 'center' }}>
@@ -148,7 +160,6 @@ const Main = () => {
             </ListItem>
           ))}
         </List>
-
       </Drawer>
       <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} /> 
       <Box id="map" className="map"></Box>
@@ -168,4 +179,5 @@ const Main = () => {
     </div>
   );
 };
+
 export default Main;

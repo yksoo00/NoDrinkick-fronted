@@ -43,22 +43,22 @@ function AddEmergency() {
             <div className="container1">
                 <h3>비상연락망 추가</h3>
 
-      <form1 onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
                     <div>
-                        <label1>이름:</label1>
-                        <input type="text" name="name" value={contactInfo.name} onChange={handleChange} required />
+                        <label>이름:</label>
+                        <input type="text" name="name" value={formData.name} onChange={handleChange} required />
                     </div>
                     <div>
-                        <label1>전화번호:</label1>
-                        <input type="text" name="phoneNum" value={contactInfo.phoneNum} onChange={handleChange} required />
+                        <label>전화번호:</label>
+                        <input type="text" name="phoneNum" value={formData.phoneNum} onChange={handleChange} required />
                     </div>
                     <div>
-                        <label1>메시지:</label1>
-                        <input type="text" name="voiceMessage" value={contactInfo.voiceMessage} onChange={handleChange} />
+                        <label>메시지:</label>
+                        <input type="text" name="voiceMessage" value={formData.voiceMessage} onChange={handleChange} />
                     </div>
                 
-                    <button1 type="submit">추가하기</button1>
-                </form1>
+                    <button type="submit">추가하기</button>
+                </form>
 
 
             </div>
