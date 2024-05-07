@@ -7,6 +7,10 @@ import AddMemberForm from './pages/addMemberForm';
 import Main from './pages/main';
 import AddEmergency from './pages/addEmergency';
 
+import Emergency from './pages/Emergency';
+import Bluetooth from './pages/Bluetooth';
+import BluetoothDetail from './pages/BluetoothDetails';
+
 function App() {
   return (
     <Router>
@@ -18,7 +22,12 @@ function App() {
         <Route path="/LoginForm" component={LoginForm} />
         <Route path="/AddMemberForm" component={AddMemberForm} />
         <Route path="/AddEmergency" component={AddEmergency} />
-        <Route path="/" component={Main} />
+
+        <Route path="/Emergency" component={Emergency} />
+        <Route path="/Bluetooth" component={Bluetooth} />
+        <Route path="/detail/:deviceId" component={BluetoothDetail} />
+        <Route path="/" component={Home} />
+
 
       </Switch>
     </Router>

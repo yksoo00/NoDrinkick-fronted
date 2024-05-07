@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { KakaoMap, Marker } from 'react-kakao-maps';
+import { useHistory } from 'react-router-dom';
 import LogoImage from '../assets/Logo.png';
 import '../styles/main.css'; 
 import CssBaseline from '@mui/material/CssBaseline';
@@ -25,6 +26,8 @@ const Main = () => {
   const [zoomLevel, setZoomLevel] = useState(2);
   const [map, setMap] = useState(null);
 
+  const history = useHistory();
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -38,6 +41,26 @@ const Main = () => {
     // 대여 관련 동작 구현
     console.log("대여하기 버튼 클릭됨");
     // 여기서 원하는 동작을 수행하도록 코드를 추가하세요.
+  };
+
+  const handleClickPage = (pageName) => {
+    let path;
+    switch (pageName) {
+      case '마이페이지':
+        path = '/myPage';
+        break;
+      case '추가':
+        path = '/addEmergency';
+        break;
+      case '비상연락망':
+        path = '/Emergency';
+        break;
+      // 다른 페이지에 대한 경로도 이곳에 추가할 수 있습니다.
+      default:
+        path = '/';
+        break;
+    }
+    history.push(path);
   };
 
   useEffect(() => {
@@ -116,13 +139,14 @@ const Main = () => {
       >
         <List>
           {['마이페이지', '설정', '이용기록', '공지사항', '이용약관', '비상연락망'].map((text, index) => (
-            <ListItem button key={text} sx={{ paddingTop: index === 0 ? 9 : 2, paddingBottom: 2, display: 'flex', justifyContent: 'center' }}>
+            <ListItem button key={text} sx={{ paddingTop: index === 0 ? 9 : 2, paddingBottom: 2, display: 'flex', justifyContent: 'center' }} onClick={() => handleClickPage(text)}>
               <Typography variant="body1" sx={{ fontFamily: 'Pretendard-Black', textAlign: 'center' }}>
                 {text}
               </Typography>
             </ListItem>
           ))}
         </List>
+
       </Drawer>
       <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} /> 
       <Box id="map" className="map"></Box>

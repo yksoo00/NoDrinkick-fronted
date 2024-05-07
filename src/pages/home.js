@@ -66,7 +66,7 @@ function Home() {
             </button>
           </div>
           <div className="col-auto">
-            <button className="register-button" onClick={() => { window.location.href = '/members/add'; }}>
+            <button className="register-button" onClick={() => { window.location.href = '/addMemberForm'; }}>
             회원 가입
         </button>
       </div>
