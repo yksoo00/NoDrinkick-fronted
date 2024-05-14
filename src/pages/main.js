@@ -17,6 +17,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button'; 
 import AddIcon from '@mui/icons-material/Add'; 
 import RemoveIcon from '@mui/icons-material/Remove'; 
+
 import LogoDrawer from './Logo';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 아이콘 정의
@@ -26,12 +27,31 @@ import { faUserPlus } from '@fortawesome/free-solid-svg-icons'; //비상연락�
 import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; //비상연락망 목록 아이콘
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
 import { faBell } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
+import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 
 const Main = () => {
   const [open, setOpen] = useState(false); 
   const [menuOpen, setMenuOpen] = useState(false); 
   const [zoomLevel, setZoomLevel] = useState(2);
   const [map, setMap] = useState(null);
+  const [darkModeEnabled, setDarkModeEnabled] = useState(
+    localStorage.getItem('darkModeEnabled') === 'true'
+  );
+
+  useEffect(() => {
+    // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
+    if (darkModeEnabled) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+    // 다크 모드 상태를 localStorage에 저장합니다.
+    localStorage.setItem('darkModeEnabled', darkModeEnabled);
+  }, [darkModeEnabled]);
+
+  const toggleDarkMode = () => {
+    setDarkModeEnabled(!darkModeEnabled);
+  };
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -138,6 +158,13 @@ const Main = () => {
 
   return (
     <div>
+      <div className={`dark-mode-toggle ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={toggleDarkMode}>
+      <FontAwesomeIcon
+        icon={darkModeEnabled ? faMoon : faSun}
+        size="2x"
+        style={darkModeEnabled ? { color: '#FFFFFF' } : { color: '#000000' }} // 아이콘의 색을 변경
+      />
+    </div>
       <CssBaseline />
       <AppBar position="fixed" sx={{zIndex: 9999, backgroundColor: '#2d2c28;' }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>

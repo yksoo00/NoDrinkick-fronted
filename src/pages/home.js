@@ -77,7 +77,7 @@ function Home() {
       </div>
       {showBackgroundShape && <img src={BackImage} alt="C" className="back-image" />}
       {showCustomizedSwitch && (
-        <DarkMode onChange={toggleDarkMode} />
+        <DarkMode darkModeEnabled={darkModeEnabled} onChange={toggleDarkMode} />
       )}
     </div> 
   );

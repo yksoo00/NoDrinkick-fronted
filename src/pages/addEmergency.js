@@ -106,7 +106,7 @@ function AddEmergency() {
 
     return (
         <div style={{
-            backgroundColor: '#EEF0F5',
+            backgroundColor: '#F7F7F7',
             minHeight: '100vh', 
             display: 'flex',
             flexDirection: 'column',
