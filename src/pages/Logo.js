@@ -27,7 +27,7 @@ function BellButton({ onClick }) {
       }}
     >
       <BellIcon />
-      <Typography variant="h6" sx={{ fontFamily: 'Pretendard-Bold', textAlign: 'center', marginTop: '8px' }}>벨 울리기</Typography>
+      <Typography variant="h6" sx={{ color: '#000000', fontFamily: 'Pretendard-Bold', textAlign: 'center', marginTop: '8px' }}>벨 울리기</Typography>
     </ListItemButton>
   );
 }
@@ -51,7 +51,7 @@ function NoButton({ onClick }) {
       }}
     >
       <ClearIcon />
-      <Typography variant="h6" sx={{ fontFamily: 'Pretendard-Bold', textAlign: 'center', marginTop: '8px' }}>여기 없어요</Typography>
+      <Typography variant="h6" sx={{ color: '#000000', fontFamily: 'Pretendard-Bold', textAlign: 'center', marginTop: '8px' }}>여기 없어요</Typography>
     </ListItemButton>
   );
 }

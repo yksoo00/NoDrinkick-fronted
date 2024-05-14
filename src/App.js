@@ -17,7 +17,7 @@ function App() {
   return (
     <Router>
       <Switch>
-       
+
         <Route path="/myPage" component={myPage} />
         <Route path="/main" component={Main} />
         <Route path="/home" component={Home} />
@@ -31,12 +31,9 @@ function App() {
         <Route path="/detail/:deviceId" component={BluetoothDetail} />
         <Route path="/" component={Home} />
 
-
-
       </Switch>
     </Router>
   );
 }
-//확인확인
 
 export default App;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { KakaoMap, Marker } from 'react-kakao-maps';
 import LogoImage from '../assets/Logo.png';
 import '../styles/main.css'; 
@@ -10,19 +11,25 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box'; 
 import Button from '@mui/material/Button'; 
 import AddIcon from '@mui/icons-material/Add'; 
 import RemoveIcon from '@mui/icons-material/Remove'; 
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import LogoDrawer from './Logo';
-import { useHistory } from 'react-router-dom';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 아이콘 정의
+import { faUser } from '@fortawesome/free-solid-svg-icons'; //마이페이지 아이콘
+import { faClipboard } from '@fortawesome/free-solid-svg-icons'; //이용내역 아이콘
+import { faUserPlus } from '@fortawesome/free-solid-svg-icons'; //비상연락망 추가 아이콘
+import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; //비상연락망 목록 아이콘
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
+import { faBell } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
 
 const Main = () => {
-  const [open, setOpen] = useState(false); // 좌측 메뉴 상태
-  const [menuOpen, setMenuOpen] = useState(false); // 킥보드 메뉴의 상태
+  const [open, setOpen] = useState(false); 
+  const [menuOpen, setMenuOpen] = useState(false); 
   const [zoomLevel, setZoomLevel] = useState(2);
   const [map, setMap] = useState(null);
 
@@ -42,12 +49,11 @@ const Main = () => {
       case '마이페이지':
         path = '/myPage';
         break;
-      case '추가':
+      case 'SOS 추가':
         path = '/addEmergency';
         break;
-      case '비상연락망':
-
-        path = '/addEmergency';
+      case 'SOS 목록':
+        path = '/Emergency';
         break;
       case '이용약관':
         path = '/use';
@@ -61,8 +67,7 @@ const Main = () => {
       case '이용기록':
         path = '/usagerecord';
         break;                         
-
-      // 다른 페이지에 대한 경로도 이곳에 추가할 수 있습니다.
+        
       default:
         path = '/';
         break;
@@ -134,7 +139,7 @@ const Main = () => {
   return (
     <div>
       <CssBaseline />
-      <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#2d2c28;' }}>
+      <AppBar position="fixed" sx={{zIndex: 9999, backgroundColor: '#2d2c28;' }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2 }}>
@@ -150,16 +155,31 @@ const Main = () => {
         open={open}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
+        sx = {{zIndex: 2}}
       >
          <List>
-          {['마이페이지', '설정', '이용기록', '공지사항', '이용약관', '비상연락망'].map((text, index) => (
-            <ListItem button key={text} sx={{ paddingTop: index === 0 ? 9 : 2, paddingBottom: 2, display: 'flex', justifyContent: 'center' }} onClick={() => handleClickPage(text)}>
-              <Typography variant="body1" sx={{ fontFamily: 'Pretendard-Black', textAlign: 'center' }}>
-                {text}
-              </Typography>
-            </ListItem>
-          ))}
-        </List>
+           {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
+    <ListItem
+      button
+      key={text}
+      sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom:3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
+      onClick={() => handleClickPage(text)}
+    >
+      <ListItemIcon>
+        {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style = {{marginLeft:3}} />}
+        {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style = {{marginLeft:4}} />}
+        {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style = {{marginLeft:3}} />}
+        {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style = {{marginLeft:3}} />}
+        {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style = {{marginLeft:3}} />}
+        {text === '공지사항' && <FontAwesomeIcon icon={faBell} style = {{marginLeft:3}} />}
+      </ListItemIcon>
+
+      <Typography variant="body1" sx={{ marginLeft:-1.5,fontSize: 15, fontFamily: 'Pretendard-Black', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+        {text}
+      </Typography>
+    </ListItem>
+  ))}
+</List>
       </Drawer>
       <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} /> 
       <Box id="map" className="map"></Box>
@@ -172,7 +192,7 @@ const Main = () => {
         </Button>
       </Box>
       <Box sx={{position: 'fixed', bottom: '3%', left: '50%', transform: 'translate(-50%)', zIndex: 9999}}>
-        <Button className="Rent-Button" variant="contained" color="primary" onClick={handleRent} style={{ right:'1px', backgroundColor: '#2d2c28', color: '#ffffff', height:'10vh', width:'700px'}} >
+        <Button className="Rent-Button" variant="contained" color="primary" onClick={handleRent} style={{  right:'1px', backgroundColor: '#2d2c28', color: '#ffffff', height:'10vh', width:'700px'}} >
         <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold' }}>대여하기</Typography>
         </Button>
       </Box>
