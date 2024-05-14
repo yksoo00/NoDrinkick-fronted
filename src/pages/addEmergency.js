@@ -77,7 +77,7 @@ function AddEmergency() {
     const [formData, setFormData] = useState({
         name: '',
         phoneNum: '',
-        voiceMessage: '',
+        Message: '',
         countryCode: '+82'
     });
     
@@ -97,7 +97,7 @@ function AddEmergency() {
         try {
             await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum });
             alert('저장되었습니다!');
-            setFormData({ name: '', phoneNum: '', voiceMessage: '', countryCode: '+82' });
+            setFormData({ name: '', phoneNum: '', Message: '', countryCode: '+82' });
         } catch (error) {
             console.error('비상 연락망 추가 에러:', error);
             alert('저장에 실패했습니다.');
@@ -193,14 +193,14 @@ function AddEmergency() {
                         />
                     </div>
                     <div className="SOS-Label">
-                        <label htmlFor="voiceMessage" className="InputLabel">SOS 메시지
+                        <label htmlFor="Message" className="InputLabel">SOS 메시지
                         <FontAwesomeIcon icon={faEnvelope} className= "SOS-Icon3" />
                         </label>
                         <input
                             type="text"
-                            id="voiceMessage"
-                            name="voiceMessage"
-                            value={formData.voiceMessage}
+                            id="Message"
+                            name="Message"
+                            value={formData.Message}
                             onChange={handleChange}
                             className="SOS-Input"
                             placeholder="MessageText"
