@@ -46,9 +46,20 @@
 
 
   "@fortawesome/fontawesome-svg-core": "^6.5.2",
+  
+
+
+
+    
+
 
 
   "@fortawesome/free-solid-svg-icons": "^6.5.2",
+  
+
+
+
+    
 
 
 
@@ -143,6 +154,15 @@
 
 
   "react-kakao-maps": "^0.0.13",
+  
+
+
+
+    
+
+
+
+  "react-qr-scanner": "^1.0.0-alpha.11",
   
 
 

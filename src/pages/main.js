@@ -18,6 +18,8 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add'; 
 import RemoveIcon from '@mui/icons-material/Remove'; 
 
+import QrScanner from 'react-qr-scanner'; // Import QR scanner
+
 import LogoDrawer from './Logo';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 아이콘 정의
@@ -37,6 +39,9 @@ const Main = () => {
   const [darkModeEnabled, setDarkModeEnabled] = useState(
     localStorage.getItem('darkModeEnabled') === 'true'
   );
+
+  const [qrScannerOpen, setQrScannerOpen] = useState(false); // State for QR scanner
+  const [qrResult, setQrResult] = useState(null); // State to store QR scan result
 
   useEffect(() => {
     // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
@@ -95,11 +100,22 @@ const Main = () => {
     history.push(path);
   };
 
-  // 대여하기 버튼 클릭 시 동작
   const handleRent = () => {
-    // 대여 관련 동작 구현
-    console.log("대여하기 버튼 클릭됨");
-    // 여기서 원하는 동작을 수행하도록 코드를 추가하세요.
+    setQrScannerOpen(true); // Open the QR scanner
+  };
+
+  const handleScan = (data) => {
+    if (data) {
+      setQrResult(data);
+      setQrScannerOpen(false); // Close the QR scanner
+      console.log("QR Code Result:", data);
+      // Perform any additional actions with the scanned data
+    }
+  };
+
+  const handleError = (err) => {
+    console.error(err);
+    setQrScannerOpen(false); // Close the QR scanner on error
   };
 
   useEffect(() => {
@@ -159,12 +175,12 @@ const Main = () => {
   return (
     <div>
       <div className={`dark-mode-toggle ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={toggleDarkMode}>
-      <FontAwesomeIcon
-        icon={darkModeEnabled ? faMoon : faSun}
-        size="2x"
-        style={darkModeEnabled ? { color: '#FFFFFF' } : { color: '#000000' }} // 아이콘의 색을 변경
-      />
-    </div>
+        <FontAwesomeIcon
+          icon={darkModeEnabled ? faMoon : faSun}
+          size="2x"
+          style={darkModeEnabled ? { color: '#FFFFFF' } : { color: '#000000' }} // 아이콘의 색을 변경
+        />
+      </div>
       <CssBaseline />
       <AppBar position="fixed" sx={{zIndex: 9999, backgroundColor: '#2d2c28;' }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
@@ -182,47 +198,57 @@ const Main = () => {
         open={open}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
-        sx = {{zIndex: 2}}
+        sx={{zIndex: 2}}
       >
-         <List>
-           {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
-    <ListItem
-      button
-      key={text}
-      sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom:3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
-      onClick={() => handleClickPage(text)}
-    >
-      <ListItemIcon>
-        {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style = {{marginLeft:3}} />}
-        {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style = {{marginLeft:4}} />}
-        {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style = {{marginLeft:3}} />}
-        {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style = {{marginLeft:3}} />}
-        {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style = {{marginLeft:3}} />}
-        {text === '공지사항' && <FontAwesomeIcon icon={faBell} style = {{marginLeft:3}} />}
-      </ListItemIcon>
-
-      <Typography variant="body1" sx={{ marginLeft:-1.5,fontSize: 15, fontFamily: 'Pretendard-Black', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        {text}
-      </Typography>
-    </ListItem>
-  ))}
-</List>
+        <List>
+          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
+            <ListItem
+              button
+              key={text}
+              sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom:3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
+              onClick={() => handleClickPage(text)}
+            >
+              <ListItemIcon>
+                {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style={{marginLeft:3}} />}
+                {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style={{marginLeft:4}} />}
+                {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{marginLeft:3}} />}
+                {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{marginLeft:3}} />}
+                {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{marginLeft:3}} />}
+                {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{marginLeft:3}} />}
+              </ListItemIcon>
+              <Typography variant="body1" sx={{marginLeft:-1.5, fontSize: 15, fontFamily: 'Pretendard-Black', display: 'flex', alignItems: 'center', textAlign: 'center' }}>{text}</Typography>
+            </ListItem>
+          ))}
+        </List>
       </Drawer>
-      <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} /> 
+      <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} />
       <Box id="map" className="map"></Box>
       <Box sx={{position: 'fixed', bottom: '84.5%', right: '1vw', zIndex: 3}}>
-        <Button variant="contained" color="primary" className="zoom-button" style={{ borderTopLefttRadius: '10%', borderBottomLeftRadius: '10%', borderTopRightRadius: '0%', borderBottomRightRadius: '0%', backgroundColor: '#2d2c28', minWidth: '2vw', Height:'2vh' }} onClick={() => setZoomLevel(zoomLevel + 1)}>
+        <Button variant="contained" color="primary" className="zoom-button" style={{ borderTopLeftRadius: '10%', borderBottomLeftRadius: '10%', borderTopRightRadius: '0%', borderBottomRightRadius: '0%', backgroundColor: '#2d2c28', minWidth: '2vw', height: '3.55vh' }} onClick={() => setZoomLevel(zoomLevel + 1)}>
           <AddIcon />
         </Button>
-        <Button variant="contained" color="primary" className="zoom-button" style={{ borderTopRightRadius: '10%', borderBottomRightRadius: '10%', borderBottomLeftRadius: '0%', borderTopLeftRadius: '0%', backgroundColor: '#2d2c28', minWidth: '2vw'}} onClick={() => setZoomLevel(zoomLevel - 1)}>
+        <Button variant="contained" color="primary" className="zoom-button" style={{ borderTopRightRadius: '10%', borderBottomRightRadius: '10%', borderBottomLeftRadius: '0%', borderTopLeftRadius: '0%', backgroundColor: '#2d2c28', minWidth: '2vw' }} onClick={() => setZoomLevel(zoomLevel - 1)}>
           <RemoveIcon />
         </Button>
       </Box>
       <Box sx={{position: 'fixed', bottom: '3%', left: '50%', transform: 'translate(-50%)', zIndex: 9999}}>
-        <Button className="Rent-Button" variant="contained" color="primary" onClick={handleRent} style={{  right:'1px', backgroundColor: '#2d2c28', color: '#ffffff', height:'10vh', width:'700px'}} >
-        <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold' }}>대여하기</Typography>
+        <Button className="Rent-Button" variant="contained" color="primary" onClick={handleRent} style={{ right: '1px', backgroundColor: '#2d2c28', color: '#ffffff', height: '10vh', width: '700px' }} >
+          <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold' }}>대여하기</Typography>
         </Button>
       </Box>
+      {qrScannerOpen && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 10000 }}>
+          <div style={{ width: '300px', height: '300px', backgroundColor: 'white', padding: '20px', borderRadius: '8px' }}>
+            <QrScanner
+              delay={300}
+              onError={handleError}
+              onScan={handleScan}
+              style={{ width: '100%' }}
+            />
+      <Button className="CloseButton" onClick={() => setQrScannerOpen(false)} style={{ height:'50px', width: '260px', backgroundColor: '#2d2c28', color: '#FFFFFF', fontSize: 15, fontFamily: 'Pretendard-Black', marginTop: '10px', left: '50%', transform: 'translateX(-50%)' }}>Close</Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
