@@ -93,7 +93,8 @@ const LoginForm = () => {
           </button>
         </form>
         <div className="register-text">
-          <span>계정이 없으신가요? </span>
+          <span className={`Q ${darkModeEnabled ? 'dark-mode' : ''}`} > 계정이 없으신가요? 
+          </span>
           <button className={`register-Button ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={handleRedirectToRegister}>
             회원가입
           </button>

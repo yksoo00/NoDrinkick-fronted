@@ -81,7 +81,7 @@ function SignUpPage() {
 
 
         <div className={`transparent-shapeB ${darkModeEnabled ? 'dark-mode' : ''}`}>
-            <h2 className="registerText"> 회원가입</h2>
+            <h2 className={`registerText ${darkModeEnabled ? 'dark-mode' : ''}`}> 회원가입</h2>
             <form className={`signup-form ${darkModeEnabled ? 'dark-mode' : ''}`} onSubmit={handleSubmit}>
                 <div>
                     <input type="text" 
@@ -133,7 +133,7 @@ function SignUpPage() {
                     placeholder="사용자 얼굴 사진 경로"/>
                 </div>
                 <div>
-                    <label className='license'>운전면허 인증 유무</label>
+                    <label className={`license ${darkModeEnabled ? 'dark-mode' : ''}`}>운전면허 인증 유무</label>
                     <select 
                     name="license" 
                     value={userInfo.license} 

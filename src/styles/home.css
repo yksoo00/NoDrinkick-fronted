@@ -9,6 +9,7 @@
   }
 }
 
+
 .text-container {
   margin-top: 50px; 
 }
@@ -165,15 +166,15 @@
   }
 
   .background-shape {
-    top: 215px;
+    top: 210px;
     width: 90%;
-    height: 85%;
+    height: 90%;
   }
   .Logo-B {
     max-width:30px;
     max-height: 30px;
     margin-left:90px;
-    margin-top: -20px;
+    margin-top: -10px;
   }
 
   .Main {
@@ -182,7 +183,7 @@
   }
 
   .text {
-    margin-bottom:2px;
+    padding-bottom: 20px;
   }
 
   .login-button {

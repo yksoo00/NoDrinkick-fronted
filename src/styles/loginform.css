@@ -58,7 +58,7 @@
 }
 
 .input-container input::placeholder {
-  color: #020202;
+  color: #000000;
   font-family: 'Pretendard-SemiBold'; 
   font-size: 12px;
 }
@@ -144,6 +144,7 @@
   color: #000000;
  }
 
+
  .input-field.dark-mode {
   color: #FFFFFF;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 5);
@@ -178,6 +179,10 @@
     box-shadow: 0 2px 2px rgba(0, 0, 0, 5);
   }
 
+  .Q.dark-mode{
+    color:#000000;
+    font-family: 'Pretendard-Bold'; 
+  }
 
 
 @media screen and (max-width: 720px) and (max-height: 1440px) {
@@ -240,10 +245,10 @@
       font-size: 16px;
       border: none;
       border-radius: 5px;
-      background-color: rgb(223, 226, 230);
+      background-color: rgb(255, 255, 255);
       color: #000000; 
       font-family: 'Pretendard-SemiBold'; 
-      font-size: 12px;
+      font-size: 10px;
       margin-bottom: 20px;
     }
 
@@ -257,6 +262,8 @@
       display: flex;
       flex-direction: column;
     }
+
+
 
     .loginbutton {
       margin-left: 150px;

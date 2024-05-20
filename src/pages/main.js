@@ -210,7 +210,7 @@ const Main = () => {
       </Drawer>
       <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} /> 
       <Box id="map" className="map"></Box>
-      <Box sx={{position: 'fixed', bottom: '85%', right: '1vw', zIndex: 3}}>
+      <Box sx={{position: 'fixed', bottom: '84.5%', right: '1vw', zIndex: 3}}>
         <Button variant="contained" color="primary" className="zoom-button" style={{ borderTopLefttRadius: '10%', borderBottomLeftRadius: '10%', borderTopRightRadius: '0%', borderBottomRightRadius: '0%', backgroundColor: '#2d2c28', minWidth: '2vw', Height:'2vh' }} onClick={() => setZoomLevel(zoomLevel + 1)}>
           <AddIcon />
         </Button>
