@@ -1,26 +1,10 @@
 body {
   margin: 0;
 }
+
 .map {
   width: 100vw;
   height: 100vh;
-
-}
-
-.zoom-button {
-width:5px;
-height:'2vh';
-}
-
-.CloseButton {
-  background-color: yellow;
-  font-family: 'Pretendard-Bold'; 
-  font-size: 15px;
-  color: black;
-}
-
-.zoom {
-  bottom: 88%;
 }
 
 @media screen and (max-width: 720px) and (max-height: 1440px) {
@@ -29,19 +13,10 @@ body, html {
   overflow: hidden; 
 }
 
-.zoom-button {
-  bottom:30px;
-  right:8px;
-  height: 30px;
-}
-
 .Rent-Button {
   max-height: 50px;
   max-width: 360px;
 }
 
-.zoom {
-  bottom: 84.5%;
-}
 
 }

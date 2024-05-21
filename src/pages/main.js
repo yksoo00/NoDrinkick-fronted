@@ -234,17 +234,10 @@ const Main = () => {
       <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} /> 
 
       <Box id="map" className="map"></Box>
-      <Box className="zoom" sx={{position: 'fixed',  right: '1vw', zIndex: 3}}>
-        <Button variant="contained" color="primary" className="zoom-button" style={{ borderTopLeftRadius: '10%', borderBottomLeftRadius: '10%', borderTopRightRadius: '0%', borderBottomRightRadius: '0%', backgroundColor: '#2d2c28', minWidth: '2vw', height: '3.55vh' }} onClick={() => setZoomLevel(zoomLevel + 1)}>
-          <AddIcon />
-        </Button>
-        <Button variant="contained" color="primary" className="zoom-button" style={{ borderTopRightRadius: '10%', borderBottomRightRadius: '10%', borderBottomLeftRadius: '0%', borderTopLeftRadius: '0%', backgroundColor: '#2d2c28', minWidth: '2vw' }} onClick={() => setZoomLevel(zoomLevel - 1)}>
-          <RemoveIcon />
-        </Button>
-      </Box>
+
       <Box sx={{position: 'fixed', bottom: '3%', left: '50%', transform: 'translate(-50%)', zIndex: 999}}>
         <Button className="Rent-Button" variant="contained" color="primary" onClick={handleRent} style={{ right: '1px', backgroundColor: '#2d2c28', color: '#ffffff', height: '10vh', width: '700px' }} >
-          <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold' }}>킥보드 타러가기</Typography>
+          <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold', fontSize:'12px' }}>킥보드 타러가기</Typography>
         </Button>
       </Box>
       {qrScannerOpen && (
