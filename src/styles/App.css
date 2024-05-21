@@ -13,6 +13,18 @@
     src: url('../font/Pretendard-Black.woff2') format('woff2');
   }
 
+  @font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('../font/Pretendard-Regular.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Pretendard-Thin';
+    src: url('../font/Pretendard-Thin.woff2') format('woff2');
+  }
+
+  @import "~normalize.css/normalize.css";
+
 body {
     background-color: #2d2c28;
     transition: background-color 0.5s ease; 

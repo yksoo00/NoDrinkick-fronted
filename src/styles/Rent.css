@@ -1,0 +1,81 @@
+@font-face {
+    font-family: 'Pretendard-SemiBold';
+    src: url('../font/Pretendard-SemiBold.woff2') format('woff2');
+  }
+  
+
+  
+  
+  @media screen and (max-width: 720px) and (max-height: 1440px) {
+    body, html {
+        height: 100%;
+        overflow-x: hidden;
+    }
+    
+
+.Box-1 {
+  margin: 20px;
+  background-color: #e8e8e8;
+  padding: 20px;
+  display:flex;
+  flex-direction: row; 
+  justify-content: center; 
+  align-items: center; 
+  border-radius: 10px;
+}
+
+.KickBoardName {
+  font-family: 'Pretendard-SemiBold'; 
+  font-size: 20px;
+  color: #000000;
+}
+
+.KickBoardImage {
+  max-width:100px;
+  max-height:100px;
+  margin-right: 30px;
+}
+
+
+.Face {
+  display: flex;
+  margin: 20px;
+  background-color: #e8e8e8;
+  padding: 20px;
+  display:flex;
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
+  border-radius: 10px;
+  height: 22vh;
+  margin-top: 0px;
+}
+
+.Face-Test {
+  font-family: 'Pretendard-SemiBold'; 
+  font-size: 14px;
+  color: #000000;
+
+}
+
+
+.Alchol {
+  display: flex;
+  margin: 20px;
+  background-color: #e8e8e8;
+  padding: 20px;
+  display:flex;
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
+  border-radius: 10px;
+  height: 22vh;
+  margin-top: 0px;
+}
+
+.Alchol-Test {
+  font-family: 'Pretendard-SemiBold'; 
+  font-size: 14px;
+  color: #000000;
+}
+}

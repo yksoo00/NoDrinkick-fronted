@@ -12,7 +12,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import LogoDrawer from './Logo';
 import axios from 'axios';
 
 
@@ -36,7 +35,6 @@ function AddEmergency() {
     const history = useHistory();
 
     const [open, setOpen] = useState(false); // 좌측 메뉴 상태
-    const [menuOpen, setMenuOpen] = useState(false); // 사이드바 메뉴 상태
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -77,7 +75,7 @@ function AddEmergency() {
     const [formData, setFormData] = useState({
         name: '',
         phoneNum: '',
-        voiceMessage: '',
+        message: '',
         countryCode: '+82'
     });
     
@@ -97,7 +95,7 @@ function AddEmergency() {
         try {
             await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum });
             alert('저장되었습니다!');
-            setFormData({ name: '', phoneNum: '', voiceMessage: '', countryCode: '+82' });
+            setFormData({ name: '', phoneNum: '', message: '', countryCode: '+82' });
         } catch (error) {
             console.error('비상 연락망 추가 에러:', error);
             alert('저장에 실패했습니다.');
@@ -159,7 +157,6 @@ function AddEmergency() {
                     ))}
                 </List>
             </Drawer>
-            <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} />
 
             <div className="SOS-BOX">
                 <form onSubmit={handleSubmit}>
@@ -193,14 +190,14 @@ function AddEmergency() {
                         />
                     </div>
                     <div className="SOS-Label">
-                        <label htmlFor="voiceMessage" className="InputLabel">SOS 메시지
+                        <label htmlFor="message" className="InputLabel">SOS 메시지
                         <FontAwesomeIcon icon={faEnvelope} className= "SOS-Icon3" />
                         </label>
                         <input
                             type="text"
-                            id="voiceMessage"
-                            name="voiceMessage"
-                            value={formData.voiceMessage}
+                            id="message"
+                            name="message"
+                            value={formData.message}
                             onChange={handleChange}
                             className="SOS-Input"
                             placeholder="MessageText"

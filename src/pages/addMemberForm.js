@@ -50,7 +50,7 @@ function SignUpPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/members/add', userInfo);
+            const response = await axios.post('http://13.125.168.244:8080/members/add', userInfo);
             console.log('회원가입 성공:', response.data);
             window.location.href = '/home';
         } catch (error) {
@@ -74,11 +74,6 @@ function SignUpPage() {
 
         <div><DarkMode onChange={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
       </div>
-
-      <div className={`SignUp-introduction ${darkModeEnabled ? 'dark-mode' : ''}`}>
-        Sign-Up
-      </div>
-
 
         <div className={`transparent-shapeB ${darkModeEnabled ? 'dark-mode' : ''}`}>
             <h2 className={`registerText ${darkModeEnabled ? 'dark-mode' : ''}`}> 회원가입</h2>

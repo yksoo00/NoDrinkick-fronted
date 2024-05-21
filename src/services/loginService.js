@@ -7,7 +7,7 @@ const login = async (username, password) => {
     formData.append('password', password);
 
     // 로그인 요청 및 응답 헤더에서 JWT 토큰 추출
-    const response = await axios.post('http://localhost:8080/login', formData);
+    const response = await axios.post('http://13.125.168.244:8080/login', formData);
     let token = response.headers['authorization'] || response.headers['Authorization'];
 
     // 'Bearer ' 접두사 제거 (있을 경우)

@@ -19,8 +19,9 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove'; 
 
 import QrScanner from 'react-qr-scanner'; // Import QR scanner
+import LogoDrawer from './Rent';
 
-import LogoDrawer from './Logo';
+
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 아이콘 정의
 import { faUser } from '@fortawesome/free-solid-svg-icons'; //마이페이지 아이콘
@@ -33,15 +34,14 @@ import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 
 const Main = () => {
   const [open, setOpen] = useState(false); 
-  const [menuOpen, setMenuOpen] = useState(false); 
+  const [menuOpen, setMenuOpen] = useState(false); // 킥보드 메뉴의 상태
   const [zoomLevel, setZoomLevel] = useState(2);
   const [map, setMap] = useState(null);
   const [darkModeEnabled, setDarkModeEnabled] = useState(
     localStorage.getItem('darkModeEnabled') === 'true'
   );
 
-  const [qrScannerOpen, setQrScannerOpen] = useState(false); // State for QR scanner
-  const [qrResult, setQrResult] = useState(null); // State to store QR scan result
+  const [qrScannerOpen, setQrScannerOpen] = useState(false);
 
   useEffect(() => {
     // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
@@ -64,6 +64,7 @@ const Main = () => {
 
   const history = useHistory();
 
+  //렌트진행
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen); 
   };
@@ -101,21 +102,29 @@ const Main = () => {
   };
 
   const handleRent = () => {
-    setQrScannerOpen(true); // Open the QR scanner
+    setQrScannerOpen(true); 
   };
 
   const handleScan = (data) => {
     if (data) {
-      setQrResult(data);
-      setQrScannerOpen(false); // Close the QR scanner
-      console.log("QR Code Result:", data);
-      // Perform any additional actions with the scanned data
+      let url;
+      if (typeof data === 'object') {
+        url = data.text; 
+      } else {
+        url = data;
+      }   
+      if (url && typeof url === 'string' && url.startsWith('http')) {
+        window.open(url, '_blank');
+      } else {
+        console.error('Invalid URL:', url);
+      }
+      setQrScannerOpen(false); 
     }
   };
 
   const handleError = (err) => {
     console.error(err);
-    setQrScannerOpen(false); // Close the QR scanner on error
+    setQrScannerOpen(false); 
   };
 
   useEffect(() => {
@@ -221,9 +230,11 @@ const Main = () => {
           ))}
         </List>
       </Drawer>
-      <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} />
+
+      <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} /> 
+
       <Box id="map" className="map"></Box>
-      <Box sx={{position: 'fixed', bottom: '84.5%', right: '1vw', zIndex: 3}}>
+      <Box className="zoom" sx={{position: 'fixed',  right: '1vw', zIndex: 3}}>
         <Button variant="contained" color="primary" className="zoom-button" style={{ borderTopLeftRadius: '10%', borderBottomLeftRadius: '10%', borderTopRightRadius: '0%', borderBottomRightRadius: '0%', backgroundColor: '#2d2c28', minWidth: '2vw', height: '3.55vh' }} onClick={() => setZoomLevel(zoomLevel + 1)}>
           <AddIcon />
         </Button>
@@ -231,9 +242,9 @@ const Main = () => {
           <RemoveIcon />
         </Button>
       </Box>
-      <Box sx={{position: 'fixed', bottom: '3%', left: '50%', transform: 'translate(-50%)', zIndex: 9999}}>
+      <Box sx={{position: 'fixed', bottom: '3%', left: '50%', transform: 'translate(-50%)', zIndex: 999}}>
         <Button className="Rent-Button" variant="contained" color="primary" onClick={handleRent} style={{ right: '1px', backgroundColor: '#2d2c28', color: '#ffffff', height: '10vh', width: '700px' }} >
-          <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold' }}>대여하기</Typography>
+          <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold' }}>킥보드 타러가기</Typography>
         </Button>
       </Box>
       {qrScannerOpen && (

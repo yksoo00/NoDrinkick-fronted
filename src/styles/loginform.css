@@ -60,7 +60,7 @@
 .input-container input::placeholder {
   color: #000000;
   font-family: 'Pretendard-SemiBold'; 
-  font-size: 12px;
+  font-size: 9px;
 }
 
 .input-label {
@@ -191,33 +191,45 @@
     overflow: hidden; 
   }
 
+  .login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+  }
+
   .main-image {
-      position: absolute;
-      top: 40%; /* 부모 요소의 상단 기준으로 50% 위치 */
-      left: 50%; /* 부모 요소의 왼쪽 기준으로 50% 위치 */
-      transform: translate(-50%, 40%); /* 요소의 중심을 기준으로 좌우/상하로 50% 이동 */
-      width: 100%;
-      height: 460px;
-      border-radius: 0px;
-      z-index: 1;
-    }
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 600px;
+    height: 500px;
+    border-radius: 10px;
+    z-index: 1;
+  }
 
-    .transparent-shape {
-      position: absolute;
-      left: 50%; /* 부모 요소의 왼쪽 기준으로 50% 위치 */
-      transform: translate(-50%, 40%); /* 요소의 중심을 기준으로 좌우/상하로 50% 이동 */
-      width: 300px;
-      height: 350px;
-      background-color: #2d2c28;
-      opacity: 0.9;
-      border-radius: 20px;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column; 
-      justify-content: center; 
-      align-items: center; 
-    }      
+  .transparent-shape {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 400px;
+    background-color: #2d2c28;
+    opacity: 0.9;
+    border-radius: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
+    /* 제일 상단 텍스트 (노드링킥에 오신 것을 환영합니다) */
     .login-text{
       font-family: 'Pretendard-Bold'; 
       color: #ffffff;
@@ -225,6 +237,7 @@
       margin-bottom: 50px;  
       margin-top: 40px;
     }
+
 
     .input-container {
       display: flex;
@@ -242,16 +255,16 @@
       width: 90%;
       height: 10px;
       padding: 10px;
-      font-size: 16px;
       border: none;
       border-radius: 5px;
       background-color: rgb(255, 255, 255);
       color: #000000; 
       font-family: 'Pretendard-SemiBold'; 
-      font-size: 10px;
+      font-size: 9px;
       margin-bottom: 20px;
     }
 
+    /* 하단 텍스트 (노드링킥에 오신 것을 환영합니다) */
     .register-text{
       font-family: 'Pretendard-SemiBold'; 
       color:#ffffff;
@@ -263,8 +276,7 @@
       flex-direction: column;
     }
 
-
-
+    /* 로그인 버튼 */
     .loginbutton {
       margin-left: 150px;
       width: 70px;
@@ -272,7 +284,7 @@
       background-color: #020202;
       color: #ffffff;
       font-family: 'Pretendard-SemiBold';
-      font-size: 12px;
+      font-size: 9px;
       border-radius: 2px;
       opacity: 0.98;
       z-index: 4;
@@ -280,13 +292,14 @@
       cursor: pointer; 
     }
 
+    /* 회원가입 버튼 */
     .register-Button {
       width: 120px;
       height: 30px;
       background-color: #020202;
       color: #ffffff;
       font-family: 'Pretendard-SemiBold'; 
-      font-size: 12px;    
+      font-size: 9px;    
       border-radius: 2px;
       opacity: 0.98;
       z-index: 4;
@@ -298,12 +311,4 @@
       margin-top: 10px;
     }
 
-     .login-introduction {
-      position: absolute;
-      color: #ffffff;
-      font-family: 'Pretendard-Bold'; 
-      font-size: 10px;
-      left:5px;
-      top:180px;
-     }
 }

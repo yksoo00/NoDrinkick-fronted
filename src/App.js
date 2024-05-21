@@ -13,6 +13,8 @@ import Emergency from './pages/Emergency';
 import Bluetooth from './pages/Bluetooth';
 import BluetoothDetail from './pages/BluetoothDetails';
 
+import './styles/App.css';
+
 function App() {
   return (
     <Router>

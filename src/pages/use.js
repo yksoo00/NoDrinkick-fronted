@@ -12,7 +12,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import LogoDrawer from './Logo';
 import ToggleButton from '@mui/material/ToggleButton';
 import Stack from '@mui/material/Stack';
 
@@ -67,7 +66,6 @@ const termsData = {
 function TermsOfUse() {
   const [alignment, setAlignment] = React.useState(false);
   const [open, setOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState(null);
   const history = useHistory();
 
@@ -161,7 +159,6 @@ function TermsOfUse() {
           ))}
         </List>
       </Drawer>
-      <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} />
 
       <div className="MainBOX">
       <div className="buttons-container">

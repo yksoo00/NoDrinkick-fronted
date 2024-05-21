@@ -46,7 +46,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="container">
+    <div className="login-page">
       <img src={MainImage} alt="Main" className="main-image" />
       {darkModeEnabled ? (
         <img src={DarkModeFullLogoImage} alt="DarkModeFullLogoImage" className="DarkmodeFullLogoImage" />
@@ -58,16 +58,12 @@ const LoginForm = () => {
         <DarkMode onChange={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
       </div>
 
-      <div className={`login-introduction ${darkModeEnabled ? 'dark-mode' : ''}`}>
-        Login
-      </div>
-
       <div className={`transparent-shape ${darkModeEnabled ? 'dark-mode' : ''}`}>
-      <div className={`login-text ${darkModeEnabled ? 'dark-mode' : ''}`}>
-        노드링킥에 오신 것을 환영합니다
-      </div>
+        <div className={`login-text ${darkModeEnabled ? 'dark-mode' : ''}`}>
+          노드링킥에 오신 것을 환영합니다
+        </div>
         <form onSubmit={handleLogin}>
-          <div className='input-container'>
+          <div className="input-container">
             <input
               type="text"
               id="loginId"
@@ -75,7 +71,7 @@ const LoginForm = () => {
               onChange={(e) => setLoginId(e.target.value)}
               className={`input-field ${darkModeEnabled ? 'dark-mode' : ''}`}
               placeholder={darkModeEnabled ? 'ID' : 'ID'}
-        />
+            />
           </div>
           <div className="input-container">
             <input
@@ -87,14 +83,12 @@ const LoginForm = () => {
               placeholder="Password"
             />
           </div>
-          <button className={`loginbutton ${darkModeEnabled ? 'dark-mode' : ''}`}
-        type="submit">
+          <button className={`loginbutton ${darkModeEnabled ? 'dark-mode' : ''}`} type="submit">
             로그인
           </button>
         </form>
         <div className="register-text">
-          <span className={`Q ${darkModeEnabled ? 'dark-mode' : ''}`} > 계정이 없으신가요? 
-          </span>
+          <span className={`Q ${darkModeEnabled ? 'dark-mode' : ''}`}> 계정이 없으신가요?</span>
           <button className={`register-Button ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={handleRedirectToRegister}>
             회원가입
           </button>

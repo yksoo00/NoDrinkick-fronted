@@ -18,7 +18,21 @@ import { faHouse, faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, 
 
 function UserList() {
   const [open, setOpen] = useState(false);
+  const [users, setUsers] = useState([]);
   const history = useHistory();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get('http://13.125.168.244:8080/members/info');
+        setUsers([response.data]); // 응답 데이터를 배열에 감싸기
+      } catch (error) {
+        console.error('API 서버오류', error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -54,18 +68,6 @@ function UserList() {
     }
     history.push(path);
   };
-
-  const users = [
-    {
-      id: 'wlgns5041',
-      profilePicture: 'https://via.placeholder.com/100x100',
-      name: '김지훈',
-      email: 'wlgns5041@naver.com',
-      phone: '010-5664-5041',
-      licenseImage: 'https://via.placeholder.com/500x300',
-      licenseVerified: true,
-    },
-  ];
 
   return (
     <div className="terms-container">
@@ -117,35 +119,33 @@ function UserList() {
       <Box>
         <div className="myPage">
           {users.map((user) => (
-            <div key={user.id} className="user-info-container">
+            <div key={user.username} className="user-info-container">
               <div className="user-info-all">
                 <div className="user-info">
-                <img src={user.profilePicture} alt="프로필 사진" className="User-Image" />
-                <div className="UserText">
-                  <p>{user.name} 님<br />환영합니다</p>
+                  <img src={user.imagePath} alt="프로필 사진" className="User-Image" />
+                  <div className="UserText">
+                    <p>{user.name} 님<br />환영합니다</p>
+                  </div>
+                </div>
+                <div className="user-profile_details">
+                  <p className="user-profile_detail-text">
+                    {user.username} <br /><br />
+                    {user.email} <br /><br />
+                    {user.phoneNum}
+                  </p>
+                  <button className="user-profile__edit-button">수정</button>
                 </div>
               </div>
-              <div className="user-profile_details">
-                <p className="user-profile_detail-text">
-                  {user.id} <br /><br />
-                  {user.email} <br /><br />
-                  {user.phone}
-                </p>
-                <button className="user-profile__edit-button">수정</button>
-              </div>
-              </div>
-
 
               <div className="license-all">
                 <div className="license-details-item">
-                    <img src={user.licenseImage} alt="Driver's License" className="license-image" />
-                  </div>
+                  <img src={user.licenseImage} alt="Driver's License" className="license-image" />
+                </div>
 
                 <div className="license-details-verification">
-                  <p>인증여부 : {user.licenseVerified ? 'YES' : 'NO'}</p>
-
+                  <p>인증여부 : {user.license ? 'YES' : 'NO'}</p>
+                </div>
               </div>
-            </div>
             </div>
           ))}
         </div>
