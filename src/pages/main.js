@@ -188,13 +188,17 @@ const Main = () => {
         />
       </div>
       <CssBaseline />
-      <AppBar position="fixed" sx={{zIndex: 9999, backgroundColor: '#2d2c28;' }}>
+      <AppBar position="fixed" sx={{
+        zIndex: 9999,
+        backgroundColor: darkModeEnabled ? '#F2F2F2' : '#2d2c28',
+        transition: 'background-color 0.5s ease'
+      }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2 }}>
+            <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2,  color: darkModeEnabled ? '#2d2c28' : '#FFFFFF'}}>
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6"sx={{ fontFamily: 'Pretendard-Bold', textAlign: 'center' }} component="div">노드링킥</Typography>
+            <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 노드링킥 </Typography>
           </Box>
           <Box />
         </Toolbar>
@@ -204,7 +208,7 @@ const Main = () => {
         open={open}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
-        sx={{zIndex: 2}}
+        sx={{zIndex: 999}}
       >
         <List>
           {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
@@ -222,7 +226,7 @@ const Main = () => {
                 {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{marginLeft:3}} />}
                 {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{marginLeft:3}} />}
               </ListItemIcon>
-              <Typography variant="body1" sx={{marginLeft:-1.5, fontSize: 15, fontFamily: 'Pretendard-Black', display: 'flex', alignItems: 'center', textAlign: 'center' }}>{text}</Typography>
+              <Typography variant="body1" sx={{marginLeft:-1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>{text}</Typography>
             </ListItem>
           ))}
         </List>
@@ -233,9 +237,32 @@ const Main = () => {
       <Box id="map" className="map"></Box>
 
       <Box sx={{position: 'fixed', bottom: '3%', left: '50%', transform: 'translate(-50%)', zIndex: 999}}>
-        <Button className="Rent-Button" variant="contained" color="primary" onClick={handleRent} style={{ right: '1px', backgroundColor: '#2d2c28', color: '#ffffff', height: '10vh', width: '700px' }} >
-          <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold', fontSize:'12px' }}>킥보드 타러가기</Typography>
-        </Button>
+      <Button
+  className="Rent-Button"
+  variant="contained"
+  color="primary"
+  onClick={handleRent}
+  sx={{
+    right: '1px',
+    backgroundColor: darkModeEnabled ? '#F2F2F2' : '#2d2c28',
+    height: '10vh',
+    width: '700px',
+    transition: 'background-color 0.5s ease',
+    zIndex:1
+  }}
+>
+  <Typography
+    variant="h6"
+    sx={{
+      fontFamily: 'Pretendard-Bold',
+      fontSize: '12px',
+      color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', 
+      transition: 'color 0.5s ease' 
+    }}
+  >
+    킥보드 타러가기
+  </Typography>
+</Button>
       </Box>
       {qrScannerOpen && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 10000 }}>

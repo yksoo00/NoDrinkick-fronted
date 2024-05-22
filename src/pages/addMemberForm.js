@@ -3,8 +3,8 @@ import axios from 'axios';
 import '../styles/addMemberForm.css'
 import { useHistory } from 'react-router-dom'; 
 import MainImageB from '../assets/Main.png';
-import FullLogoImage from '../assets/FullLogo.png';
-import DarkModeFullLogoImage from '../assets/darkmode-FullLogo.png';
+import Logo2 from '../assets/Logo2.png';
+import Logo2_Dark from '../assets/Logo2_Dark.png';
 import DarkMode from '../component/darkmode'; 
 
 function SignUpPage() {
@@ -65,10 +65,11 @@ function SignUpPage() {
     return (
         <div className="signup-container">
         <img src={MainImageB} alt="Main" className="main-imageB" />
+        <div className={`Logo-Text ${darkModeEnabled ? 'dark-mode' : ''}`}>NO <br></br>DRINKICK</div>
         {darkModeEnabled ? (
-        <img src={DarkModeFullLogoImage} alt="DarkModeFullLogoImage" className="DarkmodeFullLogoImage" />
+        <img src={Logo2_Dark} alt="Logo2_Dark" className="Logo2_Dark" />
       ) : (
-        <img src={FullLogoImage} alt="FullLogoImage" className="FullLogoImage" />
+        <img src={Logo2} alt="Logo2" className="Logo2" />
       )}
 
         <div><DarkMode onChange={toggleDarkMode} darkModeEnabled={darkModeEnabled} />

@@ -3,8 +3,8 @@ import login from '../services/loginService.js';
 import { useHistory } from 'react-router-dom';
 import '../styles/loginform.css';
 import MainImage from '../assets/Main.png';
-import FullLogoImage from '../assets/FullLogo.png';
-import DarkModeFullLogoImage from '../assets/darkmode-FullLogo.png';
+import Logo2 from '../assets/Logo2.png';
+import Logo2_Dark from '../assets/Logo2_Dark.png';
 import DarkMode from '../component/darkmode'; 
 
 const LoginForm = () => {
@@ -47,13 +47,13 @@ const LoginForm = () => {
 
   return (
     <div className="login-page">
-      <img src={MainImage} alt="Main" className="main-image" />
-      {darkModeEnabled ? (
-        <img src={DarkModeFullLogoImage} alt="DarkModeFullLogoImage" className="DarkmodeFullLogoImage" />
+            <div className={`Logo-Text2 ${darkModeEnabled ? 'dark-mode' : ''}`}>NO <br></br>DRINKICK</div>
+        {darkModeEnabled ? (
+        <img src={Logo2_Dark} alt="Logo2_Dark" className="Logo2_Dark" />
       ) : (
-        <img src={FullLogoImage} alt="FullLogoImage" className="FullLogoImage" />
+        <img src={Logo2} alt="Logo2" className="Logo2" />
       )}
-
+      <img src={MainImage} alt="Main" className="main-image" />
       <div className="switch-container LoginDark">
         <DarkMode onChange={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
       </div>

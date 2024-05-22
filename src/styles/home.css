@@ -21,6 +21,7 @@
   margin-top: -100px;
   z-index: -3; 
   opacity: 0.7;
+  border-radius: 8px;
 }
 
 .container {
@@ -34,7 +35,7 @@
     transform: translate(-50%, -50%); 
     width: 500px; 
     height: 500px;
-    background-color: #2d2c28;
+    background-color: #1E1E1E;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 5);
     border-radius: 10px; 
     z-index: -1; 
@@ -73,7 +74,7 @@
     width:300px;
     height:50px;
     border: 2px solid;
-    color: #020202;
+    color: #1E1E1E;
     line-height: 1.5;
     background-color: #FFFFFF;
     font-family: 'Pretendard-Bold';
@@ -92,7 +93,7 @@
     width:300px;
     height:50px;
     border: 2px solid;
-    color: #020202;
+    color: #1E1E1E;
     line-height: 1.5;
     background-color: #FFFFFF;
     font-family: 'Pretendard-Bold';
@@ -201,32 +202,35 @@
 }
   
 .background-shape.dark-background {
-  background-color: #FFFFFA; 
+  background-color: #eaeaea; 
   transition: background-color 0.5s ease; 
+
 }
 
 .text.dark-mode {
-  color: #000000; 
+  color: #1d1c1c; 
   transition: color 0.5s ease; 
   font-family: 'Pretendard-Regular'; 
 }
 
 .MainPage.dark-mode{
-  color : #2d2c28;
+  color : #1d1c1c;
   transition: color 0.5s ease; 
 }
 
 .login-button.dark-mode{
-  color: #FFFFFF;
-  background-color: #2d2c28;
+  color: #2d2c28;
+  background-color: #fffefb;
   transition: background-color 0.5s ease; 
   transition: color 0.5s ease; 
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
 }
 
 .register-button.dark-mode {
-  color: #FFFFFF;
-  background-color: #2d2c28;
+  color: #2d2c28;
+  background-color: #fffefb;
   transition: background-color 0.5s ease; 
   transition: color 0.5s ease; 
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
 }
 

@@ -14,11 +14,6 @@ input:focus, textarea:focus, select:focus {
     z-index: 1;
   }
 
-  .DarkmodeFullLogoImage {
-    position: absolute;
-    top:8px;
-    left:10px;
-  }
 
 .transparent-shapeB{
     position: absolute;
@@ -34,11 +29,14 @@ input:focus, textarea:focus, select:focus {
     flex-direction: column; 
     justify-content: center; 
     align-items: center; 
+    transition: background-color 0.5s ease; 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 5);
 }
 
 .transparent-shapeB.dark-mode {
     background-color: #ffffff; 
     box-shadow: 0 2px 10px rgba(0, 0, 0, 5);
+    transition: background-color 0.5s ease; 
 }
 
 .signup-form {
@@ -63,6 +61,8 @@ input:focus, textarea:focus, select:focus {
     border-radius: 4px;
     font-size: 12px;
     background-color: rgb(255, 255, 255);
+    transition: background-color 0.5s ease; 
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 5);
 }
 
 .dark-mode .signup-form input,
@@ -71,6 +71,8 @@ input:focus, textarea:focus, select:focus {
   font-size: 10px;
   background-color: #2d2c28;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 5);
+  transition: color 0.5s ease; 
+  transition: background-color 0.5s ease; 
 }
 
 .Signupbutton{
@@ -92,6 +94,8 @@ input:focus, textarea:focus, select:focus {
     flex-direction: column; 
     margin-top: 20px;
     left:210px;
+    transition: color 0.5s ease; 
+    transition: background-color 0.5s ease; 
 }
 
 .HomeButton {
@@ -113,6 +117,8 @@ input:focus, textarea:focus, select:focus {
     flex-direction: column; 
     margin-top: 20px;
     left:70px;
+    transition: color 0.5s ease; 
+    transition: background-color 0.5s ease; 
 }
 
 .Signupbutton.dark-mode {
@@ -140,6 +146,7 @@ input:focus, textarea:focus, select:focus {
     color: #020202;
     font-family: 'Pretendard-Bold'; 
     font-size: 10px;
+    transition: color 0.5s ease; 
   }
 
 
@@ -151,6 +158,7 @@ input:focus, textarea:focus, select:focus {
 
 .select-field.dark-mode {
     color:#FFFFFF;
+    transition: color 0.5s ease; 
 }
 
 .license {
@@ -161,6 +169,7 @@ input:focus, textarea:focus, select:focus {
 .dark-mode .select-field option {
     background-color: #FFFFFF;
     color: #020202; 
+    transition: background-color 0.5s ease; 
   }
 
 
@@ -170,19 +179,23 @@ input:focus, textarea:focus, select:focus {
     font-family: 'Pretendard-Bold'; 
     left:240px;
     top:72px;
+    transition: color 0.5s ease; 
 }
 
 .SignUp-introduction.dark-mode {
     color: #000000;
+    transition: color 0.5s ease; 
 }
 
 .license.dark-mode {
     color: #000000;
     font-family: 'Pretendard-Bold'; 
+    transition: color 0.5s ease; 
 }
 
 .registerText.dark-mode {
     color: #000000;
+    transition: color 0.5s ease; 
 }
 
 
@@ -191,6 +204,44 @@ input:focus, textarea:focus, select:focus {
       height: 100%;
       overflow: hidden; 
       
+}
+
+.Logo2 {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 10px;
+    left: 10px;
+    transition: all 0.5s ease;
+    shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); 
+}
+
+.Logo2_Dark {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 10px;
+    left: 10px;
+    transition: all 0.5s ease;
+    shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); 
+  }
+
+.Logo-Text{
+    font-family: 'Pretendard-Bold';
+    color: #FFFFFF;
+    font-size: 12px;
+    margin-top : 10px;
+    margin-left: 50px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); 
+}
+
+.Logo-Text.dark-mode{
+    font-family: 'Pretendard-Bold';
+    color: #000000;
+    font-size: 12px;
+    margin-top : 10px;
+    margin-left: 50px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); 
 }
 
 input:focus, textarea:focus, select:focus {
@@ -206,6 +257,7 @@ input:focus, textarea:focus, select:focus {
     margin-top: -20px;
     margin-bottom: 20px;
     color: #FFFFFF;
+    transition: color 0.5s ease; 
 }
 
 /* 회원가입 버튼 */
@@ -228,6 +280,8 @@ input:focus, textarea:focus, select:focus {
     flex-direction: column; 
     margin-top: 20px;
     left:155px;
+    transition: color 0.5s ease; 
+    transition: background-color 0.5s ease; 
 }
 
 /* 홈 버튼 */
@@ -250,6 +304,8 @@ input:focus, textarea:focus, select:focus {
     flex-direction: column; 
     margin-top: 20px;
     left:60px;
+    transition: color 0.5s ease; 
+    transition: background-color 0.5s ease; 
 }
 
 /* 회원가입 버튼(다크모드) */
@@ -267,12 +323,13 @@ input:focus, textarea:focus, select:focus {
     color: #020202;
     font-family: 'Pretendard-Bold'; 
     font-size: 8px;
+    transition: color 0.5s ease; 
   }
 
   /* 입력 안했을 때 나오는 텍스트(다크모드) */
 .dark-mode .signup-form input::placeholder {
     font-family: 'Pretendard-Bold'; 
-    font-size: 7px; 
+    font-size: 8px; 
   }
 
 
@@ -305,6 +362,7 @@ input:focus, textarea:focus, select:focus {
     flex-direction: column; 
     justify-content: center; 
     align-items: center; 
+    transition: background-color 0.5s ease; 
 }
 
 /* 운전면허 인증여부 텍스트 */
@@ -312,6 +370,7 @@ input:focus, textarea:focus, select:focus {
     font-family: 'Pretendard-Bold'; 
     font-size: 11px;
     color: #FFFFFF;
+    transition: color 0.5s ease; 
 }
 
 /* 양식 입력 박스 */
@@ -325,6 +384,7 @@ input:focus, textarea:focus, select:focus {
     border-radius: 4px;
     font-size: 9px;
     background-color: rgb(223, 226, 230);
+    transition: background-color 0.5s ease; 
 }
 
 /* 운전면허증 인증여부 */
@@ -339,16 +399,14 @@ input:focus, textarea:focus, select:focus {
     margin-left:15px;
     font-size: 10px;
     color:#000000;
+    transition: color 0.5s ease; 
 }
 
 /* 인증,미인증 선택창(다크모드) */
 .select-field.dark-mode {
     color:#FFFFFF;
+    transition: color 0.5s ease; 
 }
 
-.select-field.option {
-    width: 200px;
-    color: #bf2d2d;
-}
 }
 

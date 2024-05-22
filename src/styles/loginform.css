@@ -13,18 +13,7 @@
   justify-content: center; 
   align-items: center; 
   box-shadow: 0 2px 10px rgba(0, 0, 0, 5);
-}
-
-.FullLogoImage {
-  position: absolute;
-  top:8px;
-  left:10px;
-}
-
-.DarkmodeFullLogoImage {
-  position: absolute;
-  top:8px;
-  left:10px;
+  transition: background-color 0.5s ease; 
 }
 
 .main-image {
@@ -54,6 +43,7 @@
   color: #000000; 
   font-family: 'Pretendard-SemiBold'; 
   font-size: 12px;
+  transition: background-color 0.5s ease; 
   
 }
 
@@ -61,6 +51,7 @@
   color: #000000;
   font-family: 'Pretendard-SemiBold'; 
   font-size: 9px;
+  transition: color 0.5s ease; 
 }
 
 .input-label {
@@ -70,10 +61,11 @@
   transform: translateY(-50%);
   color: #fff; 
   pointer-events: none; 
+  transition: color 0.5s ease; 
 }
 
 .loginbutton{
-  margin-left: 200px;
+  margin-left: 180px;
   width: 70px;
   height: 25px;
   background-color: #020202;
@@ -82,7 +74,9 @@
   font-size: 12px;    
   border-radius: 2px;
   z-index: 1;
-  border: none;
+  border: none;  
+  margin-top:5px;  
+  transition: background-color 0.5s ease; 
 }
 
 .loginbutton:hover {
@@ -117,6 +111,8 @@
   display: flex;
   flex-direction: column; 
   margin-top: 10px;
+  transition: background-color 0.5s ease; 
+  transition: color 0.5s ease; 
 }
 
 .register-Button:hover {
@@ -130,6 +126,7 @@
   margin-bottom: 100px;  
   margin-top: 40px;
   color: #000000;
+  transition: color 0.5s ease; 
 }
 
 .login-introduction {
@@ -138,10 +135,12 @@
   font-family: 'Pretendard-SemiBold'; 
   left:240px;
   top:72px;
+  transition: color 0.5s ease; 
  }
 
  .login-text.dark-mode {
   color: #000000;
+  transition: color 0.5s ease; 
  }
 
 
@@ -151,28 +150,34 @@
   font-family: 'Pretendard-SemiBold'; 
   font-size: 10px;
   background-color: #2d2c28;
+  transition: background-color 0.5s ease; 
+  transition: color 0.5s ease; 
  }
 
  .loginbutton.dark-mode {
   color: #FFFFFF;
-  font-size: 11px;
+  font-size: 9px;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 5);
   background-color: #2d2c28;
   transition: color 0.5s ease; 
+  transition: background-color 0.5s ease; 
  }
 
  .transparent-shape.dark-mode {
   background-color: #ffffff; 
+  transition: background-color 0.5s ease; 
  }
 
  .dark-mode .input-field::placeholder {
-  font-size: 10px;
+  font-size: 9px;
   color: #FFFFFF; 
+  transition: color 0.5s ease; 
 }
 
   .login-introduction.dark-mode {
     font-family: 'Pretendard-Bold'; 
     color:#000000;
+    transition: color 0.5s ease; 
   }
 
   .register-Button.dark-mode {
@@ -182,6 +187,7 @@
   .Q.dark-mode{
     color:#000000;
     font-family: 'Pretendard-Bold'; 
+    transition: color 0.5s ease; 
   }
 
 
@@ -190,6 +196,49 @@
     height: 100%;
     overflow: hidden; 
   }
+
+  .Logo2 {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 10px;
+    left: 10px;
+    transition: all 0.5s ease;
+    shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); 
+}
+
+.Logo2_Dark {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 10px;
+    left: 10px;
+    transition: all 0.5s ease;
+    shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); 
+  }
+
+.Logo-Text2{
+  position: absolute;
+    font-family: 'Pretendard-Bold';
+    color: #FFFFFF;
+    font-size: 12px;
+    top:10px;
+    left:50px;
+    z-index: 9999;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); 
+}
+
+.Logo-Text2.dark-mode{
+  position: absolute;
+    font-family: 'Pretendard-Bold';
+    color: #000000;
+    font-size: 12px;
+    top:10px;
+    left:50px;
+    z-index: 9999;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); 
+
+}
 
   .login-page {
     display: flex;
@@ -227,6 +276,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    transition: background-color 0.5s ease; 
   }
 
     /* 제일 상단 텍스트 (노드링킥에 오신 것을 환영합니다) */
@@ -236,6 +286,7 @@
       font-size: 16px;  
       margin-bottom: 50px;  
       margin-top: 40px;
+      transition: color 0.5s ease; 
     }
 
 
@@ -262,6 +313,8 @@
       font-family: 'Pretendard-SemiBold'; 
       font-size: 9px;
       margin-bottom: 20px;
+      transition: background-color 0.5s ease; 
+      transition: color 0.5s ease; 
     }
 
     /* 하단 텍스트 (노드링킥에 오신 것을 환영합니다) */
@@ -274,11 +327,12 @@
       align-items: center; 
       display: flex;
       flex-direction: column;
+      transition: color 0.5s ease; 
     }
 
     /* 로그인 버튼 */
     .loginbutton {
-      margin-left: 150px;
+      margin-left: 130px;
       width: 70px;
       height: 25px;
       background-color: #020202;
@@ -290,6 +344,8 @@
       z-index: 4;
       border: none;
       cursor: pointer; 
+      transition: background-color 0.5s ease; 
+      transition: color 0.5s ease; 
     }
 
     /* 회원가입 버튼 */
@@ -309,6 +365,8 @@
       display: flex;
       flex-direction: column; 
       margin-top: 10px;
+      transition: background-color 0.5s ease; 
+      transition: color 0.5s ease; 
     }
 
 }
