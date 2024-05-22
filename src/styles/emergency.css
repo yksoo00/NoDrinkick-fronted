@@ -28,7 +28,7 @@
   flex-direction: column; 
   justify-content: center; 
   align-items: center; 
-  left: 42%;
+  left: 40%;
   transform: translateX(-50%);
   transition: background-color 0.3s ease; 
 }
@@ -50,7 +50,7 @@
   flex-direction: column; 
   justify-content: center; 
   align-items: center; 
-  left: 58%;
+  left: 60%;
   transform: translateX(-50%);
 }
 
@@ -235,7 +235,7 @@ input[type="checkbox"] {
     flex-direction: column; 
     justify-content: center; 
     align-items: center; 
-    left: 30%;
+    left: 27.5%;
     transform: translateX(-50%);
     transition: background-color 0.3s ease; 
   }
@@ -256,7 +256,7 @@ input[type="checkbox"] {
     flex-direction: column; 
     justify-content: center; 
     align-items: center; 
-    left: 70%;
+    left: 72.5%;
     transform: translateX(-50%);
   }
 
