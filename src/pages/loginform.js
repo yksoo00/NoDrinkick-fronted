@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import login from '../services/loginService.js';
+import login, { removeToken } from '../services/loginService.js';
 import { useHistory } from 'react-router-dom';
 import '../styles/loginform.css';
 import MainImage from '../assets/Main.png';
@@ -41,6 +41,12 @@ const LoginForm = () => {
     }
   };
 
+  const handleLogout = () => {
+    removeToken();
+    alert('로그아웃 되었습니다.');
+    window.location.href = '/';
+  };
+  
   const handleRedirectToRegister = () => {
     history.push('/addmemberform');
   };
@@ -87,13 +93,19 @@ const LoginForm = () => {
             로그인
           </button>
         </form>
+        
+        <div className="Token"> 
         <div className="register-text">
           <span className={`Q ${darkModeEnabled ? 'dark-mode' : ''}`}> 계정이 없으신가요?</span>
           <button className={`register-Button ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={handleRedirectToRegister}>
             회원가입
           </button>
         </div>
+        <button className={`logout-button ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={handleLogout}>
+          토큰삭제
+        </button>
       </div>
+     </div>
     </div>
   );
 };

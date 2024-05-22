@@ -369,4 +369,31 @@
       transition: color 0.5s ease; 
     }
 
+    .logout-button{
+      width: 50px;
+      height: 30px;
+      background-color: #020202;
+      color: #ffffff;
+      font-family: 'Pretendard-SemiBold'; 
+      font-size: 9px;    
+      border-radius: 2px;
+      opacity: 0.98;
+      z-index: 4;
+      border: none;
+      justify-content: center; 
+      align-items: center; 
+      display: flex;
+      flex-direction: column; 
+      margin-top: 3.5px;
+      margin-left: 20px;
+      transition: background-color 0.5s ease; 
+      transition: color 0.5s ease; 
+    }
+
+    .Token{
+      display: flex;
+      flex-direction: row; 
+      justify-content: center; 
+      align-items: center; 
+    }
 }
