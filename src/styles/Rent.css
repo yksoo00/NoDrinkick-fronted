@@ -47,42 +47,43 @@
 
 .Face {
   display: flex;
-  margin: 20px;
   background-color: #e8e8e8;
   padding: 20px;
-  display:flex;
   flex-direction: column; 
   justify-content: center; 
   align-items: center; 
   border-radius: 10px;
   height: 15vh;
   margin-top: 0px;
-  width:20vw;
+  width:50vw;
 }
+
 
 .Face-Test {
   font-family: 'Pretendard-SemiBold'; 
-  font-size: 14px;
-  color: #000000;
+  font-size: 12px;
+  color: #ea3c3c;
+  margin-top: 20px;
 }
+
 
 .Alchol {
   display: flex;
-  margin: 20px;
   background-color: #e8e8e8;
-  padding: 20px;
-  display:flex;
+  padding: 10px;
   flex-direction: column; 
   justify-content: center; 
   align-items: center; 
   border-radius: 10px;
   height: 15vh;
   margin-top: 0px;
+  width:50vw;
 }
 
 .Alchol-Test {
   font-family: 'Pretendard-SemiBold'; 
-  font-size: 14px;
-  color: #000000;
+  font-size: 12px;
+  color: #ea3c3c;
+  margin-top: 20px;
 }
 }

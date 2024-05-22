@@ -6,7 +6,6 @@ import MainImageB from '../assets/Main.png';
 import FullLogoImage from '../assets/FullLogo.png';
 import DarkModeFullLogoImage from '../assets/darkmode-FullLogo.png';
 import DarkMode from '../component/darkmode'; 
-import Switch from '@mui/material/Switch'; // Switch 컴포넌트 import
 
 function SignUpPage() {
     const [darkModeEnabled, setDarkModeEnabled] = useState(

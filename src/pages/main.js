@@ -15,12 +15,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box'; 
 import Button from '@mui/material/Button'; 
-import AddIcon from '@mui/icons-material/Add'; 
-import RemoveIcon from '@mui/icons-material/Remove'; 
 
 import QrScanner from 'react-qr-scanner'; // Import QR scanner
 import LogoDrawer from './Rent';
-
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 아이콘 정의
