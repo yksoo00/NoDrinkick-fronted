@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import ToggleButton from '@mui/material/ToggleButton';
 import Stack from '@mui/material/Stack';
-
+import { removeToken } from '../services/loginService';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -24,7 +24,9 @@ import {
   faUserPlus,
   faAddressBook,
   faCircleInfo,
-  faBell
+  faBell,
+  faSignOutAlt,
+  faBook
 } from '@fortawesome/free-solid-svg-icons';
 
 const termsData = {
@@ -94,7 +96,7 @@ function TermsOfUse() {
       history.push('/');
     }
   }, [history]);
-  
+
   const handleClickPage = (pageName) => {
     let path;
     switch (pageName) {
@@ -113,8 +115,8 @@ function TermsOfUse() {
       case '공지사항':
         path = '/notice';
         break;
-      case '설정':
-        path = '/set';
+      case '가이드북':
+        path = '/guidebook';
         break;
       case '이용기록':
         path = '/usagerecord';
@@ -130,6 +132,12 @@ function TermsOfUse() {
     setSelectedSection(termsData[section]);
   };
 
+  const handleLogout = () => {
+    removeToken();
+    alert('로그아웃 되었습니다.');
+    window.location.href = '/';
+  };
+
   return (
     <div className="terms-container">
       <CssBaseline />
@@ -143,7 +151,7 @@ function TermsOfUse() {
             <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2,  color: darkModeEnabled ? '#2d2c28' : '#FFFFFF'}}>
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 이용약관 </Typography>
+            <Typography variant="h6" sx={{fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 이용약관 </Typography>
           </Box>
           <Box />
           <Box>
@@ -164,25 +172,41 @@ function TermsOfUse() {
         onOpen={() => setOpen(true)}
         sx={{zIndex: 999}}
       >
-        <List>
-          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
+         <List>
+          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '가이드북', '공지사항'].map((text, index) => (
             <ListItem
               button
               key={text}
-              sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom:3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
+              sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
               onClick={() => handleClickPage(text)}
             >
               <ListItemIcon>
-                {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style={{marginLeft:3}} />}
-                {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style={{marginLeft:4}} />}
-                {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{marginLeft:3}} />}
-                {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{marginLeft:3}} />}
-                {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{marginLeft:3}} />}
-                {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{marginLeft:3}} />}
+                {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style={{ marginLeft: 3 }} />}
+                {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style={{ marginLeft: 4 }} />}
+                {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{ marginLeft: 3 }} />}
+                {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{ marginLeft: 3 }} />}
+                {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{ marginLeft: 3 }} />}
+                {text === '가이드북' && <FontAwesomeIcon icon={faBook} style={{ marginLeft: 3 }} />}
+                {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{ marginLeft: 3 }} />}
               </ListItemIcon>
-              <Typography variant="body1" sx={{marginLeft:-1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>{text}</Typography>
+              <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                {text}
+              </Typography>
             </ListItem>
           ))}
+          <ListItem
+            button
+            key="로그아웃"
+            sx={{ width: 150, paddingTop: 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center', position: 'absolute', bottom: -120 }}
+            onClick={handleLogout}
+          >
+            <ListItemIcon>
+              <FontAwesomeIcon icon={faSignOutAlt} style={{ marginLeft: 3 }} />
+            </ListItemIcon>
+            <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+              로그아웃
+            </Typography>
+          </ListItem>
         </List>
       </Drawer>
 

@@ -13,7 +13,7 @@ import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import axios from 'axios';
-
+import { removeToken } from '../services/loginService';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons'; 
@@ -25,6 +25,8 @@ import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; 
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; 
 import { faBell } from '@fortawesome/free-solid-svg-icons'; 
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faBook } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -83,8 +85,8 @@ function AddEmergency() {
             case '공지사항':
               path = '/notice';
               break;
-            case '설정':
-              path = '/set';
+            case '가이드북':
+              path = '/guidebook';
               break;
             case '이용기록':
               path = '/usagerecord';
@@ -128,6 +130,12 @@ function AddEmergency() {
       }
   };
 
+  const handleLogout = () => {
+    removeToken();
+    alert('로그아웃 되었습니다.');
+    window.location.href = '/';
+  };
+
     return (
         <div style={{
             backgroundColor: '#e8e8e8',
@@ -148,7 +156,7 @@ function AddEmergency() {
             <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2,  color: darkModeEnabled ? '#2d2c28' : '#FFFFFF'}}>
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 비상연락망 추가 </Typography>
+            <Typography variant="h6" sx={{fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 비상연락망 추가 </Typography>
           </Box>
           <Box />
           <Box>
@@ -167,27 +175,43 @@ function AddEmergency() {
         open={open}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
-        sx={{zIndex: 999}}
+        sx={{ zIndex: 999 }}
       >
         <List>
-          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
+          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '가이드북', '공지사항'].map((text, index) => (
             <ListItem
               button
               key={text}
-              sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom:3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
+              sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
               onClick={() => handleClickPage(text)}
             >
               <ListItemIcon>
-                {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style={{marginLeft:3}} />}
-                {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style={{marginLeft:4}} />}
-                {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{marginLeft:3}} />}
-                {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{marginLeft:3}} />}
-                {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{marginLeft:3}} />}
-                {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{marginLeft:3}} />}
+                {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style={{ marginLeft: 3 }} />}
+                {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style={{ marginLeft: 4 }} />}
+                {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{ marginLeft: 3 }} />}
+                {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{ marginLeft: 3 }} />}
+                {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{ marginLeft: 3 }} />}
+                {text === '가이드북' && <FontAwesomeIcon icon={faBook} style={{ marginLeft: 3 }} />}
+                {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{ marginLeft: 3 }} />}
               </ListItemIcon>
-              <Typography variant="body1" sx={{marginLeft:-1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>{text}</Typography>
+              <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                {text}
+              </Typography>
             </ListItem>
           ))}
+          <ListItem
+            button
+            key="로그아웃"
+            sx={{ width: 150, paddingTop: 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center', position: 'absolute', bottom: -120 }}
+            onClick={handleLogout}
+          >
+            <ListItemIcon>
+              <FontAwesomeIcon icon={faSignOutAlt} style={{ marginLeft: 3 }} />
+            </ListItemIcon>
+            <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+              로그아웃
+            </Typography>
+          </ListItem>
         </List>
       </Drawer>
 
