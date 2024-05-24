@@ -37,6 +37,15 @@ function UserList() {
     fetchUser();
   }, []);
 
+  // 토큰없이 접속 시 제한
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      history.push('/');
+    }
+  }, [history]);
+
   useEffect(() => {
     // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
     if (darkModeEnabled) {

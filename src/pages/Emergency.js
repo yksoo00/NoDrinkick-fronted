@@ -36,7 +36,8 @@ function EmergencyContactsList() {
         localStorage.getItem('darkModeEnabled') === 'true'
       );
 
-
+      const history = useHistory();
+      
       useEffect(() => {
         // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
         if (darkModeEnabled) {
@@ -48,11 +49,18 @@ function EmergencyContactsList() {
         localStorage.setItem('darkModeEnabled', darkModeEnabled);
       }, [darkModeEnabled]);
 
+  // 토큰없이 접속 시 제한
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      history.push('/');
+    }
+  }, [history]);
+
     const toggleDrawer = () => {
         setOpen(!open);
     };
-
-    const history = useHistory();
 
     const handleClickPage = (pageName) => {
         let path;
@@ -98,31 +106,6 @@ function EmergencyContactsList() {
         }
     };
 
-    const handleSendMessage = async () => {
-        try {
-            // 선택된 연락처에 대해서만 메시지 전송
-            for (const contactId of selectedContacts) {
-                const contact = contacts.find(contact => contact.id === contactId);
-                if (contact) {
-                    await sendSmsToContact(contact.phoneNum, contact.message);
-                }
-            }
-            // 메시지 전송 후 선택된 연락처 초기화
-            setSelectedContacts([]);
-        } catch (error) {
-            console.error("메시지 전송 중 오류가 발생했습니다.", error);
-        }
-    };
-
-    const sendSmsToContact = async (phoneNum, message) => {
-        try {
-            await axios.post('http://13.125.168.244:8080/send-sms', { toPhoneNumber: phoneNum, message: message });
-            console.log(`메시지가 성공적으로 전송되었습니다. 수신자: ${phoneNum}`);
-        } catch (error) {
-            console.error(`메시지 전송 실패: ${error.message}`);
-        }
-    };
-
     const handleDeleteContact = async (id) => {
         try {
             await axios.delete(`http://13.125.168.244:8080/emergency-contacts/${id}`);
@@ -133,14 +116,6 @@ function EmergencyContactsList() {
         }
     };
 
-    const handleCheckboxChange = (id) => {
-        // 선택된 카드의 id 목록을 관리
-        if (selectedContacts.includes(id)) {
-            setSelectedContacts(selectedContacts.filter(contactId => contactId !== id));
-        } else {
-            setSelectedContacts([...selectedContacts, id]);
-        }
-    };
 
     return (
         <div className="emergency-container">
@@ -212,28 +187,11 @@ function EmergencyContactsList() {
                                 <p1>{contact.phoneNum}</p1>
                                 <p2>{contact.message}</p2>
                             </div>
-                            <input
-                                type="checkbox"
-                                checked={selectedContacts.includes(contact.id)}
-                                onChange={() => handleCheckboxChange(contact.id)}
-                            />
                             <button className="delete-button" onClick={() => handleDeleteContact(contact.id)}>연락처 삭제</button>
                         </div>
                     ))}
                 </div>
-                <button
-                    className="send-button"
-                    style={{
-                        backgroundColor: selectedContacts.length > 0 ? '#FFD700' : '#8A8A8A',
-                        color: selectedContacts.length > 0 ? '#000000' : '#FFFFFF',
-                        cursor: selectedContacts.length > 0 ? 'pointer' : 'not-allowed'
-                    }}
-                    onClick={handleSendMessage}
-                    disabled={selectedContacts.length === 0}
-                >
-                    설정 연락처에 메시지 전송
-                </button>
-                <button className="send-Allbutton" onClick={sendMessageToAll}>모든 연락처에 메시지 전송</button>
+                <button className="send-Allbutton" onClick={sendMessageToAll}>목록 연락처에 메시지 전송</button>
             </div>
         </div>
     );

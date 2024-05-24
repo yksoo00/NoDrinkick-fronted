@@ -32,6 +32,7 @@ const Notices = () => {
     localStorage.getItem('darkModeEnabled') === 'true'
   );
 
+  const history = useHistory();
 
   useEffect(() => {
     // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
@@ -52,6 +53,13 @@ const Notices = () => {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      history.push('/');
+    }
+  }, [history]);
 
   const handleClickPage = (pageName) => {
     let path;
@@ -84,8 +92,6 @@ const Notices = () => {
     }
     history.push(path);
   };
-  
-  const history = useHistory();
 
   const searchNotices = async () => {
     if (!searchTerm) {

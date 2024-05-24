@@ -52,6 +52,15 @@ function AddEmergency() {
       }, [darkModeEnabled]);
     
 
+  // 토큰없이 접속 시 제한
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      history.push('/');
+    }
+  }, [history]);
+
     const toggleDrawer = () => {
         setOpen(!open);
     };
@@ -104,19 +113,20 @@ function AddEmergency() {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        const formattedPhoneNum = formatPhoneNumber(formData.phoneNum);
-
-        try {
-            await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum });
-            alert('저장되었습니다!');
-            setFormData({ name: '', phoneNum: '', message: '', countryCode: '+82' });
-        } catch (error) {
-            console.error('비상 연락망 추가 에러:', error);
-            alert('저장에 실패했습니다.');
-        }
-    };
+      e.preventDefault();
+  
+      const formattedPhoneNum = formatPhoneNumber(formData.phoneNum);
+  
+      try {
+          await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum });
+          alert('저장되었습니다!');
+          setFormData({ name: '', phoneNum: '', message: '', countryCode: '+82' });
+          history.push('/emergency'); // 추가 성공 후 페이지 이동
+      } catch (error) {
+          console.error('비상 연락망 추가 에러:', error);
+          alert('저장에 실패했습니다.');
+      }
+  };
 
     return (
         <div style={{

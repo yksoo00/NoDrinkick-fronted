@@ -88,6 +88,13 @@ function TermsOfUse() {
     setOpen(!open);
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      history.push('/');
+    }
+  }, [history]);
+  
   const handleClickPage = (pageName) => {
     let path;
     switch (pageName) {

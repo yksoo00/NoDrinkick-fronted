@@ -18,6 +18,7 @@ import Button from '@mui/material/Button';
 
 import QrScanner from 'react-qr-scanner'; // Import QR scanner
 import LogoDrawer from './Rent';
+import { removeToken } from '../services/loginService';
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 아이콘 정의
@@ -28,10 +29,12 @@ import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; //비상연�
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
 import { faBell } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
 import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faBook } from '@fortawesome/free-solid-svg-icons';
 
 const Main = () => {
   const [open, setOpen] = useState(false); 
-  const [menuOpen, setMenuOpen] = useState(false); // 킥보드 메뉴의 상태
+  const [menuOpen, setMenuOpen] = useState(false); 
   const [zoomLevel, setZoomLevel] = useState(2);
   const [map, setMap] = useState(null);
   const [darkModeEnabled, setDarkModeEnabled] = useState(
@@ -61,6 +64,15 @@ const Main = () => {
 
   const history = useHistory();
 
+  // 토큰없이 접속 시 제한
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      history.push('/');
+    }
+  }, [history]);
+
   //렌트진행
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen); 
@@ -84,8 +96,8 @@ const Main = () => {
       case '공지사항':
         path = '/notice';
         break;
-      case '설정':
-        path = '/set';
+      case '가이드북':
+        path = '/guidebook';
         break;
       case '이용기록':
         path = '/usagerecord';
@@ -178,6 +190,12 @@ const Main = () => {
     }
   }, [map, zoomLevel]);
 
+  const handleLogout = () => {
+    removeToken();
+    alert('로그아웃 되었습니다.');
+    window.location.href = '/';
+  };
+
   return (
     <div>
       <div className={`dark-mode-toggle ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={toggleDarkMode}>
@@ -203,32 +221,48 @@ const Main = () => {
           <Box />
         </Toolbar>
       </AppBar>
-      <Drawer
+     <Drawer
         anchor="left"
         open={open}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
-        sx={{zIndex: 999}}
+        sx={{ zIndex: 999 }}
       >
         <List>
-          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
+          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '가이드북', '공지사항'].map((text, index) => (
             <ListItem
               button
               key={text}
-              sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom:3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
+              sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
               onClick={() => handleClickPage(text)}
             >
               <ListItemIcon>
-                {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style={{marginLeft:3}} />}
-                {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style={{marginLeft:4}} />}
-                {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{marginLeft:3}} />}
-                {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{marginLeft:3}} />}
-                {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{marginLeft:3}} />}
-                {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{marginLeft:3}} />}
+                {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style={{ marginLeft: 3 }} />}
+                {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style={{ marginLeft: 4 }} />}
+                {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{ marginLeft: 3 }} />}
+                {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{ marginLeft: 3 }} />}
+                {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{ marginLeft: 3 }} />}
+                {text === '가이드북' && <FontAwesomeIcon icon={faBook} style={{ marginLeft: 3 }} />}
+                {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{ marginLeft: 3 }} />}
               </ListItemIcon>
-              <Typography variant="body1" sx={{marginLeft:-1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>{text}</Typography>
+              <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                {text}
+              </Typography>
             </ListItem>
           ))}
+          <ListItem
+            button
+            key="로그아웃"
+            sx={{ width: 150, paddingTop: 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center', position: 'absolute', bottom: -270 }}
+            onClick={handleLogout}
+          >
+            <ListItemIcon>
+              <FontAwesomeIcon icon={faSignOutAlt} style={{ marginLeft: 3 }} />
+            </ListItemIcon>
+            <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+              로그아웃
+            </Typography>
+          </ListItem>
         </List>
       </Drawer>
 
