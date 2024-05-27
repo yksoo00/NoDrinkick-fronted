@@ -7,9 +7,12 @@ import '../styles/Rent.css';
 
 import { faBeerMugEmpty } from '@fortawesome/free-solid-svg-icons';
 import { faFaceLaugh } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 아이콘 정의
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default function Rent({ open, onClose }) {
+function Rent({ open, onClose }) {
+
+/*  const [A, B] = useState(false); */ 
+
   return (
     <div>
       <SwipeableDrawer
@@ -43,7 +46,7 @@ export default function Rent({ open, onClose }) {
                     </Button>
                 </div>
 
-              <Button variant="contained" style={{left:'5%', backgroundColor: '#2d2c28', color: '#ffffff', height:'10vh' ,width: '90vw' }} >
+              <Button variant="contained"  style={{left:'5%', backgroundColor: '#2d2c28', color: '#ffffff', height:'10vh' ,width: '90vw' }} >
           <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold' }}>대여하기</Typography>
         </Button>
 
@@ -51,3 +54,5 @@ export default function Rent({ open, onClose }) {
     </div>
   );
 }
+
+export default Rent;

@@ -34,7 +34,6 @@ import { faBook } from '@fortawesome/free-solid-svg-icons';
 
 function EmergencyContactsList() {
     const [contacts, setContacts] = useState([]);
-    const [selectedContacts, setSelectedContacts] = useState([]);
     const [open, setOpen] = useState(false);
     const [darkModeEnabled, setDarkModeEnabled] = useState(
         localStorage.getItem('darkModeEnabled') === 'true'

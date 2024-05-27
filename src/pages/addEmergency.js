@@ -28,8 +28,6 @@ import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { faBook } from '@fortawesome/free-solid-svg-icons';
 
-
-
 import addEmergencyContact from '../services/addEmergency.js';
 
 function AddEmergency() {
@@ -37,12 +35,13 @@ function AddEmergency() {
     const history = useHistory();
 
     const [open, setOpen] = useState(false); // 좌측 메뉴 상태
+    const [username, setUsername] = useState(''); // 사용자 이름 추가
+    const [PhoneNum, setPhoneNum] = useState(''); // 사용자 휴대폰 번호 추가
     const [darkModeEnabled, setDarkModeEnabled] = useState(
         localStorage.getItem('darkModeEnabled') === 'true'
       );
 
-      
-      useEffect(() => {
+    useEffect(() => {
         // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
         if (darkModeEnabled) {
           document.body.classList.add('dark-mode');
@@ -52,16 +51,26 @@ function AddEmergency() {
         // 다크 모드 상태를 localStorage에 저장합니다.
         localStorage.setItem('darkModeEnabled', darkModeEnabled);
       }, [darkModeEnabled]);
-    
 
-  // 토큰없이 접속 시 제한
+    useEffect(() => {
+        const token = localStorage.getItem('jwtToken');
+        if (!token) {
+            history.push('/');
+        } else {
+            fetchUserData();
+        }
+    }, [history]);
 
-  useEffect(() => {
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      history.push('/');
-    }
-  }, [history]);
+    const fetchUserData = async () => {
+        try {
+            const response = await axios.get('http://13.125.168.244:8080/members/info');
+            const user = response.data;
+            setUsername(user.name); // 사용자 이름을 설정합니다.
+            setPhoneNum(user.phoneNum); // 사용자 휴대폰 번호를 설정합니다.
+        } catch (error) {
+            console.error('API 서버오류', error);
+        }
+    };
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -115,26 +124,27 @@ function AddEmergency() {
     };
 
     const handleSubmit = async (e) => {
-      e.preventDefault();
-  
-      const formattedPhoneNum = formatPhoneNumber(formData.phoneNum);
-  
-      try {
-          await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum });
-          alert('저장되었습니다!');
-          setFormData({ name: '', phoneNum: '', message: '', countryCode: '+82' });
-          history.push('/emergency'); // 추가 성공 후 페이지 이동
-      } catch (error) {
-          console.error('비상 연락망 추가 에러:', error);
-          alert('저장에 실패했습니다.');
-      }
-  };
+        e.preventDefault();
 
-  const handleLogout = () => {
-    removeToken();
-    alert('로그아웃 되었습니다.');
-    window.location.href = '/';
-  };
+        const formattedPhoneNum = formatPhoneNumber(formData.phoneNum);
+
+        try {
+          const messageWithUsername = `${username}, 휴대폰 번호: ${PhoneNum}, ${formData.message}`;
+            await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum, message: messageWithUsername }); // 합친 메시지 전달
+            alert('저장되었습니다!');
+            setFormData({ name: '', phoneNum: '', message: '', countryCode: '+82' }); // 저장 후 폼 초기화
+            history.push('/emergency'); // 추가 성공 후 페이지 이동
+        } catch (error) {
+            console.error('비상 연락망 추가 에러:', error);
+            alert('저장에 실패했습니다.');
+        }
+    };
+
+    const handleLogout = () => {
+        removeToken();
+        alert('로그아웃 되었습니다.');
+        window.location.href = '/';
+    };
 
     return (
         <div style={{

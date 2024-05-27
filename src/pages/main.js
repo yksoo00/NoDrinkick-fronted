@@ -20,7 +20,7 @@ import { removeToken } from '../services/loginService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSun, faMoon, faSignOutAlt, faBook } from '@fortawesome/free-solid-svg-icons';
 
-import Userinfo from '../component/userimfo';
+import Userinfo from '../component/userinfo';
 
 const Main = () => {
   const [open, setOpen] = useState(false); 
