@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { KakaoMap, Marker } from 'react-kakao-maps';
 import LogoImage from '../assets/Logo.png';
-import '../styles/main.css'; 
+import '../styles/main.css';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,24 +12,15 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box'; 
-import Button from '@mui/material/Button'; 
-
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import QrScanner from 'react-qr-scanner'; // Import QR scanner
 import LogoDrawer from './Rent';
 import { removeToken } from '../services/loginService';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSun, faMoon, faSignOutAlt, faBook } from '@fortawesome/free-solid-svg-icons';
 
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 아이콘 정의
-import { faUser } from '@fortawesome/free-solid-svg-icons'; //마이페이지 아이콘
-import { faClipboard } from '@fortawesome/free-solid-svg-icons'; //이용내역 아이콘
-import { faUserPlus } from '@fortawesome/free-solid-svg-icons'; //비상연락망 추가 아이콘
-import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; //비상연락망 목록 아이콘
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
-import { faBell } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
-import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { faBook } from '@fortawesome/free-solid-svg-icons';
+import Userinfo from '../component/userimfo';
 
 const Main = () => {
   const [open, setOpen] = useState(false); 
@@ -116,18 +106,13 @@ const Main = () => {
 
   const handleScan = (data) => {
     if (data) {
-      let url;
-      if (typeof data === 'object') {
-        url = data.text; 
+      const url = typeof data === 'object' ? data.text : data;
+      if (url && url === 'openMenu') { // 특정 값을 체크
+        setMenuOpen(true); // MUI 다이얼로그 열기
       } else {
-        url = data;
-      }   
-      if (url && typeof url === 'string' && url.startsWith('http')) {
-        window.open(url, '_blank');
-      } else {
-        console.error('Invalid URL:', url);
+        console.error('Invalid QR Code:', url);
       }
-      setQrScannerOpen(false); 
+      setQrScannerOpen(false);
     }
   };
 
@@ -282,7 +267,8 @@ const Main = () => {
     height: '10vh',
     width: '700px',
     transition: 'background-color 0.5s ease',
-    zIndex:1
+    zIndex:1,
+    opacity: '0.95'
   }}
 >
   <Typography
@@ -298,6 +284,7 @@ const Main = () => {
   </Typography>
 </Button>
       </Box>
+      <Userinfo />
       {qrScannerOpen && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 10000 }}>
           <div style={{ width: '300px', height: '300px', backgroundColor: 'white', padding: '20px', borderRadius: '8px' }}>

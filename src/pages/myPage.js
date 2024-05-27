@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import '../styles/myPage.css';
@@ -21,6 +21,13 @@ import { removeToken } from '../services/loginService';
 function UserList() {
   const [open, setOpen] = useState(false);
   const [users, setUsers] = useState([]);
+
+  const [showCamera, setShowCamera] = useState(false);
+  const [cameraStream, setCameraStream] = useState(null);
+  const [videoElement, setVideoElement] = useState(null);
+  const [capturedImage, setCapturedImage] = useState(null);
+  const canvasRef = useRef(null);
+
   const history = useHistory();
   const [darkModeEnabled, setDarkModeEnabled] = useState(
     localStorage.getItem('darkModeEnabled') === 'true'
@@ -100,7 +107,6 @@ function UserList() {
     alert('로그아웃 되었습니다.');
     window.location.href = '/';
   };
-
   return (
     <div className="terms-container">
       <CssBaseline />
@@ -198,9 +204,13 @@ function UserList() {
                 <div className="license-details-item">
                   <img src={user.licenseImage} alt="Driver's License" className="license-image" />
                 </div>
-
+                <div className="picture-all">
                 <div className="license-details-verification">
                   <p>인증여부 : {user.license ? 'YES' : 'NO'}</p>
+                </div>
+                <div>
+                 <button className="picture-button">운전면허증 등록</button>
+                </div>
                 </div>
               </div>
             </div>

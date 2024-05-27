@@ -1,0 +1,33 @@
+
+.Userinfo-container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* 상단 여백 */
+    top:13vw;
+    right: 3vw;
+    z-index: 999;
+  }
+
+  .Userinfo {
+    background-color: #2d2c28; /* 배경 색상 */
+    padding: 5px 20px; /* 내부 여백 */
+    border-radius: 8px; /* 둥근 모서리 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 */
+    text-align: center;
+    font-family: 'Pretendard-Bold', sans-serif; /* 글꼴 */
+    font-size: 14px; /* 글자 크기 */
+    color: #ffffff; /* 글자 색상 */
+    max-width: 300px;
+    opacity: 0.8;
+  }
+
+  .Userinfo.dark-mode {
+    background-color: #f2f2f2; /* 배경 색상 */
+    color : #2d2c28; /* 이 부분도 #2d2c28 으로 수정해야 합니다 */
+}
+  
+  .Userinfo p {
+    margin: 5px; 
+  }

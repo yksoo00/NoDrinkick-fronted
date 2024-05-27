@@ -236,9 +236,9 @@ function TermsOfUse() {
         {selectedSection && (
           <div className="section-content">
             <h7 className="Zo">{selectedSection.title}</h7>
-            <ul>
+            <ul className='texttext'>
               {selectedSection.content.map((item, index) => (
-                <li key={index}>{item}</li>
+                <li className='texttexttext' key={index}>{item}</li>
               ))}
             </ul>
           </div>

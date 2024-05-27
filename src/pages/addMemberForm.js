@@ -127,18 +127,6 @@ function SignUpPage() {
                     className="input-field"
                     placeholder="사용자 얼굴 사진 경로"/>
                 </div>
-                <div>
-                    <label className={`license ${darkModeEnabled ? 'dark-mode' : ''}`}>운전면허 인증 유무</label>
-                    <select 
-                    name="license" 
-                    value={userInfo.license} 
-                    onChange={handleChange}
-                    className={`select-field ${darkModeEnabled ? 'dark-mode' : ''}`}
-                    >
-                        <option className={`option ${darkModeEnabled ? 'dark-mode' : ''}`} value="false">미인증</option>
-                        <option className={`option ${darkModeEnabled ? 'dark-mode' : ''}`} value="true">인증</option>
-                    </select>
-                </div>
                 <button  className={`Signupbutton ${darkModeEnabled ? 'dark-mode' : ''}`} type="submit">회원가입</button>
                 <button  className={`HomeButton ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={handleRedirectToHome}>홈화면</button>
             </form>
