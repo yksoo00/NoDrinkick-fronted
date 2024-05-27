@@ -130,10 +130,10 @@ function AddEmergency() {
 
         try {
           const messageWithUsername = `${username}, 휴대폰 번호: ${PhoneNum}, ${formData.message}`;
-            await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum, message: messageWithUsername }); // 합친 메시지 전달
+            await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum, message: messageWithUsername }); 
             alert('저장되었습니다!');
-            setFormData({ name: '', phoneNum: '', message: '', countryCode: '+82' }); // 저장 후 폼 초기화
-            history.push('/emergency'); // 추가 성공 후 페이지 이동
+            setFormData({ name: '', phoneNum: '', message: '', countryCode: '+82' }); 
+            history.push('/emergency'); 
         } catch (error) {
             console.error('비상 연락망 추가 에러:', error);
             alert('저장에 실패했습니다.');
