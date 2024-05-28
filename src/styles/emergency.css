@@ -11,27 +11,6 @@
   margin-top: 150px;
 }
 
-.send-button {
-  position: absolute;
-  width: 200px;
-  height: 40px;
-  margin-top: 100px;
-  margin-bottom: 20px;
-  background-color: #8A8A8A;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-family: 'Pretendard-SemiBold'; 
-  font-size: 12px;
-  display: flex;
-  flex-direction: column; 
-  justify-content: center; 
-  align-items: center; 
-  left: 42%;
-  transform: translateX(-50%);
-  transition: background-color 0.3s ease; 
-}
 
 .send-Allbutton {
   position: absolute;
@@ -50,7 +29,7 @@
   flex-direction: column; 
   justify-content: center; 
   align-items: center; 
-  left: 58%;
+  left: 60%;
   transform: translateX(-50%);
 }
 
@@ -117,7 +96,6 @@
   cursor: pointer;
   font-family: 'Pretendard-SemiBold'; 
   font-size: 11px;
-  margin-left: 50px;
   margin-top: 217px;
 }
 
@@ -147,8 +125,8 @@ input[type="checkbox"] {
   .card {
     background-color: #fff;
     width: 80vw;
-    height: 200px; 
-    padding: 20px;
+    height: 160px; 
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -215,36 +193,14 @@ input[type="checkbox"] {
     cursor: pointer;
     font-family: 'Pretendard-SemiBold'; 
     font-size: 11px;
-    margin-left: 50px;
-    margin-top: 145px;
-  }
-
-  .send-button {
-    position: absolute;
-    width: 150px;
-    height: 40px;
-    bottom: 3vw;
-    background-color: #8A8A8A;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Pretendard-SemiBold'; 
-    font-size: 12px;
-    display: flex;
-    flex-direction: column; 
-    justify-content: center; 
-    align-items: center; 
-    left: 30%;
-    transform: translateX(-50%);
-    transition: background-color 0.3s ease; 
+    margin-top: 100px;
   }
   
   .send-Allbutton {
     position: absolute;
     width: 150px;
     height: 40px;
-    bottom: 3vw;
+    bottom: -0.5%;
     background-color: #2d2c28;
     color: #fff;
     border: none;
@@ -256,7 +212,7 @@ input[type="checkbox"] {
     flex-direction: column; 
     justify-content: center; 
     align-items: center; 
-    left: 70%;
+    left: 50%;
     transform: translateX(-50%);
   }
 

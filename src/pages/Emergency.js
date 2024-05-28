@@ -15,7 +15,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-
+import LogoDrawer from './Logo';
+import { removeToken } from '../services/loginService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
@@ -27,18 +28,23 @@ import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { fa1 } from '@fortawesome/free-solid-svg-icons';
 import { fa2 } from '@fortawesome/free-solid-svg-icons';
 import { fa3 } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faBook } from '@fortawesome/free-solid-svg-icons';
 
 function EmergencyContactsList() {
     const [contacts, setContacts] = useState([]);
-    const [selectedContacts, setSelectedContacts] = useState([]);
     const [open, setOpen] = useState(false);
-
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const toggleDrawer = () => {
         setOpen(!open);
     };
 
     const history = useHistory();
+
+    const handleMenuToggle = () => {
+        setMenuOpen(!menuOpen);
+    };
 
     const handleClickPage = (pageName) => {
         let path;
@@ -58,8 +64,8 @@ function EmergencyContactsList() {
             case '공지사항':
                 path = '/notice';
                 break;
-            case '설정':
-                path = '/set';
+            case '가이드북':
+                path = '/guidebook';
                 break;
             case '이용기록':
                 path = '/usagerecord';
@@ -77,7 +83,7 @@ function EmergencyContactsList() {
 
     const fetchContacts = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/emergency-contacts');
+            const response = await axios.get('/emergency-contacts');
             setContacts(response.data);
         } catch (error) {
             console.error("비상 연락망 조회 중 오류가 발생했습니다.", error);
@@ -90,7 +96,7 @@ function EmergencyContactsList() {
             for (const contactId of selectedContacts) {
                 const contact = contacts.find(contact => contact.id === contactId);
                 if (contact) {
-                    await sendSmsToContact(contact.phoneNum, contact.message);
+                    await sendSmsToContact(contact.phoneNum, contact.voiceMessage);
                 }
             }
             // 메시지 전송 후 선택된 연락처 초기화
@@ -100,9 +106,9 @@ function EmergencyContactsList() {
         }
     };
 
-    const sendSmsToContact = async (phoneNum, message) => {
+    const sendSmsToContact = async (phoneNum, voiceMessage) => {
         try {
-            await axios.post('http://localhost:8080/send-sms', { toPhoneNumber: phoneNum, message: message });
+            await axios.post('/send-sms', { toPhoneNumber: phoneNum, message: voiceMessage });
             console.log(`메시지가 성공적으로 전송되었습니다. 수신자: ${phoneNum}`);
         } catch (error) {
             console.error(`메시지 전송 실패: ${error.message}`);
@@ -111,7 +117,7 @@ function EmergencyContactsList() {
 
     const handleDeleteContact = async (id) => {
         try {
-            await axios.delete(`http://localhost:8080/emergency-contacts/${id}`);
+            await axios.delete(`/emergency-contacts/${id}`);
             // 삭제 후에 연락처 목록을 다시 불러오기
             fetchContacts();
         } catch (error) {
@@ -121,7 +127,7 @@ function EmergencyContactsList() {
 
     const handleCheckboxChange = (id) => {
         // 선택된 카드의 id 목록을 관리
-if (selectedContacts.includes(id)) {
+        if (selectedContacts.includes(id)) {
             setSelectedContacts(selectedContacts.filter(contactId => contactId !== id));
         } else {
             setSelectedContacts([...selectedContacts, id]);
@@ -131,18 +137,27 @@ if (selectedContacts.includes(id)) {
     return (
         <div className="emergency-container">
             <CssBaseline />
-            <AppBar position="fixed" sx={{ zIndex: 9999, backgroundColor: '#2d2c28' }}>
-                <Toolbar sx={{ justifyContent: 'space-between' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2 }}>
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" sx={{ fontFamily: 'Pretendard-Bold', textAlign: 'center' }} component="div">비상연락망 목록</Typography>
-                    </Box>
-                    <Box>
-                        <IconButton color="inherit" onClick={() => history.push('/main')}>
-                            <FontAwesomeIcon icon={faHouse} />
-                        </IconButton>
+             <AppBar position="fixed" sx={{
+        zIndex: 9999,
+        backgroundColor: darkModeEnabled ? '#F2F2F2' : '#2d2c28',
+        transition: 'background-color 0.5s ease'
+      }}>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2,  color: darkModeEnabled ? '#2d2c28' : '#FFFFFF'}}>
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" sx={{fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 비상연락망 목록 </Typography>
+          </Box>
+          <Box />
+          <Box>
+          <IconButton 
+          color="inherit" 
+          onClick={() => history.push('/main')}
+          style={{ color: darkModeEnabled ? '#000000' : '#ffffff' }}
+        >
+          <FontAwesomeIcon icon={faHouse} />
+        </IconButton>
                     </Box>
                 </Toolbar>
             </AppBar>
@@ -175,6 +190,7 @@ if (selectedContacts.includes(id)) {
                     ))}
                 </List>
             </Drawer>
+            <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} />
 
             <div className="emergency-content">
                 <div className="card-container">
@@ -190,28 +206,11 @@ if (selectedContacts.includes(id)) {
                                 <p1>{contact.phoneNum}</p1>
                                 <p2>{contact.message}</p2>
                             </div>
-                            <input
-                                type="checkbox"
-                                checked={selectedContacts.includes(contact.id)}
-                                onChange={() => handleCheckboxChange(contact.id)}
-                            />
                             <button className="delete-button" onClick={() => handleDeleteContact(contact.id)}>연락처 삭제</button>
                         </div>
                     ))}
                 </div>
-                <button
-                    className="send-button"
-                    style={{
-                        backgroundColor: selectedContacts.length > 0 ? '#FFD700' : '#8A8A8A',
-                        color: selectedContacts.length > 0 ? '#000000' : '#FFFFFF',
-                        cursor: selectedContacts.length > 0 ? 'pointer' : 'not-allowed'
-                    }}
-                    onClick={handleSendMessage}
-                    disabled={selectedContacts.length === 0}
-                >
-                    설정 연락처에 메시지 전송
-                </button>
-                <button className="send-Allbutton" onClick={sendMessageToAll}>모든 연락처에 메시지 전송</button>
+                <button className="send-Allbutton" onClick={sendMessageToAll}>목록 연락처에 메시지 전송</button>
             </div>
         </div>
     );

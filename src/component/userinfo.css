@@ -20,7 +20,9 @@
     font-size: 14px; /* 글자 크기 */
     color: #ffffff; /* 글자 색상 */
     max-width: 300px;
-    opacity: 0.8;
+
+    opacity: 0.85;
+
   }
 
   .Userinfo.dark-mode {
