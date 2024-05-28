@@ -64,7 +64,7 @@ function AddEmergency() {
     const fetchUserData = async () => {
         try {
 
-            const response = await axios.get('http://13.125.168.244:8080/members/info');
+            const response = await axios.get('/members/info');
 
             const user = response.data;
             setUsername(user.name); // 사용자 이름을 설정합니다.
