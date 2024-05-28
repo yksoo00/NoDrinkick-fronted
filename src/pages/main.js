@@ -12,21 +12,15 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box'; 
-import Button from '@mui/material/Button'; 
-import AddIcon from '@mui/icons-material/Add'; 
-import RemoveIcon from '@mui/icons-material/Remove'; 
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import QrScanner from 'react-qr-scanner'; // Import QR scanner
+import LogoDrawer from './Rent';
+import { removeToken } from '../services/loginService';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSun, faMoon, faSignOutAlt, faBook } from '@fortawesome/free-solid-svg-icons';
 
-import LogoDrawer from './Logo';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 아이콘 정의
-import { faUser } from '@fortawesome/free-solid-svg-icons'; //마이페이지 아이콘
-import { faClipboard } from '@fortawesome/free-solid-svg-icons'; //이용내역 아이콘
-import { faUserPlus } from '@fortawesome/free-solid-svg-icons'; //비상연락망 추가 아이콘
-import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; //비상연락망 목록 아이콘
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
-import { faBell } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
-import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
+import Userinfo from '../component/userinfo';
 
 const Main = () => {
   const [open, setOpen] = useState(false); 
@@ -257,16 +251,39 @@ const Main = () => {
         </List>
       </Drawer>
 
-      <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} /> 
 
+      <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} /> 
+      
       <Box id="map" className="map"></Box>
-      <Box sx={{position: 'fixed', bottom: '85%', right: '1vw', zIndex: 3}}>
-        <Button variant="contained" color="primary" className="zoom-button" style={{ borderTopLefttRadius: '10%', borderBottomLeftRadius: '10%', borderTopRightRadius: '0%', borderBottomRightRadius: '0%', backgroundColor: '#2d2c28', minWidth: '2vw', Height:'2vh' }} onClick={() => setZoomLevel(zoomLevel + 1)}>
-          <AddIcon />
-        </Button>
-        <Button variant="contained" color="primary" className="zoom-button" style={{ borderTopRightRadius: '10%', borderBottomRightRadius: '10%', borderBottomLeftRadius: '0%', borderTopLeftRadius: '0%', backgroundColor: '#2d2c28', minWidth: '2vw'}} onClick={() => setZoomLevel(zoomLevel - 1)}>
-          <RemoveIcon />
-        </Button>
+
+      <Box sx={{position: 'fixed', bottom: '3%', left: '50%', transform: 'translate(-50%)', zIndex: 999}}>
+      <Button
+  className="Rent-Button"
+  variant="contained"
+  color="primary"
+  onClick={handleRent}
+  sx={{
+    right: '1px',
+    backgroundColor: darkModeEnabled ? '#F2F2F2' : '#2d2c28',
+    height: '10vh',
+    width: '700px',
+    transition: 'background-color 0.5s ease',
+    zIndex:1,
+    opacity: '0.95'
+  }}
+>
+  <Typography
+    variant="h6"
+    sx={{
+      fontFamily: 'Pretendard-Bold',
+      fontSize: '12px',
+      color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', 
+      transition: 'color 0.5s ease' 
+    }}
+  >
+    킥보드 타러가기
+  </Typography>
+</Button>
       </Box>
       <Userinfo />
       {qrScannerOpen && (

@@ -15,8 +15,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import LogoDrawer from './Logo';
+
 import { removeToken } from '../services/loginService';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
@@ -34,16 +35,34 @@ import { faBook } from '@fortawesome/free-solid-svg-icons';
 function EmergencyContactsList() {
     const [contacts, setContacts] = useState([]);
     const [open, setOpen] = useState(false);
-    const [menuOpen, setMenuOpen] = useState(false);
+    const [darkModeEnabled, setDarkModeEnabled] = useState(
+        localStorage.getItem('darkModeEnabled') === 'true'
+      );
+
+      const history = useHistory();
+      
+      useEffect(() => {
+        // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
+        if (darkModeEnabled) {
+          document.body.classList.add('dark-mode');
+        } else {
+          document.body.classList.remove('dark-mode');
+        }
+        // 다크 모드 상태를 localStorage에 저장합니다.
+        localStorage.setItem('darkModeEnabled', darkModeEnabled);
+      }, [darkModeEnabled]);
+
+  // 토큰없이 접속 시 제한
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      history.push('/');
+    }
+  }, [history]);
 
     const toggleDrawer = () => {
         setOpen(!open);
-    };
-
-    const history = useHistory();
-
-    const handleMenuToggle = () => {
-        setMenuOpen(!menuOpen);
     };
 
     const handleClickPage = (pageName) => {
@@ -83,56 +102,28 @@ function EmergencyContactsList() {
 
     const fetchContacts = async () => {
         try {
-            const response = await axios.get('/emergency-contacts');
+            const response = await axios.get('http://13.125.168.244:8080/emergency-contacts');
             setContacts(response.data);
         } catch (error) {
             console.error("비상 연락망 조회 중 오류가 발생했습니다.", error);
         }
     };
 
-    const handleSendMessage = async () => {
-        try {
-            // 선택된 연락처에 대해서만 메시지 전송
-            for (const contactId of selectedContacts) {
-                const contact = contacts.find(contact => contact.id === contactId);
-                if (contact) {
-                    await sendSmsToContact(contact.phoneNum, contact.voiceMessage);
-                }
-            }
-            // 메시지 전송 후 선택된 연락처 초기화
-            setSelectedContacts([]);
-        } catch (error) {
-            console.error("메시지 전송 중 오류가 발생했습니다.", error);
-        }
-    };
-
-    const sendSmsToContact = async (phoneNum, voiceMessage) => {
-        try {
-            await axios.post('/send-sms', { toPhoneNumber: phoneNum, message: voiceMessage });
-            console.log(`메시지가 성공적으로 전송되었습니다. 수신자: ${phoneNum}`);
-        } catch (error) {
-            console.error(`메시지 전송 실패: ${error.message}`);
-        }
-    };
-
     const handleDeleteContact = async (id) => {
         try {
-            await axios.delete(`/emergency-contacts/${id}`);
+            await axios.delete(`http://13.125.168.244:8080/emergency-contacts/${id}`);
             // 삭제 후에 연락처 목록을 다시 불러오기
             fetchContacts();
         } catch (error) {
-        console.error("연락처 삭제 중 오류가 발생했습니다.", error);
+            console.error("연락처 삭제 중 오류가 발생했습니다.", error);
         }
     };
 
-    const handleCheckboxChange = (id) => {
-        // 선택된 카드의 id 목록을 관리
-        if (selectedContacts.includes(id)) {
-            setSelectedContacts(selectedContacts.filter(contactId => contactId !== id));
-        } else {
-            setSelectedContacts([...selectedContacts, id]);
-        }
-    };
+    const handleLogout = () => {
+        removeToken();
+        alert('로그아웃 되었습니다.');
+        window.location.href = '/';
+      };
 
     return (
         <div className="emergency-container">
@@ -159,38 +150,52 @@ function EmergencyContactsList() {
           <FontAwesomeIcon icon={faHouse} />
         </IconButton>
                     </Box>
-                </Toolbar>
-            </AppBar>
-            <Drawer
-                anchor="left"
-                open={open}
-                onClose={() => setOpen(false)}
-                onOpen={() => setOpen(true)}
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        anchor="left"
+        open={open}
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+        sx={{zIndex: 999}}
+      >
+        <List>
+          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '가이드북', '공지사항'].map((text, index) => (
+            <ListItem
+              button
+              key={text}
+              sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
+              onClick={() => handleClickPage(text)}
             >
-                <List>
-                    {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
-                        <ListItem
-                            button
-                            key={text}
-                            sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
-                            onClick={() => handleClickPage(text)}
-                        >
-                            <ListItemIcon>
-                                {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style={{ marginLeft: 3 }} />}
-                                {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style={{ marginLeft: 4 }} />}
-                                {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{ marginLeft: 3 }} />}
-                                {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{ marginLeft: 3 }} />}
-                                {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{ marginLeft: 3 }} />}
-                                {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{ marginLeft: 3 }} />}
-                            </ListItemIcon>
-                            <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Black', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                                {text}
-                            </Typography>
-                        </ListItem>
-                    ))}
-                </List>
-            </Drawer>
-            <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} />
+              <ListItemIcon>
+                {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style={{ marginLeft: 3 }} />}
+                {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style={{ marginLeft: 4 }} />}
+                {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{ marginLeft: 3 }} />}
+                {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{ marginLeft: 3 }} />}
+                {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{ marginLeft: 3 }} />}
+                {text === '가이드북' && <FontAwesomeIcon icon={faBook} style={{ marginLeft: 3 }} />}
+                {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{ marginLeft: 3 }} />}
+              </ListItemIcon>
+              <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                {text}
+              </Typography>
+            </ListItem>
+          ))}
+          <ListItem
+            button
+            key="로그아웃"
+            sx={{ width: 150, paddingTop: 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center', position: 'absolute', bottom: -120 }}
+            onClick={handleLogout}
+          >
+            <ListItemIcon>
+              <FontAwesomeIcon icon={faSignOutAlt} style={{ marginLeft: 3 }} />
+            </ListItemIcon>
+            <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+              로그아웃
+            </Typography>
+          </ListItem>
+        </List>
+      </Drawer>
 
             <div className="emergency-content">
                 <div className="card-container">

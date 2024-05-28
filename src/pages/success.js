@@ -15,7 +15,7 @@ const Success = () => {
   useEffect(() => {
     const approvePayment = async () => {
       try {
-        const response = await axios.post('http://localhost:8080/api/payment-result', {
+        const response = await axios.post('http://13.125.168.244:8080/api/payment-result', {
           paymentKey,
           orderId,
           amount,

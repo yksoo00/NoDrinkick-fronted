@@ -24,13 +24,6 @@ function UserList() {
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({});
  
-
-  const [showCamera, setShowCamera] = useState(false);
-  const [cameraStream, setCameraStream] = useState(null);
-  const [videoElement, setVideoElement] = useState(null);
-  const [capturedImage, setCapturedImage] = useState(null);
-  const canvasRef = useRef(null);
-
   const history = useHistory();
   const [darkModeEnabled, setDarkModeEnabled] = useState(
     localStorage.getItem('darkModeEnabled') === 'true'
@@ -40,7 +33,7 @@ function UserList() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('/members/info');
+        const response = await axios.get('http://13.125.168.244:8080/members/info');
         setUserData(response.data);
       } catch (error) {
         console.error('API 서버오류', error);
@@ -193,8 +186,7 @@ fetchUserData();
       
       <Box>
         <div className="myPage">
-          {users.map((userData) => (
-            <div key={userData.username} className="user-info-container">
+            <div className="user-info-container">
               <div className="user-info-all">
                 <div className="user-info">
                   <img src={userData.imagePath} alt="프로필 사진" className="User-Image" />
@@ -228,7 +220,6 @@ fetchUserData();
 
               </div>
             </div>
-          ))}
         </div>
       </Box>
     </div>

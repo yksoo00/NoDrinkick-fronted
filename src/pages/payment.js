@@ -1,3 +1,4 @@
+/*
 // src/pages/payment.js
 import React, { useEffect } from 'react';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
@@ -62,3 +63,5 @@ function Payment() {
 }
 
 export default Payment;
+
+*/
