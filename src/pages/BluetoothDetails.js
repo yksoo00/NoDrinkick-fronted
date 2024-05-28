@@ -25,7 +25,7 @@ const BluetoothDetail = () => {
       try {
         await axios.delete(`http://localhost:8080/bluetooth-data/${deviceDetail.id}`);
         alert('데이터가 성공적으로 삭제되었습니다.');
-        history.push('/'); // 삭제 후 메인 페이지로 이동하거나, 원하는 대로 수정하세요.
+        history.push('/bluetooth'); // 삭제 후 /bluetooth 페이지로 이동
       } catch (error) {
         console.error('데이터 삭제 중에 문제가 발생했습니다:', error);
       }

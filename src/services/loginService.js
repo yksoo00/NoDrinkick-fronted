@@ -1,5 +1,15 @@
 import axios from 'axios';
 
+const removeToken = () => {
+  // 로컬 스토리지에서 토큰 제거
+  localStorage.removeItem('jwtToken');
+
+  // axios의 기본 헤더에서 토큰 제거
+  delete axios.defaults.headers.common['Authorization'];
+
+  console.log('JWT 토큰이 제거되었습니다.');
+};
+
 const login = async (username, password) => {
   try {
     const formData = new FormData();
@@ -47,3 +57,4 @@ axios.interceptors.request.use(
 
 
 export default login;
+export { removeToken };

@@ -1,16 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import login from '../services/loginService.js';
+import { useHistory } from 'react-router-dom';
+import '../styles/loginform.css';
+import MainImage from '../assets/Main.png';
+import FullLogoImage from '../assets/FullLogo.png';
+import DarkModeFullLogoImage from '../assets/darkmode-FullLogo.png';
+import DarkMode from '../component/darkmode'; 
 
 const LoginForm = () => {
+  const history = useHistory();
   const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
-  const [redirectURL, setRedirectURL] = useState('');
+  const [darkModeEnabled, setDarkModeEnabled] = useState(
+    localStorage.getItem('darkModeEnabled') === 'true'
+  );
+
+  useEffect(() => {
+    if (darkModeEnabled) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+    localStorage.setItem('darkModeEnabled', darkModeEnabled);
+  }, [darkModeEnabled]);
+
+  const toggleDarkMode = () => {
+    setDarkModeEnabled(!darkModeEnabled);
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     try {
-      const token = await login(loginId, password); // 로그인 함수 호출
+      const token = await login(loginId, password);
       console.log('로그인 성공');
       window.location.href = '/main';
     } catch (error) {
@@ -19,50 +41,64 @@ const LoginForm = () => {
     }
   };
 
+  const handleRedirectToRegister = () => {
+    history.push('/addmemberform');
+  };
+
   return (
     <div className="container">
-      <div className="py-5 text-center">
-        <h2>로그인</h2>
-      </div>
-      <form onSubmit={handleLogin}>
-        <input type="hidden" name="redirectURL" value={redirectURL} />
+      <img src={MainImage} alt="Main" className="main-image" />
+      {darkModeEnabled ? (
+        <img src={DarkModeFullLogoImage} alt="DarkModeFullLogoImage" className="DarkmodeFullLogoImage" />
+      ) : (
+        <img src={FullLogoImage} alt="FullLogoImage" className="FullLogoImage" />
+      )}
 
-        <div>
-          <label htmlFor="loginId">로그인 ID</label>
-          <input
-            type="text"
-            id="loginId"
-            value={loginId}
-            onChange={(e) => setLoginId(e.target.value)}
-            className="form-control"
-          />
-        </div>
-        <div>
-          <label htmlFor="password">비밀번호</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="form-control"
-          />
-        </div>
-        <hr className="my-4" />
-        <div className="row">
-          <div className="col">
-          <button className="w-100 btn btn-primary btn-lg" type="submit">로그인</button>
+      <div className="switch-container LoginDark">
+        <DarkMode onChange={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
+      </div>
+
+      <div className={`login-introduction ${darkModeEnabled ? 'dark-mode' : ''}`}>
+        Login
+      </div>
+
+      <div className={`transparent-shape ${darkModeEnabled ? 'dark-mode' : ''}`}>
+      <div className={`login-text ${darkModeEnabled ? 'dark-mode' : ''}`}>
+        노드링킥에 오신 것을 환영합니다
+      </div>
+        <form onSubmit={handleLogin}>
+          <div className='input-container'>
+            <input
+              type="text"
+              id="loginId"
+              value={loginId}
+              onChange={(e) => setLoginId(e.target.value)}
+              className={`input-field ${darkModeEnabled ? 'dark-mode' : ''}`}
+              placeholder={darkModeEnabled ? 'ID' : 'ID'}
+        />
           </div>
-          <div className="col">
-            <button
-              className="w-100 btn btn-secondary btn-lg"
-              onClick={() => window.location.href = '/'}
-              type="button"
-            >
-              취소
-            </button>
+          <div className="input-container">
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={`input-field ${darkModeEnabled ? 'dark-mode' : ''}`}
+              placeholder="Password"
+            />
           </div>
+          <button className={`loginbutton ${darkModeEnabled ? 'dark-mode' : ''}`}
+        type="submit">
+            로그인
+          </button>
+        </form>
+        <div className="register-text">
+          <span>계정이 없으신가요? </span>
+          <button className={`register-Button ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={handleRedirectToRegister}>
+            회원가입
+          </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

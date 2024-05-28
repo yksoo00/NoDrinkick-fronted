@@ -1,0 +1,263 @@
+.emergency-container {
+  min-height: 100vh;
+  background-color: #F7F7F7;
+  padding: 10px;
+  display: flex;
+  flex-direction: column; 
+  align-items: center; /* 컨테이너 내 요소들을 중앙 정렬 */
+}
+
+.emergency-content {
+  margin-top: 150px;
+}
+
+.send-button {
+  position: absolute;
+  width: 200px;
+  height: 40px;
+  margin-top: 100px;
+  margin-bottom: 20px;
+  background-color: #8A8A8A;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Pretendard-SemiBold'; 
+  font-size: 12px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
+  left: 42%;
+  transform: translateX(-50%);
+  transition: background-color 0.3s ease; 
+}
+
+.send-Allbutton {
+  position: absolute;
+  width: 200px;
+  height: 40px;
+  margin-top: 100px;
+  margin-bottom: 20px;
+  background-color: #2d2c28;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Pretendard-SemiBold'; 
+  font-size: 12px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
+  left: 58%;
+  transform: translateX(-50%);
+}
+
+.card-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.card-content {
+  margin-bottom: 50px;
+}
+
+.card {
+  position: relative;
+  background-color: #fff;
+  width: 250px;
+  height: 300px; 
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Pretendard-SemiBold'; 
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+}
+
+.card h3 {
+  font-family: 'Pretendard-Black'; 
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center; 
+  text-align: center; /* 제목 가운데 정렬 */
+}
+
+.card p1 {
+  font-size: 14px;
+  display: flex;
+  margin-top: 60px;
+  justify-content: center; 
+  text-align: center; /* 제목 가운데 정렬 */
+}
+
+.card p2 {
+  color: #df4242;
+  font-size: 14px;
+  display: flex;
+  margin-top: 20px;
+  justify-content: center; 
+  align-items: center; 
+}
+
+.delete-button {
+  position: absolute;
+  width: 100px;
+  height: 25px;
+  background-color: #2d2c28;
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: 'Pretendard-SemiBold'; 
+  font-size: 11px;
+  margin-left: 50px;
+  margin-top: 217px;
+}
+
+input[type="checkbox"] {
+  position: absolute;
+  width: 25px;
+  height: 30px;
+  margin-top: 220px;
+  margin-right: 110px;
+  cursor: pointer;
+}
+
+.card-icon {
+  position: absolute; /* 절대 위치로 아이콘을 배치 */
+  top: 10px; /* 카드의 위쪽으로부터의 거리 조정 */
+  left: 15px; /* 카드의 왼쪽으로부터의 거리 조정 */
+  font-size: 15px; /* 아이콘 크기 설정 */
+}
+
+
+@media screen and (max-width: 720px) and (max-height: 1440px) {
+  body, html {
+    height: 100%;
+    overflow: hidden; 
+  }
+
+  .card {
+    background-color: #fff;
+    width: 80vw;
+    height: 200px; 
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Pretendard-SemiBold'; 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+  }
+
+  .emergency-content {
+    margin-top: 80px;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+  }
+
+  .card-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center; 
+    align-items: center; 
+  }
+
+  .card-content {
+    margin-bottom: 60px;
+  }
+
+  .card p1 {
+    font-size: 14px;
+    display: flex;
+    margin-top: 20px;
+    justify-content: center; 
+    text-align: center; /* 제목 가운데 정렬 */
+  }
+
+  .card p2 {
+    color: #df4242;
+    font-size: 14px;
+    display: flex;
+    margin-top: 5px;
+    justify-content: center; 
+    align-items: center; 
+  }
+
+  input[type="checkbox"] {
+    position: absolute;
+    width: 25px;
+    height: 20px;
+    margin-top: 145px;
+    margin-right: 90px;
+    cursor: pointer;
+  }
+
+  .delete-button {
+    position: absolute;
+    width: 80px;
+    height: 25px;
+    background-color: #2d2c28;
+    color: #fff;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: 'Pretendard-SemiBold'; 
+    font-size: 11px;
+    margin-left: 50px;
+    margin-top: 145px;
+  }
+
+  .send-button {
+    position: absolute;
+    width: 150px;
+    height: 40px;
+    bottom: 3vw;
+    background-color: #8A8A8A;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Pretendard-SemiBold'; 
+    font-size: 12px;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    left: 30%;
+    transform: translateX(-50%);
+    transition: background-color 0.3s ease; 
+  }
+  
+  .send-Allbutton {
+    position: absolute;
+    width: 150px;
+    height: 40px;
+    bottom: 3vw;
+    background-color: #2d2c28;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Pretendard-SemiBold'; 
+    font-size: 12px;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    left: 70%;
+    transform: translateX(-50%);
+  }
+
+}

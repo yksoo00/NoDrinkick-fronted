@@ -5,7 +5,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Typography from '@mui/material/Typography';
 import ClearIcon from '@mui/icons-material/Clear';
 import BellIcon from '@mui/icons-material/Notifications';
-import KickBoardImage from '../assets/Logo.png';
+import KickBoardImage from '../assets/KickBoard.png';
 import '../styles/Logo.css'; 
 
 function BellButton({ onClick }) {
@@ -22,13 +22,12 @@ function BellButton({ onClick }) {
         alignItems: 'center',
         height: '100%', // 부모 요소의 높이와 동일하게 설정
         width: '200px', // 원하는 너비 설정
-        border: '2px solid #000', // border 스타일 추가
         borderRadius: '10px', // border radius 설정
         margin: '8px', // 마진 추가
       }}
     >
       <BellIcon />
-      <Typography variant="h6" sx={{ fontFamily: 'Pretendard-Bold', textAlign: 'center', marginTop: '8px' }}>벨 울리기</Typography>
+      <Typography variant="h6" sx={{ color: '#000000', fontFamily: 'Pretendard-Bold', textAlign: 'center', marginTop: '8px' }}>벨 울리기</Typography>
     </ListItemButton>
   );
 }
@@ -47,13 +46,12 @@ function NoButton({ onClick }) {
         alignItems: 'center',
         height: '100%', // 부모 요소의 높이와 동일하게 설정
         width: '200px', // 원하는 너비 설정
-        border: '2px solid #000', // border 스타일 추가
         borderRadius: '10px', // border radius 설정
         margin: '8px', // 마진 추가
       }}
     >
       <ClearIcon />
-      <Typography variant="h6" sx={{ fontFamily: 'Pretendard-Bold', textAlign: 'center', marginTop: '8px' }}>여기 없어요</Typography>
+      <Typography variant="h6" sx={{ color: '#000000', fontFamily: 'Pretendard-Bold', textAlign: 'center', marginTop: '8px' }}>여기 없어요</Typography>
     </ListItemButton>
   );
 }
@@ -66,7 +64,12 @@ export default function LogoDrawer({ open, onClose }) {
         open={open}
         onClose={onClose}
         onOpen={() => {}}
-        sx={{ '& .MuiDrawer-paper': { height: 400 } }}
+        sx={{ 
+          '& .MuiDrawer-paper': { 
+            height: 400,
+            borderTopLeftRadius: '20px', 
+            borderTopRightRadius: '20px', 
+           }, }}
       >
         <Box
           sx={{
@@ -78,10 +81,10 @@ export default function LogoDrawer({ open, onClose }) {
           onClick={onClose}
           onKeyDown={onClose}
         >
-             <Box sx={{ marginLeft: '350px', marginRight: '20px'}}>
+             <Box sx={{ marginLeft: '350px', marginRight: '45px'}}>
             <img className="KickBoardImage" src={KickBoardImage} alt="KickBoardImage" />
           </Box>
-          <Box className="name" sx={{ marginTop:'5px', display: 'flex', flexDirection: 'column', height: '32vh' }}>
+          <Box className="name" sx={{ marginleft: '50px', marginTop:'30px', display: 'flex', flexDirection: 'column', height: '32vh' }}>
             <Typography variant="h6" sx={{ marginLeft:'1vw', fontFamily: 'Pretendard-Bold', marginBottom: '5px' }}>킥보드이름: NDK1</Typography>
             <Typography variant="h6" sx={{ marginLeft:'1vw', fontFamily: 'Pretendard-Bold', marginBottom: '5px' }}>배터리 잔량: 92%</Typography>
             <Box

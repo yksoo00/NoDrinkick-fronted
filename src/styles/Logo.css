@@ -1,49 +1,51 @@
 @font-face {
-    font-family: 'Pretendard-SemiBold';
-    src: url('../font/Pretendard-SemiBold.woff2') format('woff2');
+  font-family: 'Pretendard-SemiBold';
+  src: url('../font/Pretendard-SemiBold.woff2') format('woff2');
+}
+
+.KickBoardImage {
+  width: 200px;
+  height: 200px;
+  margin-left: 50px;
+  margin-top: 20px;
+}
+
+
+@media screen and (max-width: 720px) and (max-height: 1440px) {
+  body, html {
+      height: 100%;
+      overflow-x: hidden;
   }
   
+  .BellButton {
+    top: 30px;
+    max-width: 170px;
+    max-height: 80px;
+    right: 200px;
+    border: none;
+    
+  }
+
+  .NoButton {
+
+    top: 30px;
+    max-width: 170px;
+    max-height: 80px;
+    right: 200px;
+    border: none;
+  }
+
   .KickBoardImage {
-    width: '20%';
-    height: '20%';
+    position: fixed;
+      bottom: 210px;
+      max-height: 150px;
+      left: -20px; 
+    width: 150px; 
   }
   
   .name {
-
+    position: fixed;
+    right:-190px;
+    bottom:50px;
   }
-  @media screen and (max-width: 720px) and (max-height: 1440px) {
-    body, html {
-        height: 100%;
-        overflow-x: hidden;
-    }
-    
-    .BellButton {
-      top:50px;
-      max-width: 170px;
-      max-height: 70px;
-      right:200px;
-      
-    }
-
-    .NoButton {
-
-      top: 50px;
-      max-width: 170px;
-      max-height: 70px;
-      right:200px;
-    }
-
-    .KickBoardImage {
-      position: fixed;
-        bottom: 200px;
-        max-height: 150px;
-        left: 20px; 
-      width: 150px; 
-    }
-    
-    .name {
-      position: fixed;
-      right:-190px;
-      bottom:50px;
-    }
-  }
+}
