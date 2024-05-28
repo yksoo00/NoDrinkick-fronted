@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../styles/addEmergency.css';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,9 +12,8 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import LogoDrawer from './Logo';
 import axios from 'axios';
-
+import { removeToken } from '../services/loginService';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons'; 
@@ -26,8 +25,8 @@ import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; 
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; 
 import { faBell } from '@fortawesome/free-solid-svg-icons'; 
-
-
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faBook } from '@fortawesome/free-solid-svg-icons';
 
 import addEmergencyContact from '../services/addEmergency.js';
 
@@ -36,7 +35,42 @@ function AddEmergency() {
     const history = useHistory();
 
     const [open, setOpen] = useState(false); // 좌측 메뉴 상태
-    const [menuOpen, setMenuOpen] = useState(false); // 사이드바 메뉴 상태
+    const [username, setUsername] = useState(''); // 사용자 이름 추가
+    const [PhoneNum, setPhoneNum] = useState(''); // 사용자 휴대폰 번호 추가
+    const [darkModeEnabled, setDarkModeEnabled] = useState(
+        localStorage.getItem('darkModeEnabled') === 'true'
+      );
+
+    useEffect(() => {
+        // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
+        if (darkModeEnabled) {
+          document.body.classList.add('dark-mode');
+        } else {
+          document.body.classList.remove('dark-mode');
+        }
+        // 다크 모드 상태를 localStorage에 저장합니다.
+        localStorage.setItem('darkModeEnabled', darkModeEnabled);
+      }, [darkModeEnabled]);
+
+    useEffect(() => {
+        const token = localStorage.getItem('jwtToken');
+        if (!token) {
+            history.push('/');
+        } else {
+            fetchUserData();
+        }
+    }, [history]);
+
+    const fetchUserData = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/members/info');
+            const user = response.data;
+            setUsername(user.name); // 사용자 이름을 설정합니다.
+            setPhoneNum(user.phoneNum); // 사용자 휴대폰 번호를 설정합니다.
+        } catch (error) {
+            console.error('API 서버오류', error);
+        }
+    };
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -60,8 +94,8 @@ function AddEmergency() {
             case '공지사항':
               path = '/notice';
               break;
-            case '설정':
-              path = '/set';
+            case '가이드북':
+              path = '/guidebook';
               break;
             case '이용기록':
               path = '/usagerecord';
@@ -95,18 +129,26 @@ function AddEmergency() {
         const formattedPhoneNum = formatPhoneNumber(formData.phoneNum);
 
         try {
-            await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum });
+          const messageWithUsername = `${username}, 휴대폰 번호: ${PhoneNum}, ${formData.message}`;
+            await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum, message: messageWithUsername }); 
             alert('저장되었습니다!');
-            setFormData({ name: '', phoneNum: '', message: '', countryCode: '+82' });
+            setFormData({ name: '', phoneNum: '', message: '', countryCode: '+82' }); 
+            history.push('/emergency'); 
         } catch (error) {
             console.error('비상 연락망 추가 에러:', error);
             alert('저장에 실패했습니다.');
         }
     };
 
+    const handleLogout = () => {
+        removeToken();
+        alert('로그아웃 되었습니다.');
+        window.location.href = '/';
+    };
+
     return (
         <div style={{
-            backgroundColor: '#F7F7F7',
+            backgroundColor: '#e8e8e8',
             minHeight: '100vh', 
             display: 'flex',
             flexDirection: 'column',
@@ -114,52 +156,74 @@ function AddEmergency() {
             justifyContent: 'center'
         }}>
             <CssBaseline />
-            <AppBar position="fixed" sx={{ zIndex: 9999, backgroundColor: '#2d2c28' }}>
-                <Toolbar sx={{ justifyContent: 'space-between' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2 }}>
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" sx={{ fontFamily: 'Pretendard-Bold', textAlign: 'center' }} component="div">비상연락망 추가</Typography>
+            <AppBar position="fixed" sx={{
+        zIndex: 9999,
+        backgroundColor: darkModeEnabled ? '#F2F2F2' : '#2d2c28',
+        transition: 'background-color 0.5s ease'
+      }}>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2,  color: darkModeEnabled ? '#2d2c28' : '#FFFFFF'}}>
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" sx={{fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 비상연락망 추가 </Typography>
+          </Box>
+          <Box />
+          <Box>
+          <IconButton 
+          color="inherit" 
+          onClick={() => history.push('/main')}
+          style={{ color: darkModeEnabled ? '#000000' : '#ffffff' }}
+        >
+          <FontAwesomeIcon icon={faHouse} />
+        </IconButton>
                     </Box>
-                    <Box>
-                        <IconButton color="inherit" onClick={() => history.push('/main')}>
-                            <FontAwesomeIcon icon={faHouse} />
-                        </IconButton>
-                    </Box>
-                </Toolbar>
-            </AppBar>
-            <Drawer
-                anchor="left"
-                open={open}
-                onClose={() => setOpen(false)}
-                onOpen={() => setOpen(true)}
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        anchor="left"
+        open={open}
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+        sx={{ zIndex: 999 }}
+      >
+        <List>
+          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '가이드북', '공지사항'].map((text, index) => (
+            <ListItem
+              button
+              key={text}
+              sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
+              onClick={() => handleClickPage(text)}
             >
-                <List>
-                     {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
-                        <ListItem
-                        button
-                        key={text}
-                        sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom: 3, display: 'flex' }}
-                        onClick={() => handleClickPage(text)}
-                      >
-                        <ListItemIcon>
-                          {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style = {{marginLeft:3}} />}
-                          {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style = {{marginLeft:4}} />}
-                          {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style = {{marginLeft:3}} />}
-                          {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style = {{marginLeft:3}} />}
-                          {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style = {{marginLeft:3}} />}
-                          {text === '공지사항' && <FontAwesomeIcon icon={faBell} style = {{marginLeft:3}} />}
-                        </ListItemIcon>
-                  
-                        <Typography variant="body1" sx={{ marginLeft:-1.5, fontSize: 15, fontFamily: 'Pretendard-Black', textAlign: 'center' }}>
-                          {text}
-                        </Typography>
-                      </ListItem>
-                    ))}
-                </List>
-            </Drawer>
-            <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} />
+              <ListItemIcon>
+                {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style={{ marginLeft: 3 }} />}
+                {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style={{ marginLeft: 4 }} />}
+                {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{ marginLeft: 3 }} />}
+                {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{ marginLeft: 3 }} />}
+                {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{ marginLeft: 3 }} />}
+                {text === '가이드북' && <FontAwesomeIcon icon={faBook} style={{ marginLeft: 3 }} />}
+                {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{ marginLeft: 3 }} />}
+              </ListItemIcon>
+              <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                {text}
+              </Typography>
+            </ListItem>
+          ))}
+          <ListItem
+            button
+            key="로그아웃"
+            sx={{ width: 150, paddingTop: 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center', position: 'absolute', bottom: -120 }}
+            onClick={handleLogout}
+          >
+            <ListItemIcon>
+              <FontAwesomeIcon icon={faSignOutAlt} style={{ marginLeft: 3 }} />
+            </ListItemIcon>
+            <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+              로그아웃
+            </Typography>
+          </ListItem>
+        </List>
+      </Drawer>
 
             <div className="SOS-BOX">
                 <form onSubmit={handleSubmit}>
@@ -200,10 +264,10 @@ function AddEmergency() {
                             type="text"
                             id="message"
                             name="message"
-                            value={formData.Message}
+                            value={formData.message}
                             onChange={handleChange}
                             className="SOS-Input"
-                            placeholder="messageText"
+                            placeholder="MessageText"
                         />
                     </div>
                     <button type="submit" className="SOSButton">추가하기</button>

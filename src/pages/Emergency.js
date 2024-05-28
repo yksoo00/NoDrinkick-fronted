@@ -15,7 +15,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import LogoDrawer from './Logo';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
@@ -33,17 +32,13 @@ function EmergencyContactsList() {
     const [contacts, setContacts] = useState([]);
     const [selectedContacts, setSelectedContacts] = useState([]);
     const [open, setOpen] = useState(false);
-    const [menuOpen, setMenuOpen] = useState(false);
+
 
     const toggleDrawer = () => {
         setOpen(!open);
     };
 
     const history = useHistory();
-
-    const handleMenuToggle = () => {
-        setMenuOpen(!menuOpen);
-    };
 
     const handleClickPage = (pageName) => {
         let path;
@@ -82,7 +77,7 @@ function EmergencyContactsList() {
 
     const fetchContacts = async () => {
         try {
-            const response = await axios.get('/emergency-contacts');
+            const response = await axios.get('http://localhost:8080/emergency-contacts');
             setContacts(response.data);
         } catch (error) {
             console.error("비상 연락망 조회 중 오류가 발생했습니다.", error);
@@ -95,7 +90,7 @@ function EmergencyContactsList() {
             for (const contactId of selectedContacts) {
                 const contact = contacts.find(contact => contact.id === contactId);
                 if (contact) {
-                    await sendSmsToContact(contact.phoneNum, contact.voiceMessage);
+                    await sendSmsToContact(contact.phoneNum, contact.message);
                 }
             }
             // 메시지 전송 후 선택된 연락처 초기화
@@ -105,9 +100,9 @@ function EmergencyContactsList() {
         }
     };
 
-    const sendSmsToContact = async (phoneNum, voiceMessage) => {
+    const sendSmsToContact = async (phoneNum, message) => {
         try {
-            await axios.post('/send-sms', { toPhoneNumber: phoneNum, message: voiceMessage });
+            await axios.post('http://localhost:8080/send-sms', { toPhoneNumber: phoneNum, message: message });
             console.log(`메시지가 성공적으로 전송되었습니다. 수신자: ${phoneNum}`);
         } catch (error) {
             console.error(`메시지 전송 실패: ${error.message}`);
@@ -116,11 +111,11 @@ function EmergencyContactsList() {
 
     const handleDeleteContact = async (id) => {
         try {
-            await axios.delete(`/emergency-contacts/${id}`);
+            await axios.delete(`http://localhost:8080/emergency-contacts/${id}`);
             // 삭제 후에 연락처 목록을 다시 불러오기
             fetchContacts();
         } catch (error) {
-            console.error("연락처 삭제 중 오류가 발생했습니다.", error);
+        console.error("연락처 삭제 중 오류가 발생했습니다.", error);
         }
     };
 
@@ -180,7 +175,6 @@ if (selectedContacts.includes(id)) {
                     ))}
                 </List>
             </Drawer>
-            <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} />
 
             <div className="emergency-content">
                 <div className="card-container">
@@ -194,7 +188,7 @@ if (selectedContacts.includes(id)) {
                             <div className="card-content">
                                 <h3>{contact.name}</h3>
                                 <p1>{contact.phoneNum}</p1>
-                                <p2>{contact.voiceMessage}</p2>
+                                <p2>{contact.message}</p2>
                             </div>
                             <input
                                 type="checkbox"

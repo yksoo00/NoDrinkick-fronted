@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { KakaoMap, Marker } from 'react-kakao-maps';
 import LogoImage from '../assets/Logo.png';
-import '../styles/main.css'; 
+import '../styles/main.css';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,21 +12,15 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box'; 
-import Button from '@mui/material/Button'; 
-import AddIcon from '@mui/icons-material/Add'; 
-import RemoveIcon from '@mui/icons-material/Remove'; 
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import QrScanner from 'react-qr-scanner'; // Import QR scanner
+import LogoDrawer from './Rent';
+import { removeToken } from '../services/loginService';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSun, faMoon, faSignOutAlt, faBook } from '@fortawesome/free-solid-svg-icons';
 
-import LogoDrawer from './Logo';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 아이콘 정의
-import { faUser } from '@fortawesome/free-solid-svg-icons'; //마이페이지 아이콘
-import { faClipboard } from '@fortawesome/free-solid-svg-icons'; //이용내역 아이콘
-import { faUserPlus } from '@fortawesome/free-solid-svg-icons'; //비상연락망 추가 아이콘
-import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; //비상연락망 목록 아이콘
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
-import { faBell } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
-import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
+import Userinfo from '../component/userimfo';
 
 const Main = () => {
   const [open, setOpen] = useState(false); 
@@ -37,6 +30,8 @@ const Main = () => {
   const [darkModeEnabled, setDarkModeEnabled] = useState(
     localStorage.getItem('darkModeEnabled') === 'true'
   );
+
+  const [qrScannerOpen, setQrScannerOpen] = useState(false);
 
   useEffect(() => {
     // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
@@ -59,6 +54,16 @@ const Main = () => {
 
   const history = useHistory();
 
+  // 토큰없이 접속 시 제한
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      history.push('/');
+    }
+  }, [history]);
+
+  //렌트진행
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen); 
   };
@@ -81,8 +86,8 @@ const Main = () => {
       case '공지사항':
         path = '/notice';
         break;
-      case '설정':
-        path = '/set';
+      case '가이드북':
+        path = '/guidebook';
         break;
       case '이용기록':
         path = '/usagerecord';
@@ -95,11 +100,25 @@ const Main = () => {
     history.push(path);
   };
 
-  // 대여하기 버튼 클릭 시 동작
   const handleRent = () => {
-    // 대여 관련 동작 구현
-    console.log("대여하기 버튼 클릭됨");
-    // 여기서 원하는 동작을 수행하도록 코드를 추가하세요.
+    setQrScannerOpen(true); 
+  };
+
+  const handleScan = (data) => {
+    if (data) {
+      const url = typeof data === 'object' ? data.text : data;
+      if (url && url === 'openMenu') { // 특정 값을 체크
+        setMenuOpen(true); // MUI 다이얼로그 열기
+      } else {
+        console.error('Invalid QR Code:', url);
+      }
+      setQrScannerOpen(false);
+    }
+  };
+
+  const handleError = (err) => {
+    console.error(err);
+    setQrScannerOpen(false); 
   };
 
   useEffect(() => {
@@ -156,73 +175,129 @@ const Main = () => {
     }
   }, [map, zoomLevel]);
 
+  const handleLogout = () => {
+    removeToken();
+    alert('로그아웃 되었습니다.');
+    window.location.href = '/';
+  };
+
   return (
     <div>
       <div className={`dark-mode-toggle ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={toggleDarkMode}>
-      <FontAwesomeIcon
-        icon={darkModeEnabled ? faMoon : faSun}
-        size="2x"
-        style={darkModeEnabled ? { color: '#FFFFFF' } : { color: '#000000' }} // 아이콘의 색을 변경
-      />
-    </div>
+        <FontAwesomeIcon
+          icon={darkModeEnabled ? faMoon : faSun}
+          size="2x"
+          style={darkModeEnabled ? { color: '#FFFFFF' } : { color: '#000000' }} // 아이콘의 색을 변경
+        />
+      </div>
       <CssBaseline />
-      <AppBar position="fixed" sx={{zIndex: 9999, backgroundColor: '#2d2c28;' }}>
+      <AppBar position="fixed" sx={{
+        zIndex: 9999,
+        backgroundColor: darkModeEnabled ? '#F2F2F2' : '#2d2c28',
+        transition: 'background-color 0.5s ease'
+      }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2 }}>
+            <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2,  color: darkModeEnabled ? '#2d2c28' : '#FFFFFF'}}>
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6"sx={{ fontFamily: 'Pretendard-Bold', textAlign: 'center' }} component="div">노드링킥</Typography>
+            <Typography variant="h6" sx={{fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 노드링킥 </Typography>
           </Box>
           <Box />
         </Toolbar>
       </AppBar>
-      <Drawer
+     <Drawer
         anchor="left"
         open={open}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
-        sx = {{zIndex: 2}}
+        sx={{ zIndex: 999 }}
       >
-         <List>
-           {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
-    <ListItem
-      button
-      key={text}
-      sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom:3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
-      onClick={() => handleClickPage(text)}
-    >
-      <ListItemIcon>
-        {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style = {{marginLeft:3}} />}
-        {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style = {{marginLeft:4}} />}
-        {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style = {{marginLeft:3}} />}
-        {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style = {{marginLeft:3}} />}
-        {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style = {{marginLeft:3}} />}
-        {text === '공지사항' && <FontAwesomeIcon icon={faBell} style = {{marginLeft:3}} />}
-      </ListItemIcon>
-
-      <Typography variant="body1" sx={{ marginLeft:-1.5,fontSize: 15, fontFamily: 'Pretendard-Black', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        {text}
-      </Typography>
-    </ListItem>
-  ))}
-</List>
+        <List>
+          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '가이드북', '공지사항'].map((text, index) => (
+            <ListItem
+              button
+              key={text}
+              sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
+              onClick={() => handleClickPage(text)}
+            >
+              <ListItemIcon>
+                {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style={{ marginLeft: 3 }} />}
+                {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style={{ marginLeft: 4 }} />}
+                {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{ marginLeft: 3 }} />}
+                {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{ marginLeft: 3 }} />}
+                {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{ marginLeft: 3 }} />}
+                {text === '가이드북' && <FontAwesomeIcon icon={faBook} style={{ marginLeft: 3 }} />}
+                {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{ marginLeft: 3 }} />}
+              </ListItemIcon>
+              <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                {text}
+              </Typography>
+            </ListItem>
+          ))}
+          <ListItem
+            button
+            key="로그아웃"
+            sx={{ width: 150, paddingTop: 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center', position: 'absolute', bottom: -120 }}
+            onClick={handleLogout}
+          >
+            <ListItemIcon>
+              <FontAwesomeIcon icon={faSignOutAlt} style={{ marginLeft: 3 }} />
+            </ListItemIcon>
+            <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+              로그아웃
+            </Typography>
+          </ListItem>
+        </List>
       </Drawer>
+
       <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} /> 
+
       <Box id="map" className="map"></Box>
-      <Box sx={{position: 'fixed', bottom: '85%', right: '1vw', zIndex: 3}}>
-        <Button variant="contained" color="primary" className="zoom-button" style={{ borderTopLefttRadius: '10%', borderBottomLeftRadius: '10%', borderTopRightRadius: '0%', borderBottomRightRadius: '0%', backgroundColor: '#2d2c28', minWidth: '2vw', Height:'2vh' }} onClick={() => setZoomLevel(zoomLevel + 1)}>
-          <AddIcon />
-        </Button>
-        <Button variant="contained" color="primary" className="zoom-button" style={{ borderTopRightRadius: '10%', borderBottomRightRadius: '10%', borderBottomLeftRadius: '0%', borderTopLeftRadius: '0%', backgroundColor: '#2d2c28', minWidth: '2vw'}} onClick={() => setZoomLevel(zoomLevel - 1)}>
-          <RemoveIcon />
-        </Button>
+
+      <Box sx={{position: 'fixed', bottom: '3%', left: '50%', transform: 'translate(-50%)', zIndex: 999}}>
+      <Button
+  className="Rent-Button"
+  variant="contained"
+  color="primary"
+  onClick={handleRent}
+  sx={{
+    right: '1px',
+    backgroundColor: darkModeEnabled ? '#F2F2F2' : '#2d2c28',
+    height: '10vh',
+    width: '700px',
+    transition: 'background-color 0.5s ease',
+    zIndex:1,
+    opacity: '0.95'
+  }}
+>
+  <Typography
+    variant="h6"
+    sx={{
+      fontFamily: 'Pretendard-Bold',
+      fontSize: '12px',
+      color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', 
+      transition: 'color 0.5s ease' 
+    }}
+  >
+    킥보드 타러가기
+  </Typography>   
+</Button>
       </Box>
-      <Box sx={{position: 'fixed', bottom: '3%', left: '50%', transform: 'translate(-50%)', zIndex: 9999}}>
-        <Button className="Rent-Button" variant="contained" color="primary" onClick={handleRent} style={{  right:'1px', backgroundColor: '#2d2c28', color: '#ffffff', height:'10vh', width:'700px'}} >
-        <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold' }}>대여하기</Typography>
-        </Button>
-      </Box>
+      <Userinfo />
+      {qrScannerOpen && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 10000 }}>
+          <div style={{ width: '300px', height: '300px', backgroundColor: 'white', padding: '20px', borderRadius: '8px' }}>
+            <QrScanner
+              delay={300}
+              onError={handleError}
+              onScan={handleScan}
+              style={{ width: '100%' }}
+            />
+      <Button className="CloseButton" onClick={() => setQrScannerOpen(false)} style={{ height:'50px', width: '260px', backgroundColor: '#2d2c28', color: '#FFFFFF', fontSize: 15, fontFamily: 'Pretendard-Black', marginTop: '10px', left: '50%', transform: 'translateX(-50%)' }}>Close</Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
