@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faHouse, faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSignOutAlt, faBook } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSignOutAlt} from '@fortawesome/free-solid-svg-icons';
 
 import { removeToken } from '../services/loginService';
 
@@ -86,11 +86,8 @@ fetchUserData();
       case '공지사항':
         path = '/notice';
         break;
-      case '가이드북':
-        path = '/guidebook';
-        break;
       case '이용기록':
-        path = '/usagerecord';
+        path = '/UserRecord';
         break;
       default:
         path = '/';
@@ -142,7 +139,7 @@ fetchUserData();
         sx={{zIndex: 999}}
       >
         <List>
-          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '가이드북', '공지사항'].map((text, index) => (
+          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
 
             <ListItem
               button
@@ -156,8 +153,6 @@ fetchUserData();
                 {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{ marginLeft: 3 }} />}
                 {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{ marginLeft: 3 }} />}
                 {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{ marginLeft: 3 }} />}
-
-                {text === '가이드북' && <FontAwesomeIcon icon={faBook} style={{ marginLeft: 3 }} />}
                 {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{ marginLeft: 3 }} />}
               </ListItemIcon>
               <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>

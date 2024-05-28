@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import '../styles/addEmergency.css';
+import '../styles/UserRecord.css';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,13 +13,12 @@ import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import axios from 'axios';
+
 import { removeToken } from '../services/loginService';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons'; 
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
-import { faPhone } from '@fortawesome/free-solid-svg-icons';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faClipboard } from '@fortawesome/free-solid-svg-icons'; 
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons'; 
 import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; 
@@ -27,18 +26,35 @@ import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { faBell } from '@fortawesome/free-solid-svg-icons'; 
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
-import addEmergencyContact from '../services/addEmergency.js';
-
-function AddEmergency() {
+function UserRecord() {
 
     const history = useHistory();
 
     const [open, setOpen] = useState(false); // 좌측 메뉴 상태
-    const [username, setUsername] = useState(''); // 사용자 이름 추가
-    const [PhoneNum, setPhoneNum] = useState(''); // 사용자 휴대폰 번호 추가
+    const [users, setUsers] = useState([]);
+    const [records, setrecords] = useState([]);
     const [darkModeEnabled, setDarkModeEnabled] = useState(
         localStorage.getItem('darkModeEnabled') === 'true'
       );
+
+      useEffect(() => {
+        const fetchUser = async () => {
+          try {
+            const response = await axios.get('http://13.125.168.244:8080/members/info');
+            setUsers([response.data]); 
+          } catch (error) {
+            console.error('API 서버오류', error);
+          }
+        };
+    
+        fetchUser();
+      }, []);
+
+      // 백엔드에서 받아오기 
+      const fetchRecords = async () => {
+        const response = await axios.get('http://13.125.168.244:8080/records');
+        setrecords(response.data);
+      };
 
     useEffect(() => {
         // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
@@ -51,31 +67,18 @@ function AddEmergency() {
         localStorage.setItem('darkModeEnabled', darkModeEnabled);
       }, [darkModeEnabled]);
 
-    useEffect(() => {
+      useEffect(() => {
         const token = localStorage.getItem('jwtToken');
         if (!token) {
-            history.push('/');
-        } else {
-            fetchUserData();
+          history.push('/');
         }
-    }, [history]);
+      }, [history]);
 
-    const fetchUserData = async () => {
-        try {
-
-            const response = await axios.get('http://13.125.168.244:8080/members/info');
-
-            const user = response.data;
-            setUsername(user.name); // 사용자 이름을 설정합니다.
-            setPhoneNum(user.phoneNum); // 사용자 휴대폰 번호를 설정합니다.
-        } catch (error) {
-            console.error('API 서버오류', error);
-        }
-    };
 
     const toggleDrawer = () => {
         setOpen(!open);
     };
+
 
     const handleClickPage = (pageName) => {
         let path;
@@ -106,40 +109,6 @@ function AddEmergency() {
         history.push(path);
     };
 
-    const [formData, setFormData] = useState({
-        name: '',
-        phoneNum: '',
-        message: '',
-        countryCode: '+82'
-    });
-    
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const formatPhoneNumber = (phoneNumber) => {
-        return phoneNumber.replace(/^0/, formData.countryCode);
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        const formattedPhoneNum = formatPhoneNumber(formData.phoneNum);
-
-        try {
-
-          const messageWithUsername = `이름 : ${username}, 휴대폰 번호: ${PhoneNum}, ${formData.message}`;
-
-            await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum, message: messageWithUsername }); 
-            alert('저장되었습니다!');
-            setFormData({ name: '', phoneNum: '', message: '', countryCode: '+82' }); 
-            history.push('/emergency'); 
-        } catch (error) {
-            console.error('비상 연락망 추가 에러:', error);
-            alert('저장에 실패했습니다.');
-        }
-    };
-
     const handleLogout = () => {
         removeToken();
         alert('로그아웃 되었습니다.');
@@ -148,12 +117,7 @@ function AddEmergency() {
 
     return (
         <div style={{
-            backgroundColor: '#e8e8e8',
-            minHeight: '100vh', 
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center'
+            backgroundColor: '#e8e8e8', 
         }}>
             <CssBaseline />
             <AppBar position="fixed" sx={{
@@ -166,7 +130,7 @@ function AddEmergency() {
             <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2,  color: darkModeEnabled ? '#2d2c28' : '#FFFFFF'}}>
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" sx={{fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 비상연락망 추가 </Typography>
+            <Typography variant="h6" sx={{fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 이용기록 </Typography>
           </Box>
           <Box />
           <Box>
@@ -224,56 +188,22 @@ function AddEmergency() {
         </List>
       </Drawer>
 
-            <div className="SOS-BOX">
-                <form onSubmit={handleSubmit}>
-                <div className="SOS-Label">
-                  <label htmlFor="name" className="InputLabel"> 저장이름
-                     <FontAwesomeIcon icon={faUser} className="SOS-Icon1" />
-                 </label>
-                     <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange} required
-                        className="SOS-Input"
-                        placeholder="Name"
-                     />
-                     </div>
-                    <div className="SOS-Label">
-                        <label htmlFor="phoneNum" className="InputLabel">수신 전화번호 (- 제외)
-                        <FontAwesomeIcon icon={faPhone} className= "SOS-Icon2" />
-                        </label>
-                        <input
-                            type="text"
-                            id="phoneNum"
-                            name="phoneNum"
-                            value={formData.phoneNum}
-                            onChange={handleChange}
-                            required
-                            className="SOS-Input"
-                            placeholder="PhoneNum"
-                        />
-                    </div>
-                    <div className="SOS-Label">
-                        <label htmlFor="message" className="InputLabel">SOS 메시지
-                        <FontAwesomeIcon icon={faEnvelope} className= "SOS-Icon3" />
-                        </label>
-                        <input
-                            type="text"
-                            id="message"
-                            name="message"
-                            value={formData.message}
-                            onChange={handleChange}
-                            className="SOS-Input"
-                            placeholder="MessageText"
-                        />
-                    </div>
-                    <button type="submit" className="SOSButton">추가하기</button>
-                </form>
-            </div>
-        </div>
-    );
+          <div className="Record-userinfo-container">
+          {users.map((user) => (
+            <div key={user.username} className="Record-userinfo-area">
+              <p><span>{user.name}</span> 님 환영합니다</p>
+              </div>
+                 ))}
+          </div>
+          <div className="Record-Full">
+          {records.map((record) => (
+             <div className="Records" key={record.id}>
+                 </div>
+             ))}
+          </div>
+      </div>
+    )
+
 }
 
-export default AddEmergency;
+export default UserRecord;

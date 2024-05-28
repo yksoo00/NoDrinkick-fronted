@@ -24,7 +24,6 @@ import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; //비상연�
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
 import { faBell } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { faBook } from '@fortawesome/free-solid-svg-icons';
 
 const Notices = () => {
   const [open, setOpen] = useState(false); 
@@ -80,7 +79,6 @@ const Notices = () => {
     history.push(`/noticedetail/${noticeId}`);
   };
 
-
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -110,11 +108,8 @@ const Notices = () => {
       case '공지사항':
         path = '/notice';
         break;
-      case '가이드북':
-        path = '/guidebook';
-        break;
       case '이용기록':
-        path = '/usagerecord';
+        path = '/UserRecord';
         break;                         
         
       default:
@@ -173,7 +168,7 @@ const Notices = () => {
       sx={{zIndex: 999}}
     >
       <List>
-          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '가이드북', '공지사항'].map((text, index) => (
+          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
             <ListItem
               button
               key={text}
@@ -186,7 +181,6 @@ const Notices = () => {
                 {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{ marginLeft: 3 }} />}
                 {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{ marginLeft: 3 }} />}
                 {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{ marginLeft: 3 }} />}
-                {text === '가이드북' && <FontAwesomeIcon icon={faBook} style={{ marginLeft: 3 }} />}
                 {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{ marginLeft: 3 }} />}
               </ListItemIcon>
               <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -245,11 +239,11 @@ const Notices = () => {
         </div>
       )}
 
-<div className="Full-notice">
-          {notices.map((notice, index) => (
-            <div className="notice-button" key={notice.id} onClick={() => handleTitleClick(notice.noticeId)}>
-              <span className="notice-number">{index + 1}</span>
-              <span>{notice.title}</span>
+          <div className="Full-notice">
+            {notices.map((notice, index) => (
+             <div className="notice-button" key={notice.id} onClick={() => handleTitleClick(notice.noticeId)}>
+                <span className="notice-number">{index + 1}</span>
+                 <span>{notice.title}</span>
             </div>
           ))}
         </div>
