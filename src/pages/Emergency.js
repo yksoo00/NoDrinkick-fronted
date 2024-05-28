@@ -126,7 +126,7 @@ function EmergencyContactsList() {
 
     const handleCheckboxChange = (id) => {
         // 선택된 카드의 id 목록을 관리
-        if (selectedContacts.includes(id)) {
+if (selectedContacts.includes(id)) {
             setSelectedContacts(selectedContacts.filter(contactId => contactId !== id));
         } else {
             setSelectedContacts([...selectedContacts, id]);
