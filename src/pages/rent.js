@@ -6,7 +6,7 @@ import '../styles/Rent.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // axios를 import합니다.
 import { Link } from 'react-router-dom';
-
+import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { faBeerMugEmpty } from '@fortawesome/free-solid-svg-icons';
 import { faFaceLaugh } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 아이콘 정의
@@ -73,7 +73,6 @@ function Rent({ open, onClose }) {
     }
   };
 
-
   return (
     <div>
       <SwipeableDrawer
@@ -84,7 +83,7 @@ function Rent({ open, onClose }) {
         onOpen={() => {}}
         sx={{ 
           '& .MuiDrawer-paper': { 
-            height: 400,
+            height: 430,
             borderTopLeftRadius: '20px', 
             borderTopRightRadius: '20px', 
 
@@ -93,22 +92,25 @@ function Rent({ open, onClose }) {
 
         <div className="Box-1">
          <img className="KickBoardImage" src={KickBoardImage} alt="KickBoardImage" />
-            <h2 className="KickBoardName">킥보드이름</h2>
+            <h2 className="KickBoardName">노드링킥 1</h2>
               </div>
                 <div className="Test-Both">
-                    <Button className="Face" style={{backgroundColor: '#e8e8e8', marginBottom:'20px', marginLeft: '20px', marginRight: '10px', padding:'20px' }}>
-                    <FontAwesomeIcon icon={faFaceLaugh} style={{fontSize: '25px', color:'#000000'}} ></FontAwesomeIcon>
-                        <label className="Face-Test">인증 실패</label>
-                    </Button>
-
-                    <Button className="Alchol" style={{backgroundColor: '#e8e8e8' , marginBottom:'20px', marginRight: '20px', marginLeft: '10px', padding:'20px'}}>
-                    <FontAwesomeIcon icon={faBeerMugEmpty} style={{fontSize: '25px', color:'#000000'}}></FontAwesomeIcon>
-
+                <Button className="Face" style={{backgroundColor: '#e8e8e8', marginBottom:'20px', marginLeft: '20px', marginRight: '10px', padding:'20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+            <FontAwesomeIcon icon={faFaceLaugh} style={{fontSize: '25px', color:'#000000', marginRight:'20px'}} />
+            <FontAwesomeIcon icon={faBeerMugEmpty} style={{fontSize: '25px', color:'#000000'}} />
+            </div>
             <label className="Face-Test">{Alc ? '인증 성공' : '인증 실패'}</label> 
           </Button>
+
+
+                    <Button className="Bell" style={{backgroundColor: '#e8e8e8' , marginBottom:'20px', marginRight: '20px', marginLeft: '10px', padding:'20px'}}>
+                    <FontAwesomeIcon icon={faBell} style={{fontSize: '25px', color:'#000000'}}></FontAwesomeIcon>
+                        <label className="Bell-Text">벨 울리기</label>
+                    </Button>
                 </div>
 
-              <Button variant="contained" style={{left:'5%', backgroundColor: '#2d2c28', color: '#ffffff', height:'10vh' ,width: '90vw' }}  onClick={fetchMemberInfoAndConnect}>
+              <Button variant="contained"  style={{left:'5%', backgroundColor: '#2d2c28', color: '#ffffff', height:'10vh' ,width: '90vw' }} >
           <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold' }}>대여하기</Typography>
         </Button>
 
