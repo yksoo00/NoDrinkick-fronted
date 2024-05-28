@@ -3,10 +3,9 @@ import axios from 'axios';
 import '../styles/addMemberForm.css'
 import { useHistory } from 'react-router-dom'; 
 import MainImageB from '../assets/Main.png';
-import FullLogoImage from '../assets/FullLogo.png';
-import DarkModeFullLogoImage from '../assets/darkmode-FullLogo.png';
+import Logo2 from '../assets/Logo2.png';
+import Logo2_Dark from '../assets/Logo2_Dark.png';
 import DarkMode from '../component/darkmode'; 
-import Switch from '@mui/material/Switch'; // Switch 컴포넌트 import
 
 function SignUpPage() {
     const [darkModeEnabled, setDarkModeEnabled] = useState(
@@ -69,11 +68,9 @@ function SignUpPage() {
         formData.append('memberDto', new Blob([JSON.stringify(memberDto)], { type: 'application/json' }));
 
         try {
-            const response = await axios.post('http://localhost:8080/members/add', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+
+            const response = await axios.post('http://13.125.168.244:8080/members/add', userInfo);
+
             console.log('회원가입 성공:', response.data);
             window.location.href = '/home';
         } catch (error) {
@@ -88,84 +85,74 @@ function SignUpPage() {
 
     return (
         <div className="signup-container">
-            <img src={MainImageB} alt="Main" className="main-imageB" />
-            {darkModeEnabled ? (
-                <img src={DarkModeFullLogoImage} alt="DarkModeFullLogoImage" className="DarkmodeFullLogoImage" />
-            ) : (
-                <img src={FullLogoImage} alt="FullLogoImage" className="FullLogoImage" />
-            )}
+
+        <img src={MainImageB} alt="Main" className="main-imageB" />
+        <div className={`Logo-Text ${darkModeEnabled ? 'dark-mode' : ''}`}>NO <br></br>DRINKICK</div>
+        {darkModeEnabled ? (
+        <img src={Logo2_Dark} alt="Logo2_Dark" className="Logo2_Dark" />
+      ) : (
+        <img src={Logo2} alt="Logo2" className="Logo2" />
+      )}
+
 
             <div><DarkMode onChange={toggleDarkMode} darkModeEnabled={darkModeEnabled} /></div>
 
-            <div className={`SignUp-introduction ${darkModeEnabled ? 'dark-mode' : ''}`}>
-                Sign-Up
-            </div>
+        <div className={`transparent-shapeB ${darkModeEnabled ? 'dark-mode' : ''}`}>
+            <h2 className={`registerText ${darkModeEnabled ? 'dark-mode' : ''}`}> 회원가입</h2>
+            <form className={`signup-form ${darkModeEnabled ? 'dark-mode' : ''}`} onSubmit={handleSubmit}>
+                <div>
+                    <input type="text" 
+                    name="name" 
+                    value={userInfo.name} 
+                    onChange={handleChange} required 
+                    className="input-field"
+                    placeholder="Name"/>
+                </div>
+                <div>
+                    <input type="text" 
+                    name="username" 
+                    value={userInfo.username} 
+                    onChange={handleChange} required 
+                    className="input-field"
+                    placeholder="ID"
+                    />
+                </div>
+                <div>
+                    <input type="password" 
+                    name="password" 
+                    value={userInfo.password} 
+                    onChange={handleChange} required 
+                    className="input-field"
+                    placeholder="Password"/>
+                </div>
+                <div>
+                    <input type="text" 
+                    name="phoneNum" 
+                    value={userInfo.phoneNum} 
+                    onChange={handleChange} required 
+                    className="input-field"
+                    placeholder="PhoneNumber ( - 제외 )"/>
+                </div>
+                <div>
+                    <input type="email" 
+                    name="email" 
+                    value={userInfo.email} 
+                    onChange={handleChange}
+                    className="input-field"
+                    placeholder="E-mail" />
+                </div>
+                <div>
+                    <input type="text" 
+                    name="imagePath" 
+                    value={userInfo.imagePath} 
+                    onChange={handleChange} 
+                    className="input-field"
+                    placeholder="사용자 얼굴 사진 경로"/>
+                </div>
+                <button  className={`Signupbutton ${darkModeEnabled ? 'dark-mode' : ''}`} type="submit">회원가입</button>
+                <button  className={`HomeButton ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={handleRedirectToHome}>홈화면</button>
+            </form>
 
-            <div className={`transparent-shapeB ${darkModeEnabled ? 'dark-mode' : ''}`}>
-                <h2 className="registerText"> 회원가입</h2>
-                <form className={`signup-form ${darkModeEnabled ? 'dark-mode' : ''}`} onSubmit={handleSubmit}>
-                    <div>
-                        <input type="text" 
-                            name="name" 
-                            value={userInfo.name} 
-                            onChange={handleChange} required 
-                            className="input-field"
-                            placeholder="Name"/>
-                    </div>
-                    <div>
-                        <input type="text" 
-                            name="username" 
-                            value={userInfo.username} 
-                            onChange={handleChange} required 
-                            className="input-field"
-                            placeholder="ID"/>
-                    </div>
-                    <div>
-                        <input type="password" 
-                            name="password" 
-                            value={userInfo.password} 
-                            onChange={handleChange} required 
-                            className="input-field"
-                            placeholder="Password"/>
-                    </div>
-                    <div>
-                        <input type="text" 
-                            name="phoneNum" 
-                            value={userInfo.phoneNum} 
-                            onChange={handleChange} required 
-                            className="input-field"
-                            placeholder="PhoneNumber ( - 제외 )"/>
-                    </div>
-                    <div>
-                        <input type="email" 
-                            name="email" 
-                            value={userInfo.email} 
-                            onChange={handleChange}
-                            className="input-field"
-                            placeholder="E-mail" />
-                    </div>
-                    <div>
-                        <input type="file" 
-                            name="image"
-                            onChange={handleFileChange}
-                            className="input-field"
-                            placeholder="사용자 얼굴 사진 경로"/>
-                    </div>
-                    <div>
-                        <label className='license'>운전면허 인증 유무</label>
-                        <select 
-                            name="license" 
-                            value={userInfo.license} 
-                            onChange={handleChange}
-                            className={`select-field ${darkModeEnabled ? 'dark-mode' : ''}`}
-                        >
-                            <option className={`option ${darkModeEnabled ? 'dark-mode' : ''}`} value="false">미인증</option>
-                            <option className={`option ${darkModeEnabled ? 'dark-mode' : ''}`} value="true">인증</option>
-                        </select>
-                    </div>
-                    <button  className={`Signupbutton ${darkModeEnabled ? 'dark-mode' : ''}`} type="submit">회원가입</button>
-                    <button  className={`HomeButton ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={handleRedirectToHome}>홈화면</button>
-                </form>
             </div>
         </div>
     );

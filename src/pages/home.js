@@ -46,11 +46,11 @@ function Home() {
   };
 
   return (
-    <div className={`container text-center ${darkModeEnabled ? 'dark-mode' : ''}`} style={{ maxWidth: '1500px', position: 'relative' }}>
+    <div className={`container text-center ${darkModeEnabled ? 'dark-mode' : ''}`} >
       {showBackgroundShape && (
         <div className={`background-shape ${darkModeEnabled ? 'dark-background' : ''}`}></div>
       )}
-      <div className="image-container" style={{ position: 'absolute', top: '200px', left: '50%', transform: 'translateX(-50%)' }}>
+      <div className="image-container" >
         {showImage && <img src={AImage} alt="A" className="Logo-A" />}
       </div>
       <div className={`MainPage ${darkModeEnabled ? 'dark-mode' : ''}`} style={{ display: showImage ? 'none' : 'block' }}>

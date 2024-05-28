@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import login from '../services/loginService.js';
+import login, { removeToken } from '../services/loginService.js';
 import { useHistory } from 'react-router-dom';
 import '../styles/loginform.css';
 import MainImage from '../assets/Main.png';
-import FullLogoImage from '../assets/FullLogo.png';
-import DarkModeFullLogoImage from '../assets/darkmode-FullLogo.png';
+import Logo2 from '../assets/Logo2.png';
+import Logo2_Dark from '../assets/Logo2_Dark.png';
 import DarkMode from '../component/darkmode'; 
 
 const LoginForm = () => {
@@ -41,33 +41,35 @@ const LoginForm = () => {
     }
   };
 
+  const handleLogout = () => {
+    removeToken();
+    alert('로그아웃 되었습니다.');
+    window.location.href = '/';
+  };
+  
   const handleRedirectToRegister = () => {
     history.push('/addmemberform');
   };
 
   return (
-    <div className="container">
-      <img src={MainImage} alt="Main" className="main-image" />
-      {darkModeEnabled ? (
-        <img src={DarkModeFullLogoImage} alt="DarkModeFullLogoImage" className="DarkmodeFullLogoImage" />
+    <div className="login-page">
+            <div className={`Logo-Text2 ${darkModeEnabled ? 'dark-mode' : ''}`}>NO <br></br>DRINKICK</div>
+        {darkModeEnabled ? (
+        <img src={Logo2_Dark} alt="Logo2_Dark" className="Logo2_Dark" />
       ) : (
-        <img src={FullLogoImage} alt="FullLogoImage" className="FullLogoImage" />
+        <img src={Logo2} alt="Logo2" className="Logo2" />
       )}
-
+      <img src={MainImage} alt="Main" className="main-image" />
       <div className="switch-container LoginDark">
         <DarkMode onChange={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
       </div>
 
-      <div className={`login-introduction ${darkModeEnabled ? 'dark-mode' : ''}`}>
-        Login
-      </div>
-
       <div className={`transparent-shape ${darkModeEnabled ? 'dark-mode' : ''}`}>
-      <div className={`login-text ${darkModeEnabled ? 'dark-mode' : ''}`}>
-        노드링킥에 오신 것을 환영합니다
-      </div>
+        <div className={`login-text ${darkModeEnabled ? 'dark-mode' : ''}`}>
+          노드링킥에 오신 것을 환영합니다
+        </div>
         <form onSubmit={handleLogin}>
-          <div className='input-container'>
+          <div className="input-container">
             <input
               type="text"
               id="loginId"
@@ -75,7 +77,7 @@ const LoginForm = () => {
               onChange={(e) => setLoginId(e.target.value)}
               className={`input-field ${darkModeEnabled ? 'dark-mode' : ''}`}
               placeholder={darkModeEnabled ? 'ID' : 'ID'}
-        />
+            />
           </div>
           <div className="input-container">
             <input
@@ -87,18 +89,23 @@ const LoginForm = () => {
               placeholder="Password"
             />
           </div>
-          <button className={`loginbutton ${darkModeEnabled ? 'dark-mode' : ''}`}
-        type="submit">
+          <button className={`loginbutton ${darkModeEnabled ? 'dark-mode' : ''}`} type="submit">
             로그인
           </button>
         </form>
+        
+        <div className="Token"> 
         <div className="register-text">
-          <span>계정이 없으신가요? </span>
+          <span className={`Q ${darkModeEnabled ? 'dark-mode' : ''}`}> 계정이 없으신가요?</span>
           <button className={`register-Button ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={handleRedirectToRegister}>
             회원가입
           </button>
         </div>
+        <button className={`logout-button ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={handleLogout}>
+          토큰삭제
+        </button>
       </div>
+     </div>
     </div>
   );
 };

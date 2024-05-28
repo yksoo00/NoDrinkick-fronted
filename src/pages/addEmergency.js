@@ -63,7 +63,9 @@ function AddEmergency() {
 
     const fetchUserData = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/members/info');
+
+            const response = await axios.get('http://13.125.168.244:8080/members/info');
+
             const user = response.data;
             setUsername(user.name); // 사용자 이름을 설정합니다.
             setPhoneNum(user.phoneNum); // 사용자 휴대폰 번호를 설정합니다.
@@ -129,7 +131,9 @@ function AddEmergency() {
         const formattedPhoneNum = formatPhoneNumber(formData.phoneNum);
 
         try {
-          const messageWithUsername = `${username}, 휴대폰 번호: ${PhoneNum}, ${formData.message}`;
+
+          const messageWithUsername = `이름 : ${username}, 휴대폰 번호: ${PhoneNum}, ${formData.message}`;
+
             await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum, message: messageWithUsername }); 
             alert('저장되었습니다!');
             setFormData({ name: '', phoneNum: '', message: '', countryCode: '+82' }); 

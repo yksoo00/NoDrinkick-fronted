@@ -15,13 +15,13 @@
 
 .back-image{
   position: absolute;
-  width:1200px;
-  height: 785px;
-  margin-top: 50%;
-  left: 10%; 
-  margin-top: -600px;
+  width:100%;
+  height: 1000px;
+  left: 20%; 
+  margin-top: -100px;
   z-index: -3; 
   opacity: 0.7;
+  border-radius: 8px;
 }
 
 .container {
@@ -30,12 +30,12 @@
 
   .background-shape {
     position: absolute; 
-    top: 44%; 
+    top: 50%; 
     left: 50%; 
     transform: translate(-50%, -50%); 
     width: 500px; 
     height: 500px;
-    background-color: #2d2c28;
+    background-color: #1E1E1E;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 5);
     border-radius: 10px; 
     z-index: -1; 
@@ -49,31 +49,32 @@
 
 .text{
   color:#FFFFFF;
-  font-size: 15px;
-  font-family: 'Pretendard-Bold'; 
+  font-size: 12px;
+  font-family: 'Pretendard-Regular'; 
   transition: color 0.5s ease; 
 }
 
 .MainPage
 {
     font-size: 45px; 
+    top:50%;
     left: 50%; 
     color: #FFFFFF;
     text-align: center;
-    font-family: 'Pretendard-Black'; 
-    margin-top: 200px; 
+    font-family: 'Pretendard-Bold'; 
+    margin-top: 150px; 
     transition: color 0.5s ease; 
   }
 
 .login-button {
     box-shadow: none;
     text-transform: none;
-    font-size: 16px;
+    font-size: 10px;
     padding: 6px 12px;
     width:300px;
     height:50px;
     border: 2px solid;
-    color: #020202;
+    color: #1E1E1E;
     line-height: 1.5;
     background-color: #FFFFFF;
     font-family: 'Pretendard-Bold';
@@ -87,12 +88,12 @@
 .register-button {
     box-shadow: none;
     text-transform: none;
-    font-size: 16px;
+    font-size: 10px;
     padding: 6px 12px;
     width:300px;
     height:50px;
     border: 2px solid;
-    color: #020202;
+    color: #1E1E1E;
     line-height: 1.5;
     background-color: #FFFFFF;
     font-family: 'Pretendard-Bold';
@@ -126,7 +127,7 @@
 
 .Logo-A {
   width: '100px';
-  animation: 0.7s ease-in-out loadEffect1;
+  animation: 3.0s ease-in-out loadEffect1;
 }
 
 .Logo-B {
@@ -148,32 +149,34 @@
     height: 100%;
   }
 
+
   .back-image {
     left: 1px;
-    bottom: -20px;
+    bottom: -40px;
     width: 100%;
-    height: 100%;
+    height: 110%;
   }
   .logo {
     font-size: 15px;
   }
 
   .Logo-A {
-    margin-top:125px;
     width:100px;
-    margin-left:20px;
+    position: fixed; 
+    margin-top: 75%;
+    left: 38%; 
   }
 
   .background-shape {
-    top: 215px;
+    top: 210px;
     width: 90%;
-    height: 85%;
+    height: 90%;
   }
   .Logo-B {
     max-width:30px;
     max-height: 30px;
     margin-left:90px;
-    margin-top: -20px;
+    margin-top: -10px;
   }
 
   .Main {
@@ -182,7 +185,8 @@
   }
 
   .text {
-    margin-bottom:2px;
+    padding-bottom: 20px;
+    font-family: 'Pretendard-Regular'; 
   }
 
   .login-button {
@@ -198,31 +202,35 @@
 }
   
 .background-shape.dark-background {
-  background-color: #FFFFFA; 
+  background-color: #eaeaea; 
   transition: background-color 0.5s ease; 
+
 }
 
 .text.dark-mode {
-  color: #000000; 
+  color: #1d1c1c; 
   transition: color 0.5s ease; 
-  font-family: 'Pretendard-Bold'; 
+  font-family: 'Pretendard-Regular'; 
 }
 
 .MainPage.dark-mode{
-  color : #2d2c28;
+  color : #1d1c1c;
   transition: color 0.5s ease; 
 }
 
 .login-button.dark-mode{
-  color: #FFFFFF;
-  background-color: #2d2c28;
+  color: #2d2c28;
+  background-color: #fffefb;
   transition: background-color 0.5s ease; 
   transition: color 0.5s ease; 
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
 }
 
 .register-button.dark-mode {
-  color: #FFFFFF;
-  background-color: #2d2c28;
+  color: #2d2c28;
+  background-color: #fffefb;
   transition: background-color 0.5s ease; 
   transition: color 0.5s ease; 
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
 }
+

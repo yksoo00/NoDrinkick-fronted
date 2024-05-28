@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Home from './pages/home';
 import myPage from './pages/myPage';
 import LoginForm from './pages/loginform';
@@ -12,6 +12,8 @@ import use from './pages/use';
 import Emergency from './pages/Emergency';
 import Bluetooth from './pages/Bluetooth';
 import BluetoothDetail from './pages/BluetoothDetails';
+
+import './styles/App.css';
 
 function App() {
   return (
@@ -29,8 +31,9 @@ function App() {
         <Route path="/Emergency" component={Emergency} />
         <Route path="/Bluetooth" component={Bluetooth} />
         <Route path="/detail/:deviceId" component={BluetoothDetail} />
-        <Route path="/" component={Home} />
-
+        <Route exact path="/">
+          <Redirect to="/home" />
+        </Route>
       </Switch>
     </Router>
   );
