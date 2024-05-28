@@ -69,7 +69,7 @@ function SignUpPage() {
 
         try {
 
-            const response = await axios.post('http://13.125.168.244:8080/members/add', userInfo);
+            const response = await axios.post('http://localhost:8080/members/add', userInfo);
 
             console.log('회원가입 성공:', response.data);
             window.location.href = '/home';

@@ -41,7 +41,7 @@ function UserList() {
     const fetchUser = async () => {
       try {
 
-        const response = await axios.get('http://13.125.168.244:8080/members/info');
+        const response = await axios.get('http://localhost:8080/members/info');
 
         setUsers([response.data]); // 응답 데이터를 배열에 감싸기
       } catch (error) {
