@@ -11,7 +11,7 @@ import use from './pages/use';
 import Payment from './pages/payment'; // 수정된 부분
 import PaymentResult from './pages/success';
 import Fail from './pages/fail';
-
+import NoticeDetail from './pages/NoticeDetail'; 
 
 import Emergency from './pages/Emergency';
 import Bluetooth from './pages/Bluetooth';
@@ -30,6 +30,7 @@ function App() {
         <Route path="/AddMemberForm" component={AddMemberForm} />
         <Route path="/AddEmergency" component={AddEmergency} />
         <Route path="/notice" component={notice} />
+        <Route path="/NoticeDetail/:noticeId" component={NoticeDetail} /> 
         <Route path="/use" component={use} />
         <Route path="/Emergency" component={Emergency} />
         <Route path="/Bluetooth" component={Bluetooth} />

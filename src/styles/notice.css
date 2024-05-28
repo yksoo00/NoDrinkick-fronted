@@ -1,46 +1,162 @@
-h10 {
-    font-size: 25px;
-    color: #ffffff;
-    font-family: Pretendard-SemiBoldt;
-    text-align: center;
-    margin-top: 30px;
-    font-weight: bold;
-    display: block;
-  }
+
+.search-bar {
+  margin-top: 80px;
+}
   .search-input {
+    display: flex;
+    position: fixed;
     max-width: 100px;
-    margin: auto 250px;
-    border: 2px solid #ffffff; /* 테두리 색상 변경 */
+    border: 2px solid #FFFFFF; /* 테두리 색상 변경 */
     border-radius: 4px; /* 테두리 둥글게 */
-    padding: 6px 8px; /* 패딩 조절 */
-    margin-top: 25px; /* 하단 여백 */
-    font-size: 10px; /* 글꼴 크기 */
-    background-color: #f0f0f0; /* 배경색 변경 */
+    padding: 6px 8px; 
+    margin-top: 10px; 
+    font-size: 10px; 
+    right: 20vw;
+    font-family: 'Pretendard-Semibold'; 
+    background-color: #FFFFFF; 
   }
   
-  button5 {
-    padding: 10px 15px;
-    background-color: #ffffff;
+  .search-button {
+    display: flex;
+    position: fixed;
+    padding: 6px 8px; 
+    background-color: #FFFFFF;
     color: #000000;
-    border: 3px solid #7b7b7b;
+    border: 2px solid #FFFFFF;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 15px;
-    font-family: 'Pretendard-Black'; 
-    transition: background-color 0.2s;
+    margin-top: 10px; 
+    font-size: 10px;
+    right: 6vw;
+    font-family: 'Pretendard-Semibold'; 
     align-self: center;
 }
 
-button6 {
+.add-button {
+  display: flex;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+    width: 87vw;
+    height: 8vh;
+    bottom: 10vw;
     padding: 10px 15px;
-    background-color: #ffffff;
-    color: #000000;
-    border: 3px solid #7b7b7b;
+    background-color: #2d2c28;
+    color: #FFFFFF;
+    border: 3px solid #2d2c28;
     border-radius: 4px;
     cursor: pointer;
     font-size: 15px;
-    font-family: 'Pretendard-Black'; 
-    transition: background-color 0.2s;
-    align-self: center;
+    font-family: 'Pretendard-Semibold'; 
     margin-top: 30px;
+    align-items: center;
+    justify-content: center;
+}
+
+.Full-notice {
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 20px;
+  width: 77%;
+  height: 400px;
+  background-color: #d2d2d2;
+  border-radius: 5px;
+  overflow-y: auto; 
+  max-height: calc(100vh - 64px - 48px);
+}
+
+  .notice-button {
+  display: flex;
+  width: 98%;
+  min-height: 10%;
+  align-items: center;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  border: 3px solid #FFFFFF;
+  font-size: 12px;
+  font-family: 'Pretendard-Semibold'; 
+  margin-bottom: 20px; /* Add margin to space out the buttons */
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.notice-number {
+  margin-left: 10px;
+  margin-right: 10px; /* 번호와 제목 사이의 간격 */
+  font-weight: bold; /* 번호를 더 두껍게 표시 */
+}
+
+  .modal {
+    display: flex;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 82%;
+    padding: 10px;
+    height: 100px;
+    bottom: 30.5vw;
+    background-color: #d2d2d2;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .notice-title {
+    display: flex;
+    position: fixed;
+    left: 38%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 20%;
+    background-color: #FFFFFF;
+    color: #000000;
+    border: 3px solid #FFFFFF;
+    border-radius: 2px;
+    font-size: 10px;
+    font-family: 'Pretendard-Semibold'; 
+    bottom: 70px;
+  }
+
+
+  .notice-text {
+    display: flex;
+    position: fixed;
+    left: 38%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 30%;
+    background-color: #FFFFFF;
+    color: #000000;
+    border: 3px solid #FFFFFF;
+    border-radius: 2px;
+    font-size: 10px;
+    font-family: 'Pretendard-Semibold'; 
+  }
+
+  .modal-content{
+    display: flex;
+    position: fixed;
+    flex-direction: column; 
+  }
+
+.notice-addbutton {
+  display: flex;
+  position: fixed;
+  width: 20%;
+  height: 70%;
+  right: 20px;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFFFFF;
+  color: #000000;
+  border: 3px solid #FFFFFF;
+  border-radius: 2px;
+  font-size: 12px;
+  font-family: 'Pretendard-Semibold'; 
 }

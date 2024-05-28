@@ -1,0 +1,125 @@
+.notice-detail {
+  display: flex;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 80%;
+  margin-top: 90px;
+  padding:20px;
+  background-color: #d2d2d2;
+  border-radius: 5px;
+  }
+  
+  .notice-detail-sub {
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    left: 50%;
+    height: 15%;
+    padding: 10px;
+    transform: translateX(-50%);
+    background-color: #FFFFFF;
+    width: 80%;
+    border-radius: 5px;
+    z-index: -1;
+    font-family: 'Pretendard-Bold'; 
+  }
+
+  .date{
+    align-self: flex-end;
+    font-family: 'Pretendard-Regular'; 
+  }
+
+  .NoticeContent {
+    display: flex;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 50%;
+    margin-top: 150px;
+    padding: 10px;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Pretendard-Semibold'; 
+  }
+
+  .notice-detail-edit-title {
+    display: flex;
+    position: fixed;
+    bottom: 16.5%;
+    left: 30%;
+    transform: translateX(-50%);
+    width: 43%;
+    height: 3%;
+    font-family: 'Pretendard-Semibold'; 
+    border: 3px solid #FFFFFF;
+    border-radius: 4px;
+    font-size: 10px;
+    text-align: center; 
+  }
+
+  .notice-detail-edit-text {
+    display: flex;
+    position: fixed;
+    bottom: 3%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 84%;
+    height: 9%;
+    font-family: 'Pretendard-Semibold'; 
+    border: 3px solid #FFFFFF;
+    border-radius: 4px;
+    font-size: 10px;
+    text-align: center;
+  }
+
+  .edit-form-button {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .edit-form-button button {
+    padding: 5px 10px;
+    font-size: 10px;
+    cursor: pointer;
+  }
+
+  .notice-edit-edit {
+    display: flex;
+    position: fixed;
+    bottom: 16.5%;
+    right: 27%;
+    height: 4.2%;
+    align-items: center;
+    justify-content: center;
+    background-color: #dadada;
+    font-family: 'Pretendard-Semibold'; 
+    border: 3px solid #dadada;
+    border-radius: 4px;
+    font-size: 10px;
+  }
+
+  .notice-edit-delete {
+    display: flex;
+    position: fixed;
+    bottom: 16.5%;
+    right: 8%;
+    height: 4.2%;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    font-family: 'Pretendard-Semibold'; 
+    border: 3px solid #FFFFFF;
+    border-radius: 4px;
+    font-size: 10px;
+  }
+
