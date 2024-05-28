@@ -129,7 +129,7 @@ function AddEmergency() {
         const formattedPhoneNum = formatPhoneNumber(formData.phoneNum);
 
         try {
-          const messageWithUsername = `${username}, 휴대폰 번호: ${PhoneNum}, ${formData.message}`;
+          const messageWithUsername = `이름 : ${username}, 휴대폰 번호: ${PhoneNum}, ${formData.message}`;
             await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum, message: messageWithUsername }); 
             alert('저장되었습니다!');
             setFormData({ name: '', phoneNum: '', message: '', countryCode: '+82' }); 

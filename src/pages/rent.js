@@ -32,7 +32,7 @@ function Rent({ open, onClose }) {
         onOpen={() => {}}
         sx={{ 
           '& .MuiDrawer-paper': { 
-            height: 400,
+            height: 430,
             borderTopLeftRadius: '20px', 
             borderTopRightRadius: '20px', 
 
