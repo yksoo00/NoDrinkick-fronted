@@ -142,13 +142,13 @@ function SignUpPage() {
                     placeholder="E-mail" />
                 </div>
                 <div>
-                    <input type="text" 
-                    name="imagePath" 
-                    value={userInfo.imagePath} 
-                    onChange={handleChange} 
-                    className="input-field"
-                    placeholder="사용자 얼굴 사진 경로"/>
-                </div>
+                        <input type="file" 
+                            name="image"
+                            onChange={handleFileChange}
+                            className="input-field"
+                            placeholder="사용자 얼굴 사진 경로"/>
+                    </div>
+                
                 <button  className={`Signupbutton ${darkModeEnabled ? 'dark-mode' : ''}`} type="submit">회원가입</button>
                 <button  className={`HomeButton ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={handleRedirectToHome}>홈화면</button>
             </form>

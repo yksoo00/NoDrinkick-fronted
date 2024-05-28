@@ -22,8 +22,8 @@ import { removeToken } from '../services/loginService';
 
 function UserList() {
   const [open, setOpen] = useState(false);
-  const [users, setUsers] = useState([]);
-
+  const [userData, setUserData] = useState({});
+ 
 
   const [showCamera, setShowCamera] = useState(false);
   const [cameraStream, setCameraStream] = useState(null);
@@ -38,19 +38,17 @@ function UserList() {
 
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchUserData = async () => {
       try {
-
-        const response = await axios.get('http://localhost:8080/members/info');
-
-        setUsers([response.data]); // 응답 데이터를 배열에 감싸기
+        const response = await axios.get('/members/info');
+        setUserData(response.data);
       } catch (error) {
         console.error('API 서버오류', error);
       }
     };
 
-    fetchUser();
-  }, []);
+fetchUserData();
+}, []);
 
   // 토큰없이 접속 시 제한
 
@@ -195,20 +193,20 @@ function UserList() {
       
       <Box>
         <div className="myPage">
-          {users.map((user) => (
-            <div key={user.username} className="user-info-container">
+          {users.map((userData) => (
+            <div key={userData.username} className="user-info-container">
               <div className="user-info-all">
                 <div className="user-info">
-                  <img src={user.imagePath} alt="프로필 사진" className="User-Image" />
+                  <img src={userData.imagePath} alt="프로필 사진" className="User-Image" />
                   <div className="UserText">
-                    <p>{user.name} 님<br />환영합니다</p>
+                    <p>{userData.name} 님<br />환영합니다</p>
                   </div>
                 </div>
                 <div className="user-profile_details">
                   <p className="user-profile_detail-text">
-                    {user.username} <br /><br />
-                    {user.email} <br /><br />
-                    {user.phoneNum}
+                    {userData.username} <br /><br />
+                    {userData.email} <br /><br />
+                    {userData.phoneNum}
                   </p>
                   <button className="user-profile__edit-button">수정</button>
                 </div>
@@ -216,12 +214,12 @@ function UserList() {
 
               <div className="license-all">
                 <div className="license-details-item">
-                  <img src={user.licenseImage} alt="Driver's License" className="license-image" />
+                  <img src={userData.licenseImage} alt="Driver's License" className="license-image" />
                 </div>
 
                 <div className="picture-all">
                 <div className="license-details-verification">
-                  <p>인증여부 : {user.license ? 'YES' : 'NO'}</p>
+                  <p>인증여부 : {userData.license ? 'YES' : 'NO'}</p>
                 </div>
                 <div>
                  <button className="picture-button">운전면허증 등록</button>

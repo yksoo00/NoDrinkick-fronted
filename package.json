@@ -3,486 +3,880 @@
 
 
 
-  "name": "front",
+
+
+
+
+"name": "front",
   
 
 
 
-  "version": "0.1.0",
+
+
+
+
+"version": "0.1.0",
   
 
 
 
-  "private": true,
+
+
+
+
+"private": true,
   
 
 
 
-  "dependencies": {
+
+
+
+
+"dependencies": {
   
 
 
 
-    
 
 
 
-  "@emotion/react": "^11.11.4",
+
   
 
 
 
-    
 
 
 
-  "@emotion/styled": "^11.11.5",
+
+"@emotion/react": "^11.11.4",
   
 
 
 
-    
 
 
 
-  "@fortawesome/fontawesome-svg-core": "^6.5.2",
+
   
 
 
 
-    
 
 
 
-  "@fortawesome/free-regular-svg-icons": "^6.5.2",
+
+"@emotion/styled": "^11.11.5",
   
 
 
 
-    
 
 
 
-  "@fortawesome/free-solid-svg-icons": "^6.5.2",
+
   
 
 
 
-    
 
 
 
-  "@fortawesome/react-fontawesome": "^0.2.0",
+
+"@fortawesome/fontawesome-svg-core": "^6.5.2",
   
 
 
 
-    
 
 
 
-  "@mui/icons-material": "^5.15.15",
+
   
 
 
 
-    
 
 
 
-  "@mui/material": "^5.15.15",
+
+"@fortawesome/free-solid-svg-icons": "^6.5.2",
   
 
 
 
-    
 
 
 
-  "@testing-library/jest-dom": "^5.17.0",
+
   
 
 
 
-    
 
 
 
-  "@testing-library/react": "^13.4.0",
+
+"@fortawesome/react-fontawesome": "^0.2.0",
   
 
 
 
-    
 
 
 
-  "@testing-library/user-event": "^13.5.0",
+
   
 
 
 
-    
 
 
 
-  "axios": "^1.6.8",
+
+"@mui/icons-material": "^5.15.15",
   
 
 
 
-    
 
 
 
-  "formik": "^2.4.6",
+
   
 
 
 
-    
 
 
 
-  "normalize.css": "^8.0.1",
+
+"@mui/material": "^5.15.15",
   
 
 
 
-    
 
 
 
-  "react": "^18.3.0",
+
   
 
 
 
-    
 
 
 
-  "react-dom": "^18.2.0",
+
+"@testing-library/jest-dom": "^5.17.0",
   
 
 
 
-    
 
 
 
-  "react-kakao-maps": "^0.0.13",
+
   
 
 
 
-    
 
 
 
-  "react-qr-scanner": "^1.0.0-alpha.11",
+
+"@testing-library/react": "^13.4.0",
   
 
 
 
-    
 
 
 
-  "react-router-dom": "^5.3.4",
+
   
 
 
 
-    
 
 
 
-  "react-scripts": "5.0.1",
+
+"@testing-library/user-event": "^13.5.0",
   
 
 
 
-    
 
 
 
-  "serialport": "^12.0.0",
+
   
 
 
 
-    
 
 
 
-  "web-vitals": "^2.1.4",
+
+"@tosspayments/payment-sdk": "^1.7.1",
   
 
 
 
-    
 
 
 
-  "yup": "^1.4.0"
+
   
 
 
 
-  },
+
+
+
+
+"axios": "^1.6.8",
   
 
 
 
-  "proxy": "http://13.125.168.244:8080",
+
+
+
+
   
 
 
 
-  "scripts": {
+
+
+
+
+"formik": "^2.4.6",
   
 
 
 
-    
 
 
 
-  "start": "react-scripts start",
+
   
 
 
 
-    
 
 
 
-  "build": "react-scripts build",
+
+"react": "^18.3.0",
   
 
 
 
-    
 
 
 
-  "test": "react-scripts test",
+
   
 
 
 
-    
 
 
 
-  "eject": "react-scripts eject"
+
+"react-dom": "^18.2.0",
   
 
 
 
-  },
+
+
+
+
   
 
 
 
-  "eslintConfig": {
+
+
+
+
+"react-kakao-maps": "^0.0.13",
   
 
 
 
-    
 
 
 
-  "extends": [
+
   
 
 
 
-    
 
 
 
-    
 
-
-
-  "react-app",
+"react-router-dom": "^5.3.4",
   
 
 
 
-    
 
 
 
-    
 
-
-
-  "react-app/jest"
   
 
 
 
-    
 
 
 
-  ]
+
+"react-scripts": "5.0.1",
   
 
 
 
-  },
+
+
+
+
   
 
 
 
-  "browserslist": {
+
+
+
+
+"serialport": "^12.0.0",
   
 
 
 
-    
 
 
 
-  "production": [
+
   
 
 
 
-    
 
 
 
-    
 
-
-
-  ">0.2%",
+"web-vitals": "^2.1.4",
   
 
 
 
-    
 
 
 
-    
 
-
-
-  "not dead",
   
 
 
 
-    
 
 
 
-    
 
-
-
-  "not op_mini all"
+"yup": "^1.4.0"
   
 
 
 
-    
 
 
 
-  ],
+
+},
   
 
 
 
-    
 
 
 
-  "development": [
+
+"proxy": "http://localhost:8080",
   
 
 
 
-    
 
 
 
-    
 
-
-
-  "last 1 chrome version",
+"scripts": {
   
 
 
 
-    
 
 
 
-    
 
-
-
-  "last 1 firefox version",
   
 
 
 
-    
 
 
 
-    
 
-
-
-  "last 1 safari version"
+"start": "react-scripts start",
   
 
 
 
-    
 
 
 
-  ]
+
   
 
 
 
-  },
+
+
+
+
+"build": "react-scripts build",
   
 
 
 
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+
+
+
+
   
 
 
 
-  "main": "index.js",
+
+
+
+
+"test": "react-scripts test",
   
 
 
 
-  "keywords": [],
+
+
+
+
   
 
 
 
-  "author": "",
+
+
+
+
+"eject": "react-scripts eject"
   
 
 
 
-  "license": "ISC"
+
+
+
+
+},
+  
+
+
+
+
+
+
+
+"eslintConfig": {
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+"extends": [
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+"react-app",
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+"react-app/jest"
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+]
+  
+
+
+
+
+
+
+
+},
+  
+
+
+
+
+
+
+
+"browserslist": {
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+"production": [
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+">0.2%",
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+"not dead",
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+"not op_mini all"
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+],
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+"development": [
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+"last 1 chrome version",
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+"last 1 firefox version",
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+"last 1 safari version"
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+]
+  
+
+
+
+
+
+
+
+},
+  
+
+
+
+
+
+
+
+"description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  
+
+
+
+
+
+
+
+"main": "index.js",
+  
+
+
+
+
+
+
+
+"keywords": [],
+  
+
+
+
+
+
+
+
+"author": "",
+  
+
+
+
+
+
+
+
+"license": "ISC"
 }
