@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { fetchUserData, updateUserProfile, uploadUserImage, deleteUser } from '../services/userService';
+import { removeToken } from '../services/loginService';
 import '../styles/myPage.css';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
@@ -15,7 +16,6 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSignOutAlt, faBook, faSave, faTimes, faCamera } from '@fortawesome/free-solid-svg-icons';
-import { removeToken } from '../services/loginService';
 
 function UserList() {
   const [open, setOpen] = useState(false);
@@ -29,16 +29,16 @@ function UserList() {
   const [darkModeEnabled, setDarkModeEnabled] = useState(localStorage.getItem('darkModeEnabled') === 'true');
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get('/members/info');
-        setUserData(response.data);
-        setEditedUserData(response.data);
+        const data = await fetchUserData();
+        setUserData(data);
+        setEditedUserData(data);
       } catch (error) {
-        console.error('API 서버오류', error);
+        console.error('사용자 데이터를 가져오는 중 오류 발생:', error);
       }
     };
-    fetchUserData();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -108,8 +108,8 @@ function UserList() {
 
   const handleSaveProfile = async () => {
     try {
-      const response = await axios.patch(`/members/${userData.memberId}`, editedUserData);
-      setUserData(response.data);
+      const data = await updateUserProfile(userData.memberId, editedUserData);
+      setUserData(data);
       setIsEditing(false);
       alert('회원 정보가 성공적으로 업데이트되었습니다.');
     } catch (error) {
@@ -132,22 +132,10 @@ function UserList() {
   };
 
   const handleUploadImage = async () => {
-    if (!selectedFile) {
-      alert('파일을 선택해주세요.');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('imgFile', selectedFile);
-
     try {
-      const response = await axios.patch(`/members/img/${userData.memberId}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      setUserData(response.data);
-      setEditedUserData(response.data);
+      const data = await uploadUserImage(userData.memberId, selectedFile);
+      setUserData(data);
+      setEditedUserData(data);
       setIsUploading(false);
       alert('프로필 사진이 성공적으로 업데이트되었습니다.');
     } catch (error) {
@@ -167,8 +155,7 @@ function UserList() {
 
   const handleWithdrawal = async () => {
     try {
-      await axios.delete(`/members/${userData.memberId}`);
-      removeToken();
+      await deleteUser(userData.memberId);
       alert('회원 탈퇴가 성공적으로 이루어졌습니다.');
       history.push('/'); 
     } catch (error) {
@@ -312,4 +299,3 @@ function UserList() {
 }
 
 export default UserList;
-
