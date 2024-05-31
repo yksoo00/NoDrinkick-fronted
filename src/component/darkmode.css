@@ -12,7 +12,7 @@
     top: 12px; /* 페이지 상단에서 20px 아래로 설정 */
     right: 15px; /* 페이지 우측에서 20px 왼쪽으로 설정 */
     z-index: 99999; /* 다른 요소 위에 표시되도록 설정 */
-    font-size: 10px; /* 아이콘의 크기를 20px로 설정 */
+    font-size: 8px; /* 아이콘의 크기를 20px로 설정 */
   }
   
   .dark-mode-toggle.dark-mode {

@@ -409,8 +409,9 @@
 
 
 
-"proxy": "http://localhost:8080",
-  
+"proxy": "https://api.nodrinkick.com",
+
+
 
 
 

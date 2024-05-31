@@ -23,11 +23,6 @@
     opacity: 0.85;
 
   }
-
-  .Userinfo.dark-mode {
-    background-color: #f2f2f2; /* 배경 색상 */
-    color : #2d2c28; /* 이 부분도 #2d2c28 으로 수정해야 합니다 */
-}
   
   .Userinfo p {
     margin: 5px; 

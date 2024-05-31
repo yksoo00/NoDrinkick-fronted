@@ -20,7 +20,7 @@ function Rent({ open, onClose }) {
 
     const fetchMemberInfoAndConnect = async () => {
       try {
-        const response = await axios.get('http://13.125.168.244:8080/members/info');
+        const response = await axios.get('https://api.nodrinkick.com/members/info');
         const memberInfo = response.data;
         setMemberInfo(memberInfo); // 회원 정보 상태 설정
 

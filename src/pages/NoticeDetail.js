@@ -5,7 +5,7 @@ import '../styles/noticeDetail.css';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -52,7 +52,7 @@ const NoticeDetail = () => {
 
   const fetchNotice = async () => {
     try {
-      const response = await axios.get(`http://13.125.168.244:8080/notices/${noticeId}`);
+      const response = await axios.get(`https://api.nodrinkick.com/notices/${noticeId}`);
       setNotice(response.data);
     } catch (error) {
       console.error('Error fetching notice details:', error);
@@ -61,7 +61,7 @@ const NoticeDetail = () => {
 
   const handleEdit = async () => {
     try {
-      await axios.put(`http://13.125.168.244:8080/notices/${noticeId}`, editedNotice);
+      await axios.put(`https://api.nodrinkick.com/notices/${noticeId}`, editedNotice);
       // 수정된 공지사항 정보를 다시 불러와 화면에 반영
       fetchNotice();
       // 수정 후 입력 폼 초기화
@@ -145,12 +145,12 @@ const NoticeDetail = () => {
       transition: 'background-color 0.5s ease'
     }}>
       <Toolbar sx={{ justifyContent: 'space-between' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2,  color: darkModeEnabled ? '#2d2c28' : '#FFFFFF'}}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" sx={{fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 공지사항 </Typography>
-        </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+  <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={() => history.push('/notice')} sx={{ mr: 2,  color: darkModeEnabled ? '#2d2c28' : '#FFFFFF'}}>
+    <ArrowBackIcon />
+  </IconButton>
+  <Typography variant="h6" sx={{fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 공지사항 </Typography>
+</Box>
         <Box />
         <Box>
         <IconButton 

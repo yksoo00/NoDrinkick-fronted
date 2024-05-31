@@ -10,7 +10,7 @@ const BluetoothDetail = () => {
   useEffect(() => {
     const fetchDeviceDetail = async () => {
       try {
-        const response = await axios.get(`http://13.125.168.244:8080/bluetooth-data/search?deviceId=${deviceId}`);
+        const response = await axios.get(`https://api.nodrinkick.com/bluetooth-data/search?deviceId=${deviceId}`);
         setDeviceDetail(response.data[0]);
       } catch (error) {
         console.error('세부 정보를 불러오는 중 문제가 발생했습니다:', error);
@@ -23,7 +23,7 @@ const BluetoothDetail = () => {
   const deleteDeviceData = async () => {
     if(deviceDetail && deviceDetail.id) {
       try {
-        await axios.delete(`http://13.125.168.244:8080/bluetooth-data/${deviceDetail.id}`);
+        await axios.delete(`https://api.nodrinkick.com/bluetooth-data/${deviceDetail.id}`);
         alert('데이터가 성공적으로 삭제되었습니다.');
         history.push('/bluetooth'); // 삭제 후 /bluetooth 페이지로 이동
       } catch (error) {

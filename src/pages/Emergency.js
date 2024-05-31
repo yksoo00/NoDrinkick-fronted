@@ -98,7 +98,7 @@ function EmergencyContactsList() {
 
     const fetchContacts = async () => {
         try {
-            const response = await axios.get('http://13.125.168.244:8080/emergency-contacts');
+            const response = await axios.get('https://api.nodrinkick.com/emergency-contacts');
             setContacts(response.data);
         } catch (error) {
             console.error("비상 연락망 조회 중 오류가 발생했습니다.", error);
@@ -107,7 +107,7 @@ function EmergencyContactsList() {
 
     const handleDeleteContact = async (id) => {
         try {
-            await axios.delete(`http://13.125.168.244:8080/emergency-contacts/${id}`);
+            await axios.delete(`https://api.nodrinkick.com/emergency-contacts/${id}`);
             // 삭제 후에 연락처 목록을 다시 불러오기
             fetchContacts();
         } catch (error) {

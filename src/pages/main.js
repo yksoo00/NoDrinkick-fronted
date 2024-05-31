@@ -15,10 +15,10 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import QrScanner from 'react-qr-scanner'; // Import QR scanner
-import LogoDrawer from './Rent';
+import LogoDrawer from './Rent'
 import { removeToken } from '../services/loginService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSun, faMoon, faSignOutAlt, faLocationArrow } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSun, faMoon, faSignOutAlt} from '@fortawesome/free-solid-svg-icons';
 
 import Userinfo from '../component/userinfo';
 
@@ -56,12 +56,6 @@ const Main = () => {
 
   // 토큰없이 접속 시 제한
 
-  useEffect(() => {
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      history.push('/');
-    }
-  }, [history]);
 
   //렌트진행
   const handleMenuToggle = () => {
@@ -126,50 +120,38 @@ const Main = () => {
 
     script.onload = () => {
       window.kakao.maps.load(() => {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const { latitude, longitude } = position.coords;
-              const container = document.getElementById('map');
-              const options = {
-                center: new window.kakao.maps.LatLng(latitude, longitude),
-                level: zoomLevel
-              };
-              const newMap = new window.kakao.maps.Map(container, options);
+        const container = document.getElementById('map');
+        const options = {
+          center: new window.kakao.maps.LatLng(37.380833, 126.928333),
+          level: zoomLevel
+        };
+        const newMap = new window.kakao.maps.Map(container, options);
 
-              const LogoPosition = new window.kakao.maps.LatLng(37.38131763, 126.9288372);
-              const LogoImageSize = new window.kakao.maps.Size(50, 50);
-              const LogoMarkerImage = new window.kakao.maps.MarkerImage(LogoImage, LogoImageSize);
-              const LogoMarker = new window.kakao.maps.Marker({
-                position: LogoPosition,
-                image: LogoMarkerImage,
-              });
-              LogoMarker.setMap(newMap);
+        const LogoPosition = new window.kakao.maps.LatLng(37.38131763, 126.9288372);
+        const LogoImageSize = new window.kakao.maps.Size(50, 50);
+        const LogoMarkerImage = new window.kakao.maps.MarkerImage(LogoImage, LogoImageSize);
+        const LogoMarker = new window.kakao.maps.Marker({
+          position: LogoPosition,
+          image: LogoMarkerImage,
+        });
+        LogoMarker.setMap(newMap);
 
-              window.kakao.maps.event.addListener(LogoMarker, 'click', function() {
-                handleMenuToggle();
-              });
+        // 클릭 이벤트 리스너 추가
+        window.kakao.maps.event.addListener(LogoMarker, 'click', function() {
+          handleMenuToggle(); // 메뉴 토글 핸들러 호출
+        });
 
-              const markerPosition = new window.kakao.maps.LatLng(latitude, longitude);
-              const marker = new window.kakao.maps.Marker({
-                position: markerPosition
-              });
-              marker.setMap(newMap);
+        const markerPosition = new window.kakao.maps.LatLng(37.380833, 126.928333);
+        const marker = new window.kakao.maps.Marker({
+          position: markerPosition
+        });
+        marker.setMap(newMap);
 
-              setMap(newMap);
+        setMap(newMap);
 
-              window.kakao.maps.event.addListener(newMap, 'zoom_changed', function() {
-                setZoomLevel(newMap.getLevel());
-              });
-            },
-            (error) => {
-              console.error('Error getting current location:', error);
-              alert('현재 위치를 가져오는데 실패했습니다.');
-            }
-          );
-        } else {
-          alert('Geolocation을 지원하지 않는 브라우저입니다.');
-        }
+        window.kakao.maps.event.addListener(newMap, 'zoom_changed', function() {
+          setZoomLevel(newMap.getLevel());
+        });
       });
     };
 
@@ -188,31 +170,6 @@ const Main = () => {
     removeToken();
     alert('로그아웃 되었습니다.');
     window.location.href = '/';
-  };
-
-  const handleCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          const newCenter = new window.kakao.maps.LatLng(latitude, longitude);
-          map.setCenter(newCenter);
-
-          const currentLocationMarker = new window.kakao.maps.Marker({
-            position: newCenter,
-            map: map,
-          });
-
-          currentLocationMarker.setMap(map);
-        },
-        (error) => {
-          console.error('Error getting current location:', error);
-          alert('현재 위치를 가져오는데 실패했습니다.');
-        }
-      );
-    } else {
-      alert('Geolocation을 지원하지 않는 브라우저입니다.');
-    }
   };
 
   return (
@@ -271,7 +228,7 @@ const Main = () => {
           <ListItem
             button
             key="로그아웃"
-            sx={{ width: 150, paddingTop: 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center', position: 'absolute', bottom: -120 }}
+            sx={{ width: 150, paddingTop: 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center', position: 'absolute', bottom: -140 }}
             onClick={handleLogout}
           >
             <ListItemIcon>
@@ -332,30 +289,6 @@ const Main = () => {
           </div>
         </div>
       )}
-      <Box sx={{position: 'fixed', top: '1.5%', right: '11%', transform: 'translate(-50%)', zIndex: 9999}}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleCurrentLocation}
-          sx={{
-            backgroundColor: darkModeEnabled ? '#000000' : '#FFFFFF',
-            height: '30px',
-            minWidth: '30px',
-            transition: 'background-color 0.5s ease',
-            zIndex: 1,
-            borderRadius: '50%',
-            padding: 0,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <FontAwesomeIcon
-            icon={faLocationArrow}
-            style={{ marginRight: 2 }}
-            color={darkModeEnabled ? '#FFFFFF' : '#000000'}
-          />
-        </Button>
-      </Box>
     </div>
   );
 };

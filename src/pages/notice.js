@@ -49,7 +49,7 @@ const Notices = () => {
   }, [darkModeEnabled]);
 
   const fetchNotices = async () => {
-    const response = await axios.get('http://13.125.168.244:8080/notices');
+    const response = await axios.get('https://api.nodrinkick.com/notices');
     setNotices(response.data);
   };
 
@@ -57,7 +57,7 @@ const Notices = () => {
     if (!searchTerm) {
       fetchNotices();
     } else {
-      const response = await axios.get(`http://13.125.168.244:8080/notices/search?query=${searchTerm}`);
+      const response = await axios.get(`https://api.nodrinkick.com/notices/search?query=${searchTerm}`);
       setNotices(response.data);
     }
   };
@@ -69,7 +69,7 @@ const Notices = () => {
   };
 
   const createNotice = async (notice) => {
-    await axios.post('http://13.125.168.244:8080/notices', notice);
+    await axios.post('https://api.nodrinkick.com/notices', notice);
     fetchNotices();
     setIsModalOpen(false);
     setNewNotice({ title: '', content: '' });
