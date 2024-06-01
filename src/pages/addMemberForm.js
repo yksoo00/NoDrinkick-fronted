@@ -75,6 +75,7 @@ function SignUpPage() {
                 }
             });
             console.log('회원가입 성공:', response.data);
+            //const response = await axios.post('http://asda/mypageupload',imagefile)
             window.location.href = '/home';
         } catch (error) {
             console.error('회원가입 에러:', error.response.data);
