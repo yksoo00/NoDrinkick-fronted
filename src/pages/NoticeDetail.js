@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import '../styles/notice.css';
+import { useParams, useHistory } from 'react-router-dom';
+import '../styles/noticeDetail.css';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -25,17 +25,19 @@ import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; //이용약관
 import { faBell } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
-const Notices = () => {
+const NoticeDetail = () => {
   const [open, setOpen] = useState(false); 
-  const [notices, setNotices] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newNotice, setNewNotice] = useState({ title: '', content: '' });
+  const { noticeId } = useParams();
+  const [notice, setNotice] = useState(null);
+  const [editedNotice, setEditedNotice] = useState({ title: '', content: '' });
   const [darkModeEnabled, setDarkModeEnabled] = useState(
     localStorage.getItem('darkModeEnabled') === 'true'
   );
   const history = useHistory();
 
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
 
   useEffect(() => {
     // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
@@ -48,40 +50,42 @@ const Notices = () => {
     localStorage.setItem('darkModeEnabled', darkModeEnabled);
   }, [darkModeEnabled]);
 
-  const fetchNotices = async () => {
-    const response = await axios.get('/notices');
-    setNotices(response.data);
-  };
-
-  const searchNotices = async () => {
-    if (!searchTerm) {
-      fetchNotices();
-    } else {
-      const response = await axios.get(`/notices/search?query=${searchTerm}`);
-      setNotices(response.data);
+  const fetchNotice = async () => {
+    try {
+      const response = await axios.get(`/notices/${noticeId}`);
+      setNotice(response.data);
+    } catch (error) {
+      console.error('Error fetching notice details:', error);
     }
   };
 
-  const handleCreate = async () => {
-    if (newNotice.title && newNotice.content) {
-      await createNotice(newNotice);
+  const handleEdit = async () => {
+    try {
+      await axios.put(`/notices/${noticeId}`, editedNotice);
+      // 수정된 공지사항 정보를 다시 불러와 화면에 반영
+      fetchNotice();
+      // 수정 후 입력 폼 초기화
+      setEditedNotice({ title: '', content: '' });
+      // 수정이 완료되면 Notice 페이지로 이동
+      history.push('/notice');
+    } catch (error) {
+      console.error('Error editing notice:', error);
     }
   };
 
-  const createNotice = async (notice) => {
-    await axios.post('/notices', notice);
-    fetchNotices();
-    setIsModalOpen(false);
-    setNewNotice({ title: '', content: '' });
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/notices/${noticeId}`);
+      // 삭제가 완료되면 Notice 페이지로 이동
+      history.push('/notice');
+    } catch (error) {
+      console.error('Error deleting notice:', error);
+    }
   };
 
-  const handleTitleClick = (noticeId) => {
-    history.push(`/noticedetail/${noticeId}`);
-  };
-
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
+  useEffect(() => {
+    fetchNotice();
+  }, [noticeId]);
 
   useEffect(() => {
     const token = localStorage.getItem('jwtToken');
@@ -89,6 +93,10 @@ const Notices = () => {
       history.push('/');
     }
   }, [history]);
+
+  if (!notice) {
+    return <div>Loading...</div>;
+  }
 
   const handleClickPage = (pageName) => {
     let path;
@@ -111,7 +119,6 @@ const Notices = () => {
       case '이용기록':
         path = '/UserRecord';
         break;                         
-        
       default:
         path = '/';
         break;
@@ -119,16 +126,12 @@ const Notices = () => {
     history.push(path);
   };
 
-
-  useEffect(() => {
-    fetchNotices();
-  }, []);
-
   const handleLogout = () => {
     removeToken();
     alert('로그아웃 되었습니다.');
     window.location.href = '/';
   };
+
 
   return (
     <div style={{
@@ -142,12 +145,12 @@ const Notices = () => {
       transition: 'background-color 0.5s ease'
     }}>
       <Toolbar sx={{ justifyContent: 'space-between' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2,  color: darkModeEnabled ? '#2d2c28' : '#FFFFFF'}}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" sx={{fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 공지사항 </Typography>
-        </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+  <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={() => history.push('/notice')} sx={{ mr: 2,  color: darkModeEnabled ? '#2d2c28' : '#FFFFFF'}}>
+    <ArrowBackIcon />
+  </IconButton>
+  <Typography variant="h6" sx={{fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 공지사항 </Typography>
+</Box>
         <Box />
         <Box>
         <IconButton 
@@ -203,53 +206,38 @@ const Notices = () => {
           </ListItem>
         </List>
       </Drawer>
-      <div>
-      <div className="search-bar">
-        <input 
-          type="text"
-          className="search-input" 
-          placeholder="검색어" 
-          value={searchTerm} 
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ color: '#FFFFFF' }}
-        />
-        <button className="search-button" onClick={searchNotices}>검색</button>
-      </div>
-      <button className="add-button" onClick={() => setIsModalOpen(true)}>공지사항 추가하기</button>
-      
-      {isModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <input 
-              className="notice-title"
-              type="text"
-              placeholder="제목" 
-              value={newNotice.title} 
-              onChange={(e) => setNewNotice({ ...newNotice, title: e.target.value })}
-            />
-            <input 
-              className="notice-text"
-              type="text"
-              placeholder="내용" 
-              value={newNotice.content} 
-              onChange={(e) => setNewNotice({ ...newNotice, content: e.target.value })}
-            />
-          </div>
-          <button className="notice-addbutton" onClick={handleCreate}>추가</button>
-        </div>
-      )}
 
-          <div className="Full-notice">
-            {notices.map((notice, index) => (
-             <div className="notice-button" key={notice.id} onClick={() => handleTitleClick(notice.noticeId)}>
-                <span className="notice-number">{index + 1}</span>
-                 <span>{notice.title}</span>
-            </div>
-          ))}
+    
+    <div className="notice-detail">
+      <div className="notice-detail-sub">
+      <h1> {notice.title}</h1>
+      <p className="date">{new Date(notice.createdAt).toLocaleDateString()}</p>
+      </div>
+      <p className="NoticeContent">{notice.content}</p>
+
+      <div className="edit-form">
+        <div className="edit-form-button">
+        <input
+          className="notice-detail-edit-title"
+          type="text"
+          placeholder="수정할 제목"
+          value={editedNotice.title}
+          onChange={(e) => setEditedNotice({ ...editedNotice, title: e.target.value })}
+        />
+           <button className="notice-edit-edit" onClick={handleEdit}>수정</button>
+           <button className="notice-edit-delete"onClick={handleDelete}>삭제</button>
         </div>
+        <input
+          className="notice-detail-edit-text"
+          type="text"
+          placeholder="수정할 내용"
+          value={editedNotice.content}
+          onChange={(e) => setEditedNotice({ ...editedNotice, content: e.target.value })}
+        />
+      </div>
     </div>
     </div>
   );
-}
+};
 
-export default Notices;
+export default NoticeDetail;

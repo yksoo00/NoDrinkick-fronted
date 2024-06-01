@@ -1,4 +1,3 @@
-/*
 // src/pages/payment.js
 import React, { useEffect } from 'react';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
@@ -27,7 +26,7 @@ function Payment() {
     const random = new Date().getTime() + Math.random(); // 난수 생성
     const randomId = btoa(random); // 난수를 btoa(base64)로 인코딩한 orderID
 
-    const amount = 1500;
+    const amount = 1250;
     const orderId = randomId;
     const orderName = '킥보드 이용 결제 1건';
     const customerName = '노드링킥 결제';
@@ -42,6 +41,7 @@ function Payment() {
         failUrl: `http://localhost:3000/fail?orderId=${orderId}&amount=${amount}`,
         flowMode: 'DIRECT',
         easyPay: '토스페이',
+        windowTarget: 'self' // 현재 창에서 열리도록 설정
       }).catch(function (error) {
         if (error.code === 'USER_CANCEL') {
           // 결제 고객이 결제창을 닫았을 때 에러 처리
@@ -63,5 +63,3 @@ function Payment() {
 }
 
 export default Payment;
-
-*/
