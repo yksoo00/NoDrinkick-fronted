@@ -33,7 +33,7 @@ function UserList() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('https://api.nodrinkick.com/members/info');
+        const response = await axios.get('http://13.125.168.244:8080/members/info');
         setUserData(response.data);
       } catch (error) {
         console.error('API 서버오류', error);
@@ -43,14 +43,6 @@ function UserList() {
 fetchUserData();
 }, []);
 
-  // 토큰없이 접속 시 제한
-
-  useEffect(() => {
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      history.push('/');
-    }
-  }, [history]);
 
   useEffect(() => {
     // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
@@ -102,6 +94,14 @@ fetchUserData();
     alert('로그아웃 되었습니다.');
     window.location.href = '/';
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      history.push('/loginform');
+    }
+  }, [history]);
+
   return (
     <div className="terms-container">
       <CssBaseline />
@@ -162,20 +162,6 @@ fetchUserData();
             </ListItem>
           ))}
 
-          <ListItem
-            button
-            key="로그아웃"
-            sx={{ width: 150, paddingTop: 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center', position: 'absolute', bottom: -120 }}
-            onClick={handleLogout}
-          >
-            <ListItemIcon>
-              <FontAwesomeIcon icon={faSignOutAlt} style={{ marginLeft: 3 }} />
-            </ListItemIcon>
-            <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-              로그아웃
-            </Typography>
-          </ListItem>
-
         </List>
       </Drawer>
       
@@ -188,6 +174,8 @@ fetchUserData();
                   <div className="UserText">
                     <p>{userData.name} 님<br />환영합니다</p>
                   </div>
+                  <button className="user-logout-button" onClick={handleLogout}  >로그아웃</button>
+                  
                 </div>
                 <div className="user-profile_details">
                   <p className="user-profile_detail-text">
@@ -207,9 +195,6 @@ fetchUserData();
                 <div className="picture-all">
                 <div className="license-details-verification">
                   <p>인증여부 : {userData.license ? 'YES' : 'NO'}</p>
-                </div>
-                <div>
-                 <button className="picture-button">운전면허증 등록</button>
                 </div>
                 </div>
 

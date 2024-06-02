@@ -89,13 +89,6 @@ function TermsOfUse() {
     setOpen(!open);
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      history.push('/');
-    }
-  }, [history]);
-
   const handleClickPage = (pageName) => {
     let path;
     switch (pageName) {
@@ -128,11 +121,12 @@ function TermsOfUse() {
     setSelectedSection(termsData[section]);
   };
 
-  const handleLogout = () => {
-    removeToken();
-    alert('로그아웃 되었습니다.');
-    window.location.href = '/';
-  };
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      history.push('/loginform');
+    }
+  }, [history]);
 
   return (
     <div className="terms-container">
@@ -189,19 +183,6 @@ function TermsOfUse() {
               </Typography>
             </ListItem>
           ))}
-          <ListItem
-            button
-            key="로그아웃"
-            sx={{ width: 150, paddingTop: 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center', position: 'absolute', bottom: -120 }}
-            onClick={handleLogout}
-          >
-            <ListItemIcon>
-              <FontAwesomeIcon icon={faSignOutAlt} style={{ marginLeft: 3 }} />
-            </ListItemIcon>
-            <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-              로그아웃
-            </Typography>
-          </ListItem>
         </List>
       </Drawer>
 

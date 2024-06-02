@@ -109,12 +109,6 @@ function UserRecord() {
         history.push(path);
     };
 
-    const handleLogout = () => {
-        removeToken();
-        alert('로그아웃 되었습니다.');
-        window.location.href = '/';
-    };
-
     return (
         <div style={{
             backgroundColor: '#e8e8e8', 
@@ -172,19 +166,7 @@ function UserRecord() {
               </Typography>
             </ListItem>
           ))}
-          <ListItem
-            button
-            key="로그아웃"
-            sx={{ width: 150, paddingTop: 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center', position: 'absolute', bottom: -120 }}
-            onClick={handleLogout}
-          >
-            <ListItemIcon>
-              <FontAwesomeIcon icon={faSignOutAlt} style={{ marginLeft: 3 }} />
-            </ListItemIcon>
-            <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-              로그아웃
-            </Typography>
-          </ListItem>
+        
         </List>
       </Drawer>
 

@@ -52,7 +52,7 @@ const NoticeDetail = () => {
 
   const fetchNotice = async () => {
     try {
-      const response = await axios.get(`https://api.nodrinkick.com/notices/${noticeId}`);
+      const response = await axios.get(`http://13.125.168.244:8080/notices/${noticeId}`);
       setNotice(response.data);
     } catch (error) {
       console.error('Error fetching notice details:', error);
@@ -61,7 +61,7 @@ const NoticeDetail = () => {
 
   const handleEdit = async () => {
     try {
-      await axios.put(`https://api.nodrinkick.com/notices/${noticeId}`, editedNotice);
+      await axios.put(`http://13.125.168.244:8080/notices/${noticeId}`, editedNotice);
       // 수정된 공지사항 정보를 다시 불러와 화면에 반영
       fetchNotice();
       // 수정 후 입력 폼 초기화
@@ -90,7 +90,7 @@ const NoticeDetail = () => {
   useEffect(() => {
     const token = localStorage.getItem('jwtToken');
     if (!token) {
-      history.push('/');
+      history.push('/loginform');
     }
   }, [history]);
 
@@ -124,12 +124,6 @@ const NoticeDetail = () => {
         break;
     }
     history.push(path);
-  };
-
-  const handleLogout = () => {
-    removeToken();
-    alert('로그아웃 되었습니다.');
-    window.location.href = '/';
   };
 
 
@@ -191,19 +185,6 @@ const NoticeDetail = () => {
               </Typography>
             </ListItem>
           ))}
-          <ListItem
-            button
-            key="로그아웃"
-            sx={{ width: 150, paddingTop: 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center', position: 'absolute', bottom: -120 }}
-            onClick={handleLogout}
-          >
-            <ListItemIcon>
-              <FontAwesomeIcon icon={faSignOutAlt} style={{ marginLeft: 3 }} />
-            </ListItemIcon>
-            <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-              로그아웃
-            </Typography>
-          </ListItem>
         </List>
       </Drawer>
 
@@ -224,7 +205,18 @@ const NoticeDetail = () => {
           value={editedNotice.title}
           onChange={(e) => setEditedNotice({ ...editedNotice, title: e.target.value })}
         />
-           <button className="notice-edit-edit" onClick={handleEdit}>수정</button>
+           <button 
+  className="notice-edit-edit" 
+  onClick={handleEdit}
+  disabled={!editedNotice.title || !editedNotice.content}
+  style={{ 
+    backgroundColor: editedNotice.title && editedNotice.content ? '#F4E00B' : '',
+    borderColor: editedNotice.title && editedNotice.content ? '#F4E00B' : '',
+    transition: 'background-color 0.3s, border-color 0.3s',
+  }}
+>
+  수정
+</button>
            <button className="notice-edit-delete"onClick={handleDelete}>삭제</button>
         </div>
         <input

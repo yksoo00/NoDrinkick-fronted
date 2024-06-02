@@ -102,6 +102,23 @@
 
 
 
+"@fortawesome/free-regular-svg-icons": "^6.5.2",
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
 "@fortawesome/free-solid-svg-icons": "^6.5.2",
   
 
@@ -272,6 +289,40 @@
 
 
 
+"normalize.css": "^8.0.1",
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+"qrcode": "^1.5.3",
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
 "react": "^18.3.0",
   
 
@@ -409,9 +460,8 @@
 
 
 
-"proxy": "https://api.nodrinkick.com",
-
-
+"proxy": "http://13.125.168.244:3000",
+  
 
 
 

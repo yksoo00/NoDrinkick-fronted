@@ -51,19 +51,10 @@ function AddEmergency() {
         localStorage.setItem('darkModeEnabled', darkModeEnabled);
       }, [darkModeEnabled]);
 
-    useEffect(() => {
-        const token = localStorage.getItem('jwtToken');
-        if (!token) {
-            history.push('/');
-        } else {
-            fetchUserData();
-        }
-    }, [history]);
-
     const fetchUserData = async () => {
         try {
 
-            const response = await axios.get('https://api.nodrinkick.com/members/info');
+            const response = await axios.get('http://13.125.168.244:8080/members/info');
 
             const user = response.data;
             setUsername(user.name); // 사용자 이름을 설정합니다.
@@ -140,11 +131,15 @@ function AddEmergency() {
         }
     };
 
-    const handleLogout = () => {
-        removeToken();
-        alert('로그아웃 되었습니다.');
-        window.location.href = '/';
-    };
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      history.push('/loginform');
+    } else {
+      fetchUserData();
+  }
+}, [history]);
 
     return (
         <div style={{
@@ -208,19 +203,6 @@ function AddEmergency() {
               </Typography>
             </ListItem>
           ))}
-          <ListItem
-            button
-            key="로그아웃"
-            sx={{ width: 150, paddingTop: 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center', position: 'absolute', bottom: -120 }}
-            onClick={handleLogout}
-          >
-            <ListItemIcon>
-              <FontAwesomeIcon icon={faSignOutAlt} style={{ marginLeft: 3 }} />
-            </ListItemIcon>
-            <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-              로그아웃
-            </Typography>
-          </ListItem>
         </List>
       </Drawer>
 

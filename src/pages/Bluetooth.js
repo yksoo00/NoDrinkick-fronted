@@ -11,7 +11,7 @@ const CombinedComponent = () => {
   useEffect(() => {
     const fetchBluetoothData = async () => {
       try {
-        const response = await axios.get('https://api.nodrinkick.com/bluetooth-data');
+        const response = await axios.get('http://13.125.168.244:8080/bluetooth-data');
         setBluetoothData(response.data);
       } catch (error) {
         console.error('블루투스 데이터를 불러오는 중 문제가 발생했습니다:', error);
@@ -20,7 +20,7 @@ const CombinedComponent = () => {
 
     const fetchMemberInfoAndConnect = async () => {
       try {
-        const response = await axios.get('https://api.nodrinkick.com/members/info');
+        const response = await axios.get('http://13.125.168.244:8080/members/info');
         const memberInfo = response.data;
         setMemberInfo(memberInfo); // 회원 정보 상태 설정
 

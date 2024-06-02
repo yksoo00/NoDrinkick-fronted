@@ -49,7 +49,7 @@ const Notices = () => {
   }, [darkModeEnabled]);
 
   const fetchNotices = async () => {
-    const response = await axios.get('https://api.nodrinkick.com/notices');
+    const response = await axios.get('http://13.125.168.244:8080/notices');
     setNotices(response.data);
   };
 
@@ -57,7 +57,7 @@ const Notices = () => {
     if (!searchTerm) {
       fetchNotices();
     } else {
-      const response = await axios.get(`https://api.nodrinkick.com/notices/search?query=${searchTerm}`);
+      const response = await axios.get(`http://13.125.168.244:8080/notices/search?query=${searchTerm}`);
       setNotices(response.data);
     }
   };
@@ -69,7 +69,7 @@ const Notices = () => {
   };
 
   const createNotice = async (notice) => {
-    await axios.post('https://api.nodrinkick.com/notices', notice);
+    await axios.post('http://13.125.168.244:8080/notices', notice);
     fetchNotices();
     setIsModalOpen(false);
     setNewNotice({ title: '', content: '' });
@@ -82,13 +82,6 @@ const Notices = () => {
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      history.push('/');
-    }
-  }, [history]);
 
   const handleClickPage = (pageName) => {
     let path;
@@ -124,11 +117,12 @@ const Notices = () => {
     fetchNotices();
   }, []);
 
-  const handleLogout = () => {
-    removeToken();
-    alert('로그아웃 되었습니다.');
-    window.location.href = '/';
-  };
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      history.push('/loginform');
+    }
+  }, [history]);
 
   return (
     <div style={{
@@ -188,19 +182,7 @@ const Notices = () => {
               </Typography>
             </ListItem>
           ))}
-          <ListItem
-            button
-            key="로그아웃"
-            sx={{ width: 150, paddingTop: 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center', position: 'absolute', bottom: -120 }}
-            onClick={handleLogout}
-          >
-            <ListItemIcon>
-              <FontAwesomeIcon icon={faSignOutAlt} style={{ marginLeft: 3 }} />
-            </ListItemIcon>
-            <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-              로그아웃
-            </Typography>
-          </ListItem>
+      
         </List>
       </Drawer>
       <div>

@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import KickBoardImage from '../assets/KickBoard.png';
 import '../styles/Rent.css';
+import Test from '../component/test'
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // axios를 import합니다.
 import { Link } from 'react-router-dom';
@@ -16,11 +17,17 @@ function Rent({ open, onClose }) {
   const [memberInfo, setMemberInfo] = useState({}); // 회원 정보 상태 추가
   const [ws, setWs] = useState(null);
   const [wsMessages, setWsMessages] = useState([]); // WebSocket 메시지 상태 추가
+  const [isTestOpen, setisTestOpen] = useState(false);
+
+  const handleStartTest = () => {
+    fetchMemberInfoAndConnect();
+    setisTestOpen(false);
+  };
 
 
     const fetchMemberInfoAndConnect = async () => {
       try {
-        const response = await axios.get('https://api.nodrinkick.com/members/info');
+        const response = await axios.get('http://13.125.168.244:8080/members/info');
         const memberInfo = response.data;
         setMemberInfo(memberInfo); // 회원 정보 상태 설정
 
@@ -95,7 +102,7 @@ function Rent({ open, onClose }) {
             <h2 className="KickBoardName">노드링킥 1</h2>
               </div>
                 <div className="Test-Both">
-                <Button className="Face" style={{backgroundColor: '#e8e8e8', marginBottom:'20px', marginLeft: '20px', marginRight: '10px', padding:'20px' }}onClick={fetchMemberInfoAndConnect}>
+                <Button className="Face" style={{backgroundColor: '#e8e8e8', marginBottom:'20px', marginLeft: '20px', marginRight: '10px', padding:'20px' }} onClick={() => setisTestOpen(true)}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
             <FontAwesomeIcon icon={faFaceLaugh} style={{fontSize: '25px', color:'#000000', marginRight:'20px'}} />
             <FontAwesomeIcon icon={faBeerMugEmpty} style={{fontSize: '25px', color:'#000000'}} />
@@ -115,6 +122,11 @@ function Rent({ open, onClose }) {
         </Button>
 
       </SwipeableDrawer>
+      <Test
+        isOpen={isTestOpen}
+        onClose={() => setisTestOpen(false)}
+        onStartTest={handleStartTest}
+        />
     </div>
   );
 }

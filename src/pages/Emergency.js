@@ -51,15 +51,6 @@ function EmergencyContactsList() {
         localStorage.setItem('darkModeEnabled', darkModeEnabled);
       }, [darkModeEnabled]);
 
-  // 토큰없이 접속 시 제한
-
-  useEffect(() => {
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      history.push('/');
-    }
-  }, [history]);
-
     const toggleDrawer = () => {
         setOpen(!open);
     };
@@ -98,7 +89,7 @@ function EmergencyContactsList() {
 
     const fetchContacts = async () => {
         try {
-            const response = await axios.get('https://api.nodrinkick.com/emergency-contacts');
+            const response = await axios.get('http://13.125.168.244:8080/emergency-contacts');
             setContacts(response.data);
         } catch (error) {
             console.error("비상 연락망 조회 중 오류가 발생했습니다.", error);
@@ -107,7 +98,7 @@ function EmergencyContactsList() {
 
     const handleDeleteContact = async (id) => {
         try {
-            await axios.delete(`https://api.nodrinkick.com/emergency-contacts/${id}`);
+            await axios.delete(`http://13.125.168.244:8080/emergency-contacts/${id}`);
             // 삭제 후에 연락처 목록을 다시 불러오기
             fetchContacts();
         } catch (error) {
@@ -115,12 +106,13 @@ function EmergencyContactsList() {
         }
     };
 
-    const handleLogout = () => {
-        removeToken();
-        alert('로그아웃 되었습니다.');
-        window.location.href = '/';
-      };
-
+    useEffect(() => {
+      const token = localStorage.getItem('jwtToken');
+      if (!token) {
+        history.push('/loginform');
+      }
+    }, [history]);
+    
     return (
         <div className="emergency-container">
             <CssBaseline />
@@ -176,19 +168,7 @@ function EmergencyContactsList() {
               </Typography>
             </ListItem>
           ))}
-          <ListItem
-            button
-            key="로그아웃"
-            sx={{ width: 150, paddingTop: 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center', position: 'absolute', bottom: -120 }}
-            onClick={handleLogout}
-          >
-            <ListItemIcon>
-              <FontAwesomeIcon icon={faSignOutAlt} style={{ marginLeft: 3 }} />
-            </ListItemIcon>
-            <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-              로그아웃
-            </Typography>
-          </ListItem>
+         
         </List>
       </Drawer>
 

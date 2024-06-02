@@ -69,7 +69,7 @@ function SignUpPage() {
 
         try {
 
-            const response = await axios.post('https://api.nodrinkick.com/members/add', formData, {
+            const response = await axios.post('http://13.125.168.244:8080/members/add', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data' // 요청의 Content-Type 설정
                 }
