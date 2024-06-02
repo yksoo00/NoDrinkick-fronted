@@ -120,7 +120,7 @@ function AddEmergency() {
 
         try {
 
-          const messageWithUsername = `이름 : ${username}, 휴대폰 번호: ${PhoneNum}, ${formData.message}`;
+          const messageWithUsername = `이름 : ${formData.name}, 휴대폰 번호: ${formData.phoneNum}, ${formData.message}`;
 
             await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum, message: messageWithUsername }); 
             alert('저장되었습니다!');
