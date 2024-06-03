@@ -8,7 +8,7 @@ export const fetchUserData = async () => {
   } catch (error) {
     console.error('API 서버오류', error);
     throw error;
-  }
+  }1
 };
 
 export const updateUserProfile = async (memberId, editedUserData) => {

@@ -15,9 +15,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import { removeToken } from '../services/loginService';
-
+import axios from 'axios';
 
 import { faHouse, faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSignOutAlt, faBook, faSave, faTimes, faCamera } from '@fortawesome/free-solid-svg-icons';
 
@@ -135,14 +133,34 @@ function UserList() {
 
   const handleUploadImage = async () => {
     try {
+      // 실제 사용자 데이터 객체로 `userData`를 대체하십시오.
       const data = await uploadUserImage(userData.memberId, selectedFile);
+  
+      // 새로운 프로필 이미지 정보로 사용자 데이터를 업데이트합니다.
       setUserData(data);
       setEditedUserData(data);
+  
+      // 업로드 상태를 false로 설정합니다.
       setIsUploading(false);
+  
+      // 업데이트 성공 알림을 사용자에게 표시합니다.
       alert('프로필 사진이 성공적으로 업데이트되었습니다.');
+  
+      // 추가 업로드를 위한 폼 데이터를 준비합니다.
+      const uploadData = new FormData();
+      uploadData.append('file', selectedFile); // 올바른 파일 변수로 대체하십시오.
+      uploadData.append('id', data.username); // 업데이트된 사용자 데이터의 username을 사용합니다.
+  
+      // 추가 업로드 요청을 보냅니다.
+      await axios.post('http://127.0.0.1:8080/mypageUpload', uploadData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
     } catch (error) {
       console.error('프로필 사진 업데이트 오류:', error);
       alert('프로필 사진 업데이트 중 오류가 발생했습니다.');
+      setIsUploading(false); // 오류 발생 시 업로드 상태를 초기화합니다.
     }
   };
 
