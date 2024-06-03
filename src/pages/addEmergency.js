@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import { removeToken } from '../services/loginService';
+import { fetchUserData } from '../services/userService'; // userService import 추가
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons'; 
@@ -57,22 +58,9 @@ function AddEmergency() {
         if (!token) {
             history.push('/');
         } else {
-            fetchUserData();
+            fetchUserData(); // userService의 fetchUserData 함수 호출
         }
     }, [history]);
-
-    const fetchUserData = async () => {
-        try {
-
-            const response = await axios.get('/members/info');
-
-            const user = response.data;
-            setUsername(user.name); // 사용자 이름을 설정합니다.
-            setPhoneNum(user.phoneNum); // 사용자 휴대폰 번호를 설정합니다.
-        } catch (error) {
-            console.error('API 서버오류', error);
-        }
-    };
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -132,7 +120,7 @@ function AddEmergency() {
 
         try {
 
-          const messageWithUsername = `이름 : ${username}, 휴대폰 번호: ${PhoneNum}, ${formData.message}`;
+          const messageWithUsername = `이름 : ${formData.name}, 휴대폰 번호: ${formData.phoneNum}, ${formData.message}`;
 
             await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum, message: messageWithUsername }); 
             alert('저장되었습니다!');
@@ -188,9 +176,8 @@ function AddEmergency() {
         anchor="left"
         open={open}
         onClose={() => setOpen(false)}
-        onOpen={() => setOpen(true)}
-        sx={{ zIndex: 999 }}
-      >
+        onOpen={() => setOpen(true)}      
+        >
         <List>
           {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '가이드북', '공지사항'].map((text, index) => (
             <ListItem
@@ -282,3 +269,4 @@ function AddEmergency() {
 }
 
 export default AddEmergency;
+

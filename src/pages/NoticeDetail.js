@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useHistory } from 'react-router-dom';
 import '../styles/noticeDetail.css';
+
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -50,6 +51,7 @@ const NoticeDetail = () => {
     localStorage.setItem('darkModeEnabled', darkModeEnabled);
   }, [darkModeEnabled]);
 
+
   const fetchNotice = async () => {
     try {
       const response = await axios.get(`/notices/${noticeId}`);
@@ -87,6 +89,7 @@ const NoticeDetail = () => {
     fetchNotice();
   }, [noticeId]);
 
+
   useEffect(() => {
     const token = localStorage.getItem('jwtToken');
     if (!token) {
@@ -94,9 +97,11 @@ const NoticeDetail = () => {
     }
   }, [history]);
 
+
   if (!notice) {
     return <div>Loading...</div>;
   }
+
 
   const handleClickPage = (pageName) => {
     let path;
@@ -219,21 +224,26 @@ const NoticeDetail = () => {
         <div className="edit-form-button">
         <input
           className="notice-detail-edit-title"
+
           type="text"
           placeholder="수정할 제목"
           value={editedNotice.title}
           onChange={(e) => setEditedNotice({ ...editedNotice, title: e.target.value })}
         />
+
            <button className="notice-edit-edit" onClick={handleEdit}>수정</button>
            <button className="notice-edit-delete"onClick={handleDelete}>삭제</button>
         </div>
         <input
           className="notice-detail-edit-text"
+
+
           type="text"
           placeholder="수정할 내용"
           value={editedNotice.content}
           onChange={(e) => setEditedNotice({ ...editedNotice, content: e.target.value })}
         />
+
       </div>
     </div>
     </div>
@@ -241,3 +251,4 @@ const NoticeDetail = () => {
 };
 
 export default NoticeDetail;
+

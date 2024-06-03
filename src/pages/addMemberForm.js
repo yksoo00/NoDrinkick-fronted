@@ -53,7 +53,7 @@ function SignUpPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         const memberDto = {
             name: userInfo.name,
             username: userInfo.username,
@@ -62,25 +62,41 @@ function SignUpPage() {
             email: userInfo.email,
             license: userInfo.license === "true"
         };
-
+    
         const formData = new FormData();
         formData.append('imgFile', imageFile);
         formData.append('memberDto', new Blob([JSON.stringify(memberDto)], { type: 'application/json' }));
-
+    
         try {
-
+            // 회원가입 요청
             const response = await axios.post('/members/add', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data' // 요청의 Content-Type 설정
                 }
             });
+    
             console.log('회원가입 성공:', response.data);
+    
+            // 회원가입이 성공하면 이미지 파일과 사용자 이름을 /mypageUpload로 전송
+            
+            const uploadData = new FormData();
+            uploadData.append('file', imageFile);
+            uploadData.append('id', userInfo.username); // 사용자 이름을 'id' 필드에 추가
+    
+            await axios.post('http://127.0.0.1:8080/mypageUpload', uploadData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+    
             window.location.href = '/home';
         } catch (error) {
-            console.error('회원가입 에러:', error.response.data);
+            console.error('회원가입 에러:', error.response?.data || error.message);
             // 에러 처리 로직
         }
     };
+    
+    
 
     const handleRedirectToHome = () => {
         history.push('/home'); 

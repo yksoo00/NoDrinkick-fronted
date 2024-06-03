@@ -4,6 +4,7 @@ const addMembers = async (userInfo) => {
     try {
         const response = await axios.post('/members/add', userInfo);
         console.log('회원가입 성공:', response.data);
+        
         return response.data;
     } catch (error) {
         console.error('회원가입 에러:', error.response.data);
