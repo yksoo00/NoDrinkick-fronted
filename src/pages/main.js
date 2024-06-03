@@ -90,7 +90,7 @@ const Main = () => {
         path = '/guidebook';
         break;
       case '이용기록':
-        path = '/usagerecord';
+        path = '/UserRecord';
         break;                         
         
       default:

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/notice.css';
-import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -13,7 +12,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box'; 
-import Button from '@mui/material/Button'; 
 
 import { removeToken } from '../services/loginService';
 
@@ -26,17 +24,18 @@ import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; //비상연�
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
 import { faBell } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { faBook } from '@fortawesome/free-solid-svg-icons';
 
 const Notices = () => {
-  const [notices, setNotices] = useState([]);
   const [open, setOpen] = useState(false); 
+  const [notices, setNotices] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newNotice, setNewNotice] = useState({ title: '', content: '' });
   const [darkModeEnabled, setDarkModeEnabled] = useState(
     localStorage.getItem('darkModeEnabled') === 'true'
   );
-
   const history = useHistory();
+
 
   useEffect(() => {
     // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
@@ -52,6 +51,32 @@ const Notices = () => {
   const fetchNotices = async () => {
     const response = await axios.get('/notices');
     setNotices(response.data);
+  };
+
+  const searchNotices = async () => {
+    if (!searchTerm) {
+      fetchNotices();
+    } else {
+      const response = await axios.get(`/notices/search?query=${searchTerm}`);
+      setNotices(response.data);
+    }
+  };
+
+  const handleCreate = async () => {
+    if (newNotice.title && newNotice.content) {
+      await createNotice(newNotice);
+    }
+  };
+
+  const createNotice = async (notice) => {
+    await axios.post('/notices', notice);
+    fetchNotices();
+    setIsModalOpen(false);
+    setNewNotice({ title: '', content: '' });
+  };
+
+  const handleTitleClick = (noticeId) => {
+    history.push(`/noticedetail/${noticeId}`);
   };
 
   const toggleDrawer = () => {
@@ -83,11 +108,8 @@ const Notices = () => {
       case '공지사항':
         path = '/notice';
         break;
-      case '가이드북':
-        path = '/guidebook';
-        break;
       case '이용기록':
-        path = '/usagerecord';
+        path = '/UserRecord';
         break;                         
         
       default:
@@ -97,36 +119,6 @@ const Notices = () => {
     history.push(path);
   };
 
-  const searchNotices = async () => {
-    if (!searchTerm) {
-      fetchNotices();
-    } else {
-      const response = await axios.get(`/notices/search?query=${searchTerm}`);
-      setNotices(response.data);
-    }
-  };
-
-  const handleCreate = async () => {
-    const title = prompt("공지사항 제목을 입력하세요");
-    const content = prompt("공지사항 내용을 입력하세요");
-    if (title && content) {
-      await createNotice({ title, content });
-    }
-  };
-
-  const createNotice = async (notice) => {
-    await axios.post('/notices', notice);
-    fetchNotices();
-  };
-
-  const handleDelete = async (noticeId) => {
-    await deleteNotice(noticeId);
-  };
-
-  const deleteNotice = async (noticeId) => {
-    await axios.delete(`/notices/${noticeId}`);
-    fetchNotices();
-  };
 
   useEffect(() => {
     fetchNotices();
@@ -139,7 +131,11 @@ const Notices = () => {
   };
 
   return (
-    <div>
+    <div style={{
+      backgroundColor: '#e8e8e8',
+      minHeight: '100vh', 
+      display: 'flex',
+  }}>
     <AppBar position="fixed" sx={{
       zIndex: 9999,
       backgroundColor: darkModeEnabled ? '#F2F2F2' : '#2d2c28',
@@ -150,7 +146,7 @@ const Notices = () => {
           <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2,  color: darkModeEnabled ? '#2d2c28' : '#FFFFFF'}}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" sx={{fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 이용약관 </Typography>
+          <Typography variant="h6" sx={{fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 공지사항 </Typography>
         </Box>
         <Box />
         <Box>
@@ -172,7 +168,7 @@ const Notices = () => {
       sx={{zIndex: 999}}
     >
       <List>
-          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '가이드북', '공지사항'].map((text, index) => (
+          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
             <ListItem
               button
               key={text}
@@ -185,7 +181,6 @@ const Notices = () => {
                 {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{ marginLeft: 3 }} />}
                 {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{ marginLeft: 3 }} />}
                 {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{ marginLeft: 3 }} />}
-                {text === '가이드북' && <FontAwesomeIcon icon={faBook} style={{ marginLeft: 3 }} />}
                 {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{ marginLeft: 3 }} />}
               </ListItemIcon>
               <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -208,8 +203,7 @@ const Notices = () => {
           </ListItem>
         </List>
       </Drawer>
-    <div>
-      <h1 className="h10">공지사항 목록</h1>
+      <div>
       <div className="search-bar">
         <input 
           type="text"
@@ -217,15 +211,42 @@ const Notices = () => {
           placeholder="검색어" 
           value={searchTerm} 
           onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ color: '#FFFFFF' }}
         />
-        <button className="button5" onClick={searchNotices}>검색</button>
+        <button className="search-button" onClick={searchNotices}>검색</button>
       </div>
-      <button className="button6" onClick={handleCreate}>공지사항 추가</button>
-      <ul>
-        {notices.map(notice => (
-          <li key={notice.id}>{notice.title}</li>
-        ))}
-      </ul>
+      <button className="add-button" onClick={() => setIsModalOpen(true)}>공지사항 추가하기</button>
+      
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <input 
+              className="notice-title"
+              type="text"
+              placeholder="제목" 
+              value={newNotice.title} 
+              onChange={(e) => setNewNotice({ ...newNotice, title: e.target.value })}
+            />
+            <input 
+              className="notice-text"
+              type="text"
+              placeholder="내용" 
+              value={newNotice.content} 
+              onChange={(e) => setNewNotice({ ...newNotice, content: e.target.value })}
+            />
+          </div>
+          <button className="notice-addbutton" onClick={handleCreate}>추가</button>
+        </div>
+      )}
+
+          <div className="Full-notice">
+            {notices.map((notice, index) => (
+             <div className="notice-button" key={notice.id} onClick={() => handleTitleClick(notice.noticeId)}>
+                <span className="notice-number">{index + 1}</span>
+                 <span>{notice.title}</span>
+            </div>
+          ))}
+        </div>
     </div>
     </div>
   );

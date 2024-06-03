@@ -106,7 +106,9 @@ function EmergencyContactsList() {
 
     const handleDeleteContact = async (id) => {
         try {
+
             await deleteContact(id);
+>
             fetchContacts();
         } catch (error) {
             // 오류 처리
