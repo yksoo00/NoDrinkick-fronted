@@ -2,6 +2,7 @@ import React, { useState, useEffect,useRef } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import '../styles/myPage.css';
+import { fetchUserData, updateUserProfile, uploadUserImage, deleteUser } from '../services/userService';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,33 +16,43 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faHouse, faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSignOutAlt} from '@fortawesome/free-solid-svg-icons';
-
+import { faHouse, faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSignOutAlt, faBook, faSave, faTimes, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { removeToken } from '../services/loginService';
 
 
 function UserList() {
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({});
- 
+  const [editedUserData, setEditedUserData] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false); 
   const history = useHistory();
-  const [darkModeEnabled, setDarkModeEnabled] = useState(
-    localStorage.getItem('darkModeEnabled') === 'true'
-  );
+  const [darkModeEnabled, setDarkModeEnabled] = useState(localStorage.getItem('darkModeEnabled') === 'true');
+
 
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/members/info');
-        setUserData(response.data);
+        const data = await fetchUserData();
+        setUserData(data);
+        setEditedUserData(data);
       } catch (error) {
-        console.error('API 서버오류', error);
+        console.error('사용자 데이터를 가져오는 중 오류 발생:', error);
       }
     };
+    fetchData();
+  }, []);
 
-fetchUserData();
-}, []);
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      history.push('/');
+    }
+  }, [history]);
+
 
 
   useEffect(() => {
@@ -95,12 +106,91 @@ fetchUserData();
     window.location.href = '/';
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      history.push('/loginform');
+  const handleInputChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    setEditedUserData({ 
+      ...editedUserData, 
+      [name]: type === 'checkbox' ? checked : value 
+    });
+  };
+
+  const handleSaveProfile = async () => {
+    try {
+      const data = await updateUserProfile(userData.memberId, editedUserData);
+      setUserData(data);
+      setIsEditing(false);
+      alert('회원 정보가 성공적으로 업데이트되었습니다.');
+    } catch (error) {
+      console.error('회원 정보 업데이트 오류:', error);
+      alert('회원 정보 업데이트 중 오류가 발생했습니다.');
     }
-  }, [history]);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditedUserData(userData);
+  };
+
+  const handleEditProfile = () => {
+    setIsEditing(true);
+  };
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleUploadImage = async () => {
+    try {
+      // 실제 사용자 데이터 객체로 `userData`를 대체하십시오.
+      const data = await uploadUserImage(userData.memberId, selectedFile);
+  
+      // 새로운 프로필 이미지 정보로 사용자 데이터를 업데이트합니다.
+      setUserData(data);
+      setEditedUserData(data);
+  
+      // 업로드 상태를 false로 설정합니다.
+      setIsUploading(false);
+  
+      // 업데이트 성공 알림을 사용자에게 표시합니다.
+      alert('프로필 사진이 성공적으로 업데이트되었습니다.');
+  
+      // 추가 업로드를 위한 폼 데이터를 준비합니다.
+      const uploadData = new FormData();
+      uploadData.append('file', selectedFile); // 올바른 파일 변수로 대체하십시오.
+      uploadData.append('id', data.username); // 업데이트된 사용자 데이터의 username을 사용합니다.
+  
+      // 추가 업로드 요청을 보냅니다.
+      await axios.post('http://127.0.0.1:8080/mypageUpload', uploadData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+    } catch (error) {
+      console.error('프로필 사진 업데이트 오류:', error);
+      alert('프로필 사진 업데이트 중 오류가 발생했습니다.');
+      setIsUploading(false); // 오류 발생 시 업로드 상태를 초기화합니다.
+    }
+  };
+
+  const handleEditImage = () => {
+    setIsUploading(true);
+  };
+
+  const handleCancelUpload = () => {
+    setIsUploading(false);
+    setSelectedFile(null);
+  };
+
+  const handleWithdrawal = async () => {
+    try {
+      await deleteUser(userData.memberId);
+      alert('회원 탈퇴가 성공적으로 이루어졌습니다.');
+      history.push('/'); 
+    } catch (error) {
+      console.error('회원 탈퇴 오류:', error);
+      alert('회원 탈퇴 중 오류가 발생했습니다.');
+    }
+  };
 
   return (
     <div className="terms-container">
@@ -166,40 +256,67 @@ fetchUserData();
       </Drawer>
       
       <Box>
-        <div className="myPage">
-            <div className="user-info-container">
-              <div className="user-info-all">
-                <div className="user-info">
-                  <img src={userData.imagePath} alt="프로필 사진" className="User-Image" />
-                  <div className="UserText">
-                    <p>{userData.name} 님<br />환영합니다</p>
-                  </div>
-                  <button className="user-logout-button" onClick={handleLogout}  >로그아웃</button>
-                  
+      <div className="myPage">
+          <div className="user-info-container">
+            <div className="user-info-all">
+              <div className="user-info">
+                <img src={editedUserData.imagePath} alt="프로필 사진" className="User-Image" />
+                <div className="UserText">
+                  <p>{editedUserData.name} 님<br />환영합니다</p>
                 </div>
-                <div className="user-profile_details">
-                  <p className="user-profile_detail-text">
-                    {userData.username} <br /><br />
-                    {userData.email} <br /><br />
-                    {userData.phoneNum}
-                  </p>
-                  <button className="user-profile__edit-button">수정</button>
-                </div>
+                <button onClick={handleEditImage} className="profile-edit-button"><FontAwesomeIcon icon={faCamera} /> 프로필 사진 수정</button>
               </div>
-
-              <div className="license-all">
-                <div className="license-details-item">
-                  <img src={userData.licenseImage} alt="Driver's License" className="license-image" />
-                </div>
-
-                <div className="picture-all">
-                <div className="license-details-verification">
-                  <p>인증여부 : {userData.license ? 'YES' : 'NO'}</p>
-                </div>
-                </div>
-
+              <div className="user-profile_details">
+                {isEditing ? (
+                  <div>
+                    <input type="text" name="email" value={editedUserData.email} onChange={handleInputChange} />
+                    <input type="text" name="phoneNum" value={editedUserData.phoneNum} onChange={handleInputChange} />
+                    <input type="password" name="password" value={editedUserData.password} onChange={handleInputChange} /> {/* 비밀번호 입력 필드 */}
+                    <input type="checkbox" name="license" checked={editedUserData.license} onChange={handleInputChange} />
+                    <button onClick={handleSaveProfile}><FontAwesomeIcon icon={faSave} /> 저장</button>
+                    <button onClick={handleCancelEdit}><FontAwesomeIcon icon={faTimes} /> 취소</button>
+                  </div>
+                ) : (
+                  <div>
+                    <p>ID: {editedUserData.username} <br /><br />
+                      이메일: {editedUserData.email} <br /><br />
+                      전화번호: {editedUserData.phoneNum}</p>
+                    <button className="user-profile__edit-button" onClick={handleEditProfile}>수정</button>
+                  </div>
+                )}
               </div>
             </div>
+            <div className="license-all">
+              <div className="license-details-item">
+                <img src={editedUserData.licenseImage} alt="Driver's License" className="license-image" />
+              </div>
+              <div className="picture-all">
+                <div className="license-details-verification">
+                  <p>인증여부 : {editedUserData.license ? 'YES' : 'NO'}</p>
+                </div>
+                <div>
+                  <button className="picture-button">운전면허증 등록</button>
+                </div>
+              </div>
+            </div>
+            {isUploading && (
+              <div className="profile-image-upload">
+                <input type="file" accept="image/*" onChange={handleFileChange} />
+                <button onClick={handleUploadImage}><FontAwesomeIcon icon={faSave} /> 수정하기</button>
+                <button onClick={handleCancelUpload}><FontAwesomeIcon icon={faTimes} /> 취소</button>
+              </div>
+            )}
+            {showConfirmation && (
+              <div className="withdrawal-confirmation">
+                <p>정말로 탈퇴하시겠습니까?</p>
+                <button onClick={handleWithdrawal}>확인</button>
+                <button onClick={() => setShowConfirmation(false)}>취소</button>
+              </div>
+            )}
+            {!showConfirmation && (
+              <button onClick={() => setShowConfirmation(true)}>탈퇴하기</button>
+            )}
+          </div>
         </div>
       </Box>
     </div>
