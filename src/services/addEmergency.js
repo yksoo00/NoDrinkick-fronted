@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const addEmergencyContact = async (contactInfo) => {
     try {
-        const response = await axios.post('http://13.125.168.244:8080/emergency-contacts', contactInfo);
+        const response = await axios.post('http://localhost:8080/emergency-contacts', contactInfo);
         console.log('비상 연락망 추가 성공:', response.data);
         return response.data;
     } catch (error) {

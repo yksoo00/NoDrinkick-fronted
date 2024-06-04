@@ -7,6 +7,11 @@ import '../styles/home.css';
 import DarkMode from '../component/darkmode';
 
 function Home() {
+  const [showImage, setShowImage] = useState(true);
+  const [showNodeKick, setShowNodeKick] = useState(true);
+  const [showBackgroundShape, setShowBackgroundShape] = useState(false); 
+  const [showBImage, setShowBImage] = useState(false);
+  const [showCustomizedSwitch, setCustomizedSwitch] = useState(false);
   const [darkModeEnabled, setDarkModeEnabled] = useState(
     localStorage.getItem('darkModeEnabled') === 'true'
   );

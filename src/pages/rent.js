@@ -5,7 +5,6 @@ import KickBoardImage from '../assets/KickBoard.png';
 import '../styles/Rent.css';
 import Test from '../component/test'
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // axios를 import합니다.
 import { Link } from 'react-router-dom';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { faBeerMugEmpty } from '@fortawesome/free-solid-svg-icons';
@@ -29,9 +28,8 @@ function Rent({ open, onClose }) {
 
     const fetchMemberInfoAndConnect = async () => {
       try {
-        const response = await axios.get('http://13.125.168.244:8080/members/info');
-        const memberInfo = response.data;
-        setMemberInfo(memberInfo); // 회원 정보 상태 설정
+        const memberInfo = await fetchUserData();
+        setMemberInfo(memberInfo);
 
         const username = encodeURIComponent(memberInfo.username); // 회원 정보 중 username 추출
 
@@ -75,10 +73,10 @@ function Rent({ open, onClose }) {
 
   const sendMessageToAll = async () => {
     try {
-      const response = await axios.post('http://13.125.168.244:8080/emergency-contacts/sendSNS');
-      alert(response.data);
+      const response = await sendEmergencyMessage();
+      alert(response);
     } catch (error) {
-      alert("메시지 전송 중 오류가 발생했습니다: " + error.response.data);
+      alert(error.message);
     }
   };
 
