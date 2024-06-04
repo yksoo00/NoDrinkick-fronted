@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
-import sendMessageToAll from '../services/Emergency';
 import '../styles/emergency.css';
 
 import CssBaseline from '@mui/material/CssBaseline';
@@ -17,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 import { removeToken } from '../services/loginService';
+import { getContacts, deleteContact, sendMessageToAll } from '../services/Emergency';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
@@ -30,6 +29,7 @@ import { fa1 } from '@fortawesome/free-solid-svg-icons';
 import { fa2 } from '@fortawesome/free-solid-svg-icons';
 import { fa3 } from '@fortawesome/free-solid-svg-icons';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faBook } from '@fortawesome/free-solid-svg-icons';
 
 function EmergencyContactsList() {
     const [contacts, setContacts] = useState([]);
@@ -88,23 +88,24 @@ function EmergencyContactsList() {
     }, []);
 
     const fetchContacts = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/emergency-contacts');
-            setContacts(response.data);
-        } catch (error) {
-            console.error("비상 연락망 조회 중 오류가 발생했습니다.", error);
-        }
-    };
+      try {
+          const data = await getContacts();
+          setContacts(data);
+      } catch (error) {
+          // 오류 처리
+      }
+  };
 
-    const handleDeleteContact = async (id) => {
-        try {
-            await axios.delete(`http://localhost:8080/emergency-contacts/${id}`);
-            // 삭제 후에 연락처 목록을 다시 불러오기
-            fetchContacts();
-        } catch (error) {
-            console.error("연락처 삭제 중 오류가 발생했습니다.", error);
-        }
-    };
+  const handleDeleteContact = async (id) => {
+    try {
+
+        await deleteContact(id);
+
+        fetchContacts();
+    } catch (error) {
+        // 오류 처리
+    }
+};
 
     useEffect(() => {
       const token = localStorage.getItem('jwtToken');
