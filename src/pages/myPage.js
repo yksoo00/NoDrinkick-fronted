@@ -160,11 +160,11 @@ function UserList() {
       uploadData.append('id', data.username); // 업데이트된 사용자 데이터의 username을 사용합니다.
   
       // 추가 업로드 요청을 보냅니다.
-      await axios.post('http://127.0.0.1:8080/mypageUpload', uploadData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+      // await axios.post('http://127.0.0.1:8080/mypageUpload', uploadData, {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data'
+      //   }
+      // });
       
     } catch (error) {
       console.error('프로필 사진 업데이트 오류:', error);
