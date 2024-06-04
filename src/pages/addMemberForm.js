@@ -84,18 +84,17 @@ function SignUpPage() {
     
             console.log('회원가입 성공:', response.data);
     
-            // 회원가입이 성공하면 이미지 파일과 사용자 이름을 /mypageUpload로 전송
-           /* 
+            
             const uploadData = new FormData();
             uploadData.append('file', imageFile);
-            uploadData.append('licenseFile', licenseFile); // Add the license image file
+            //uploadData.append('licenseFile', licenseFile); // Add the license image file
             uploadData.append('id', userInfo.username); // 사용자 이름을 'id' 필드에 추가
     
             await axios.post('http://127.0.0.1:8080/mypageUpload', uploadData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
-            });*/
+            });
     
             window.location.href = '/home';
         } catch (error) {
