@@ -40,7 +40,7 @@ function UserRecord() {
       useEffect(() => {
         const fetchUser = async () => {
           try {
-            const response = await axios.get('http://13.125.168.244:8080/members/info');
+            const response = await axios.get('http://localhost:8080/members/info');
             setUsers([response.data]); 
           } catch (error) {
             console.error('API 서버오류', error);
@@ -52,7 +52,7 @@ function UserRecord() {
 
       // 백엔드에서 받아오기 
       const fetchRecords = async () => {
-        const response = await axios.get('http://13.125.168.244:8080/records');
+        const response = await axios.get('http://localhost:8080/records');
         setrecords(response.data);
       };
 

@@ -494,7 +494,7 @@
 
 
 
-"proxy": "http://13.125.168.244:3000",
+"proxy": "http://localhost:8080",
   
 
 

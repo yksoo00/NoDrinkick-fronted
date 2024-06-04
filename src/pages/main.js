@@ -15,7 +15,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import LogoDrawer from './Rent';
+import LogoDrawer from './rent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSun, faMoon, } from '@fortawesome/free-solid-svg-icons';
 import Userinfo from '../component/userinfo';

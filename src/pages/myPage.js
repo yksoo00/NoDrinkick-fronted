@@ -33,7 +33,7 @@ function UserList() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('http://13.125.168.244:8080/members/info');
+        const response = await axios.get('http://localhost:8080/members/info');
         setUserData(response.data);
       } catch (error) {
         console.error('API 서버오류', error);

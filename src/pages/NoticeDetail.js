@@ -52,7 +52,7 @@ const NoticeDetail = () => {
 
   const fetchNotice = async () => {
     try {
-      const response = await axios.get(`http://13.125.168.244:8080/notices/${noticeId}`);
+      const response = await axios.get(`http://localhost:8080/notices/${noticeId}`);
       setNotice(response.data);
     } catch (error) {
       console.error('Error fetching notice details:', error);
@@ -61,7 +61,7 @@ const NoticeDetail = () => {
 
   const handleEdit = async () => {
     try {
-      await axios.put(`http://13.125.168.244:8080/notices/${noticeId}`, editedNotice);
+      await axios.put(`http://localhost:8080/notices/${noticeId}`, editedNotice);
       // 수정된 공지사항 정보를 다시 불러와 화면에 반영
       fetchNotice();
       // 수정 후 입력 폼 초기화
@@ -75,7 +75,7 @@ const NoticeDetail = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://13.125.168.244:8080/notices/${noticeId}`);
+      await axios.delete(`http://localhost:8080/notices/${noticeId}`);
       // 삭제가 완료되면 Notice 페이지로 이동
       history.push('/notice');
     } catch (error) {
