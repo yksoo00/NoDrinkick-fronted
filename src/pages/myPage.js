@@ -21,7 +21,7 @@ import { removeToken } from '../services/loginService';
 function UserList() {
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({});
-  const [editedUserData, setEditedUserData] = useState({});
+  const [editedUserData, setEditedUserData] = useState({ license: false }); // 기본 인증여부를 NO로 설정
   const [isEditing, setIsEditing] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -36,7 +36,7 @@ function UserList() {
       try {
         const data = await fetchUserData();
         setUserData(data);
-        setEditedUserData(data);
+        setEditedUserData({ ...data, license: false }); // 기본 인증여부를 NO로 설정
 
         // 프로필 이미지를 가져와 설정합니다.
         const imageUrl = await fetchUserProfileImage(data.memberId);
@@ -51,8 +51,6 @@ function UserList() {
     };
     fetchData();
   }, []);
-
-  
 
   useEffect(() => {
     const token = localStorage.getItem('jwtToken');
@@ -150,7 +148,7 @@ function UserList() {
       setEditedUserData(data);
       setIsUploading(false);
       alert('프로필 사진이 성공적으로 업데이트되었습니다.');
-  
+
       // 업로드된 이미지로 프로필 이미지 URL을 다시 가져옴
       const imageUrl = await fetchUserProfileImage(userData.memberId);
       setProfileImageUrl(imageUrl);
@@ -158,20 +156,18 @@ function UserList() {
       const uploadData = new FormData();
       uploadData.append('file', selectedFile); // 올바른 파일 변수로 대체하십시오.
       uploadData.append('id', data.username); // 업데이트된 사용자 데이터의 username을 사용합니다.
-  
+
       // 추가 업로드 요청을 보냅니다.
       await axios.post('http://127.0.0.1:8080/mypageUpload', uploadData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-      
+
     } catch (error) {
       console.error('프로필 사진 업데이트 오류:', error);
       alert('프로필 사진 업데이트 중 오류가 발생했습니다.');
       setIsUploading(false);
-
-      
     }
   };
 
@@ -270,7 +266,6 @@ function UserList() {
               <input type="text" name="email" value={editedUserData.email} onChange={handleInputChange} />
               <input type="text" name="phoneNum" value={editedUserData.phoneNum} onChange={handleInputChange} />
               <input type="password" name="password" value={editedUserData.password} onChange={handleInputChange} /> {/* 비밀번호 입력 필드 */}
-              <input type="checkbox" name="license" checked={editedUserData.license} onChange={handleInputChange} />
               <button onClick={handleSaveProfile}><FontAwesomeIcon icon={faSave} /> 저장</button>
               <button onClick={handleCancelEdit}><FontAwesomeIcon icon={faTimes} /> 취소</button>
             </div>
@@ -290,7 +285,7 @@ function UserList() {
         </div>
         <div className="picture-all">
           <div className="license-details-verification">
-            <p>인증여부 : {editedUserData.license ? 'YES' : 'NO'}</p>
+            <p>인증여부 : {userData.license ? 'YES' : 'NO'}</p>
           </div>
           <div>
             <button className="picture-button">운전면허증 등록</button>
@@ -322,4 +317,3 @@ function UserList() {
 }
 
 export default UserList;
-

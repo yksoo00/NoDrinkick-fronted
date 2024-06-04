@@ -6,7 +6,7 @@ import MainImageB from '../assets/Main.png';
 import Logo2 from '../assets/Logo2.png';
 import Logo2_Dark from '../assets/Logo2_Dark.png';
 import DarkMode from '../component/darkmode'; 
-import addMembers from 'C:/NoDrinkick-fronted/src/services/addMembers';
+import addMembers from '../services/addMembers';
 
 function SignUpPage() {
     const [darkModeEnabled, setDarkModeEnabled] = useState(
