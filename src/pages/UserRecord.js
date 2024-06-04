@@ -173,7 +173,7 @@ function UserRecord() {
           <div className="Record-userinfo-container">
           {users.map((user) => (
             <div key={user.username} className="Record-userinfo-area">
-              <p><span>{user.name}</span> 님 환영합니다</p>
+              <p><span>{user.name}</span>님 이용기록</p>
               </div>
                  ))}
           </div>

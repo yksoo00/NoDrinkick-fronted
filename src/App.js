@@ -20,6 +20,7 @@ import BluetoothDetail from './pages/BluetoothDetails';
 import './styles/App.css';
 
 function App() {
+
   useEffect(() => {
     const currentPath = window.location.pathname;
     // '/home' 및 '/LoginForm' 경로에서는 토큰 체크를 건너뜁니다.

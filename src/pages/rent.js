@@ -11,6 +11,7 @@ import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { faBeerMugEmpty } from '@fortawesome/free-solid-svg-icons';
 import { faFaceLaugh } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 아이콘 정의
+import { useMediaQuery } from '@mui/material';
 function Rent({ open, onClose }) {
  
   let [Alc, setAlc] = useState(false); 
@@ -18,6 +19,7 @@ function Rent({ open, onClose }) {
   const [ws, setWs] = useState(null);
   const [wsMessages, setWsMessages] = useState([]); // WebSocket 메시지 상태 추가
   const [isTestOpen, setisTestOpen] = useState(false);
+  const isLargeScreen = useMediaQuery('(min-width:1440px) and (max-height:1440px)');
 
   const handleStartTest = () => {
     fetchMemberInfoAndConnect();
@@ -90,13 +92,13 @@ function Rent({ open, onClose }) {
         onOpen={() => {}}
         sx={{ 
           '& .MuiDrawer-paper': { 
-            height: 430,
+            height: 400,
             borderTopLeftRadius: '20px', 
             borderTopRightRadius: '20px', 
 
            }, }}
       >
-
+        <div className='Rent-All'>
         <div className="Box-1">
          <img className="KickBoardImage" src={KickBoardImage} alt="KickBoardImage" />
             <h2 className="KickBoardName">노드링킥 1</h2>
@@ -116,9 +118,18 @@ function Rent({ open, onClose }) {
                         <label className="Bell-Text">벨 울리기</label>
                     </Button>
                 </div>
-
-              <Button variant="contained"  style={{left:'5%', backgroundColor: '#2d2c28', color: '#ffffff', height:'10vh' ,width: '90vw' }} >
-          <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold' }}>대여하기</Typography>
+                </div>
+                <Button
+        variant="contained"
+        style={{
+          left: isLargeScreen ? '27.5%' :'5%',
+          backgroundColor: '#2d2c28',
+          color: '#ffffff',
+          height: '10vh',
+          width: isLargeScreen ? '44.2vw' : '90vw'
+        }}
+      >
+          <Typography variant="h6" sx={{fontFamily: 'Pretendard-Bold', fontSize : '20px' }}>대여하기</Typography>
         </Button>
 
       </SwipeableDrawer>

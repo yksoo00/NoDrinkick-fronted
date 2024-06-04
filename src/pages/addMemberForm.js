@@ -31,11 +31,12 @@ function SignUpPage() {
         password: '',
         phoneNum: '',
         email: '',
-        license: false,
-        imagePath: ''
+        imagePath: '',
+        licenseImagePath: '' 
     });
 
     const [imageFile, setImageFile] = useState(null);
+    const [licenseFile, setLicenseImageFile] = useState(null);
 
     const history = useHistory();
 
@@ -51,9 +52,13 @@ function SignUpPage() {
         setImageFile(e.target.files[0]);
     };
 
+    const handleLicenseFileChange = (e) => {
+        setLicenseImageFile(e.target.files[0]);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         const memberDto = {
             name: userInfo.name,
             username: userInfo.username,
@@ -62,25 +67,34 @@ function SignUpPage() {
             email: userInfo.email,
             license: userInfo.license === "true"
         };
-
+    
         const formData = new FormData();
         formData.append('imgFile', imageFile);
+        formData.append('licenseFile', licenseFile); // Add the license image file
         formData.append('memberDto', new Blob([JSON.stringify(memberDto)], { type: 'application/json' }));
-
+    
         try {
-
+            // 회원가입 요청
             const response = await axios.post('http://13.125.168.244:8080/members/add', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data' // 요청의 Content-Type 설정
                 }
             });
+    
             console.log('회원가입 성공:', response.data);
+    
+            // 회원가입이 성공하면 이미지 파일과 사용자 이름을 /mypageUpload로 전송
+            
+            
+    
             window.location.href = '/home';
         } catch (error) {
-            console.error('회원가입 에러:', error.response.data);
+            console.error('회원가입 에러:', error.response?.data || error.message);
             // 에러 처리 로직
         }
     };
+    
+    
 
     const handleRedirectToHome = () => {
         history.push('/home'); 
@@ -144,14 +158,20 @@ function SignUpPage() {
                     className="input-field"
                     placeholder="E-mail" />
                 </div>
+
                 <div>
-                        <input type="file" 
-                            name="image"
-                            onChange={handleFileChange}
-                            className="input-field"
-                            placeholder="사용자 얼굴 사진 경로"/>
-                    </div>
-                
+                    <input type="file" 
+                    name="image" 
+                    onChange={handleFileChange} 
+                    className="input-field-Image" />
+                </div>
+                <div>
+                    <input type="file" 
+                     name="licenseImage" 
+                    onChange={handleLicenseFileChange} 
+                    className="input-field-Image" />
+                </div>
+
                 <button  className={`Signupbutton ${darkModeEnabled ? 'dark-mode' : ''}`} type="submit">회원가입</button>
                 <button  className={`HomeButton ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={handleRedirectToHome}>홈화면</button>
             </form>

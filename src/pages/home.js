@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import HomeImage from '../assets/Main.png';
+import HomeImage from '../assets/Main2.png';
 import Logo2 from '../assets/Logo2.png';
 import Logo2_Dark from '../assets/Logo2_Dark.png';
 import '../styles/App.css';
@@ -41,7 +41,7 @@ function Home() {
         ) : (
           <img src={Logo2} alt="Logo2" className="HomeLogo2" />
         )}
-        <div className={`Logo-Text2 ${darkModeEnabled ? 'dark-mode' : ''}`}>
+        <div className={`HomeLogo-Text2 ${darkModeEnabled ? 'dark-mode' : ''}`}>
           NO <br /> DRINKICK
         </div>
       </div>

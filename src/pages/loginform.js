@@ -47,12 +47,13 @@ const LoginForm = () => {
 
   return (
     <div className="login-page">
-            <div className={`Logo-Text2 ${darkModeEnabled ? 'dark-mode' : ''}`}>NO <br></br>DRINKICK</div>
+            <div className={`Logo-Text ${darkModeEnabled ? 'dark-mode' : ''}`}>NO <br></br>DRINKICK</div>
         {darkModeEnabled ? (
         <img src={Logo2_Dark} alt="Logo2_Dark" className="Logo2_Dark" />
       ) : (
         <img src={Logo2} alt="Logo2" className="Logo2" />
       )}
+      <div className='MainImageAndShape'>
       <img src={MainImage} alt="Main" className="main-image" />
       <div className="switch-container LoginDark">
         <DarkMode onChange={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
@@ -94,6 +95,7 @@ const LoginForm = () => {
             회원가입
           </button>
         </div>
+     </div>
      </div>
     </div>
   );

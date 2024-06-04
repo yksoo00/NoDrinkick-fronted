@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import LogoImage from '../assets/Logo2_Dark.png';
-import LogoImage2 from '../assets/Logo2.png';
 import '../styles/main.css';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
@@ -27,8 +26,6 @@ const Main = () => {
   const [map, setMap] = useState(null);
   const [darkModeEnabled, setDarkModeEnabled] = useState(localStorage.getItem('darkModeEnabled') === 'true');
   const [logoMarker, setLogoMarker] = useState(null);
-  const [isMapDarkened, setIsMapDarkened] = useState(false);
-  const [rentClicked, setRentClicked] = useState(false);
 
   const history = useHistory();
   const location = useLocation();

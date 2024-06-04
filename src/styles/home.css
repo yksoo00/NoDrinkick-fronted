@@ -70,22 +70,22 @@
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); 
 }
 
-.Logo-Text2 {
-  margin-left: 20px; 
+.HomeLogo-Text2 {
   color: #FFFFFF;
   font-family: 'Pretendard-Bold';
   font-size: 20px;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); 
+  margin-left: 20px;
 }
 
-.Logo-Text2.dark-mode {
+.HomeLogo-Text2.dark-mode {
   color: #000000;
 }
 
 .HomeText {
   color: #020202;
   font-family: 'Pretendard-Bold';
-  font-size: 25px;
+  font-size: 20px;
   margin-bottom: 200px;
 }
 
@@ -148,7 +148,13 @@
 @media screen and (max-width: 720px) and (max-height: 1440px) {
   body, html {
     height: 100%;
+    margin: 0;
+    padding: 0;
     overflow: hidden; 
+  }
+
+  .full-height {
+    height: 100vh; /* 100% of the viewport height */
   }
 
   .ImageAndShape {
@@ -169,7 +175,7 @@
     position: absolute;
     width: 100%;
     height: 50%;
-    border-radius: 10px;
+    border-radius: 0px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-right: 0;
   }
@@ -179,21 +185,20 @@
     justify-content: center;
     align-items: center;
     flex-direction: column; 
-    width: 90%;
-    height: 30%;
+    width: 85%;
+    height: 40%;
+    opacity: 0.9;
     border-radius: 10px;
     background-color: #2d2c28; 
-    opacity: 0.95;
     transition: background-color 1.0s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 10%;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
   }
 
   .HomeShape.dark-mode {
     background-color: #2d2c28; 
-    opacity: 0.95;
+    opacity: 0.9;
     transition: background-color 1.0s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
   }
 
   .LogoAndText {
@@ -206,30 +211,30 @@
 
   .HomeLogo2,
   .HomeLogo2_Dark {
-    margin-top: 5px;
-    width: 40px;
-    height: 40px;
+    margin-top: 2px;
+    width: 30px;
+    height: 30px;
     transition: all 0.5s ease;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); 
   }
 
-  .Logo-Text2 {
-    margin-left: 5px; 
+  .HomeLogo-Text2 {
     color: #FFFFFF;
     font-family: 'Pretendard-Bold';
-    font-size: 20px;
+    font-size: 12px;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); 
+    margin-left: 10px;
   }
 
   .HomeText {
     color: #FFFFFF;
     font-family: 'Pretendard-Bold';
     font-size: 15px;
-    margin-bottom: 100px;
+    margin-bottom: 80px;
   }
 
   .HomeLoginButton {
-    width: 150px;
+    width: 50%;
     height: 30px;
     background-color: #ffffff;
     color: #020202;
@@ -242,12 +247,20 @@
     cursor: pointer; 
     transition: background-color 1.0s ease; 
     transition: color 1.0s ease; 
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); 
+    margin-bottom: 20px;
+  }
+
+  .HomeLoginButton.dark-mode {
+    background-color: #ffffff;
+    color: #2d2c28;
+    transition: background-color 1.0s ease; 
+    transition: color 1.0s ease; 
   }
 
   .HomeSignUpButton {
-    width: 150px;
+    width: 50%;
     height: 30px;
     background-color: #ffffff;
     color: #020202;
@@ -261,5 +274,12 @@
     transition: background-color 1.0s ease; 
     transition: color 1.0s ease; 
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); 
+  }
+
+  .HomeSignUpButton.dark-mode {
+    background-color: #ffffff;
+    color: #2d2c28;
+    transition: background-color 1.0s ease; 
+    transition: color 1.0s ease; 
   }
 }

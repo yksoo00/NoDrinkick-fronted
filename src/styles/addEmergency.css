@@ -1,10 +1,8 @@
-
-.form {
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-}
-
+body {
+    height: 100vh; /* 화면 높이의 100%로 설정 */
+    margin: 0; /* 기본 마진 제거 */
+  }
+  
 .SOS-BOX {
     width: 300px;
     height: 400px;

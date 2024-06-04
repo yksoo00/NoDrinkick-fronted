@@ -13,7 +13,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box'; 
 
-import { removeToken } from '../services/loginService';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 아이콘 정의
 import { faUser } from '@fortawesome/free-solid-svg-icons'; //마이페이지 아이콘
@@ -23,14 +22,11 @@ import { faUserPlus } from '@fortawesome/free-solid-svg-icons'; //비상연락�
 import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; //비상연락망 목록 아이콘
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
 import { faBell } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Notices = () => {
   const [open, setOpen] = useState(false); 
   const [notices, setNotices] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [users, setUsers] = useState([]);
   const [newNotice, setNewNotice] = useState({ title: '', content: '' });
   const [darkModeEnabled, setDarkModeEnabled] = useState(
     localStorage.getItem('darkModeEnabled') === 'true'
