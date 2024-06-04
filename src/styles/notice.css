@@ -162,3 +162,8 @@
   font-family: 'Pretendard-Semibold'; 
 }
 
+.notice-username {
+  margin-left: auto;
+  padding-left: 10px;
+  color: grey;
+}

@@ -30,36 +30,25 @@ const Notices = () => {
   const [notices, setNotices] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [users, setUsers] = useState([]);
   const [newNotice, setNewNotice] = useState({ title: '', content: '' });
   const [darkModeEnabled, setDarkModeEnabled] = useState(
     localStorage.getItem('darkModeEnabled') === 'true'
   );
   const history = useHistory();
 
-
   useEffect(() => {
-    // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
     if (darkModeEnabled) {
       document.body.classList.add('dark-mode');
     } else {
       document.body.classList.remove('dark-mode');
     }
-    // 다크 모드 상태를 localStorage에 저장합니다.
     localStorage.setItem('darkModeEnabled', darkModeEnabled);
   }, [darkModeEnabled]);
 
   const fetchNotices = async () => {
     const response = await axios.get('http://13.125.168.244:8080/notices');
     setNotices(response.data);
-  };
-
-  const searchNotices = async () => {
-    if (!searchTerm) {
-      fetchNotices();
-    } else {
-      const response = await axios.get(`http://13.125.168.244:8080/notices/search?query=${searchTerm}`);
-      setNotices(response.data);
-    }
   };
 
   const handleCreate = async () => {
@@ -111,7 +100,6 @@ const Notices = () => {
     }
     history.push(path);
   };
-
 
   useEffect(() => {
     fetchNotices();
@@ -186,17 +174,6 @@ const Notices = () => {
         </List>
       </Drawer>
       <div>
-      <div className="search-bar">
-        <input 
-          type="text"
-          className="search-input" 
-          placeholder="검색어" 
-          value={searchTerm} 
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ color: '#FFFFFF' }}
-        />
-        <button className="search-button" onClick={searchNotices}>검색</button>
-      </div>
       <button className="add-button" onClick={() => setIsModalOpen(true)}>공지사항 추가하기</button>
       
       {isModalOpen && (
@@ -221,17 +198,23 @@ const Notices = () => {
         </div>
       )}
 
-          <div className="Full-notice">
-            {notices.map((notice, index) => (
-             <div className="notice-button" key={notice.id} onClick={() => handleTitleClick(notice.noticeId)}>
-                <span className="notice-number">{index + 1}</span>
-                 <span>{notice.title}</span>
+<div className="Full-notice">
+          {notices.map((notice, index) => (
+            <div className="notice-button" key={notice.id} onClick={() => handleTitleClick(notice.noticeId)}>
+              <span className="notice-number">{index + 1}</span>
+              <span>{notice.title}</span>
+              <div className="notice-username-full">
+                <div key={notice.username} className="notice-username">
+                  <p><span style={{ color: 'yellow' }}>{notice.username}</span></p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
-    </div>
+      </div>
     </div>
   );
 }
 
 export default Notices;
+

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Home from './pages/home';
 import myPage from './pages/myPage';
@@ -20,6 +20,28 @@ import BluetoothDetail from './pages/BluetoothDetails';
 import './styles/App.css';
 
 function App() {
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    // '/home' 및 '/LoginForm' 경로에서는 토큰 체크를 건너뜁니다.
+    if (currentPath !== '/home' && currentPath !== '/loginform' && currentPath !== '/addmemberform') {
+      const jwtToken = localStorage.getItem('jwtToken');
+      if (!jwtToken) {
+        // 토큰이 없으면 홈 페이지로 리다이렉트
+        window.location.href = "/home";
+      } else {
+        // 토큰 디코딩 및 만료 시간 확인
+        const decodedToken = decodeJwtToken(jwtToken);
+        const expirationTime = decodedToken.exp * 1000; // 초 단위이므로 밀리초로 변환
+        const currentTime = Date.now();
+        if (currentTime > expirationTime) {
+          // 토큰이 만료되었으면 로그인 페이지로 리다이렉트하고 토큰 삭제
+          localStorage.removeItem('jwtToken');
+          window.location.href = "/LoginForm";
+        }
+      }
+    }
+  }, []);
+
   return (
     <Router>
       <Switch>
@@ -45,6 +67,17 @@ function App() {
       </Switch>
     </Router>
   );
+}
+
+// JWT 토큰 디코딩 함수
+function decodeJwtToken(token) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+
+  return JSON.parse(jsonPayload);
 }
 
 export default App;
