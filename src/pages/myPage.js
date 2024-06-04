@@ -1,8 +1,8 @@
-import React, { useState, useEffect,useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import '../styles/myPage.css';
-import { fetchUserData, updateUserProfile, uploadUserImage, deleteUser } from '../services/userService';
+import { fetchUserData, updateUserProfile, uploadUserImage, deleteUser, fetchUserProfileImage, fetchLicenseImage } from '../services/userService';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,10 +15,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { faHouse, faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSignOutAlt, faBook, faSave, faTimes, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { removeToken } from '../services/loginService';
-
 
 function UserList() {
   const [open, setOpen] = useState(false);
@@ -27,11 +25,11 @@ function UserList() {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [showConfirmation, setShowConfirmation] = useState(false); 
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [profileImageUrl, setProfileImageUrl] = useState('');
+  const [licenseImageUrl, setLicenseImageUrl] = useState('');
   const history = useHistory();
   const [darkModeEnabled, setDarkModeEnabled] = useState(localStorage.getItem('darkModeEnabled') === 'true');
-
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,6 +37,14 @@ function UserList() {
         const data = await fetchUserData();
         setUserData(data);
         setEditedUserData(data);
+
+        // 프로필 이미지를 가져와 설정합니다.
+        const imageUrl = await fetchUserProfileImage(data.memberId);
+        setProfileImageUrl(imageUrl);
+
+        // 운전면허 이미지를 가져와 설정합니다.
+        const licenseImgUrl = await fetchLicenseImage(data.memberId);
+        setLicenseImageUrl(licenseImgUrl);
       } catch (error) {
         console.error('사용자 데이터를 가져오는 중 오류 발생:', error);
       }
@@ -46,14 +52,14 @@ function UserList() {
     fetchData();
   }, []);
 
+  
+
   useEffect(() => {
     const token = localStorage.getItem('jwtToken');
     if (!token) {
       history.push('/');
     }
   }, [history]);
-
-
 
   useEffect(() => {
     // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
@@ -68,7 +74,6 @@ function UserList() {
 
   const toggleDrawer = () => {
     setOpen(!open);
-
   };
 
   const handleClickPage = (pageName) => {
@@ -98,7 +103,6 @@ function UserList() {
     }
     history.push(path);
   };
-
 
   const handleLogout = () => {
     removeToken();
@@ -141,20 +145,16 @@ function UserList() {
 
   const handleUploadImage = async () => {
     try {
-      // 실제 사용자 데이터 객체로 `userData`를 대체하십시오.
       const data = await uploadUserImage(userData.memberId, selectedFile);
-  
-      // 새로운 프로필 이미지 정보로 사용자 데이터를 업데이트합니다.
       setUserData(data);
       setEditedUserData(data);
-  
-      // 업로드 상태를 false로 설정합니다.
       setIsUploading(false);
-  
-      // 업데이트 성공 알림을 사용자에게 표시합니다.
       alert('프로필 사진이 성공적으로 업데이트되었습니다.');
   
-      // 추가 업로드를 위한 폼 데이터를 준비합니다.
+      // 업로드된 이미지로 프로필 이미지 URL을 다시 가져옴
+      const imageUrl = await fetchUserProfileImage(userData.memberId);
+      setProfileImageUrl(imageUrl);
+
       const uploadData = new FormData();
       uploadData.append('file', selectedFile); // 올바른 파일 변수로 대체하십시오.
       uploadData.append('id', data.username); // 업데이트된 사용자 데이터의 username을 사용합니다.
@@ -165,10 +165,13 @@ function UserList() {
           'Content-Type': 'multipart/form-data'
         }
       });
+      
     } catch (error) {
       console.error('프로필 사진 업데이트 오류:', error);
       alert('프로필 사진 업데이트 중 오류가 발생했습니다.');
-      setIsUploading(false); // 오류 발생 시 업로드 상태를 초기화합니다.
+      setIsUploading(false);
+
+      
     }
   };
 
@@ -185,7 +188,7 @@ function UserList() {
     try {
       await deleteUser(userData.memberId);
       alert('회원 탈퇴가 성공적으로 이루어졌습니다.');
-      history.push('/'); 
+      history.push('/');
     } catch (error) {
       console.error('회원 탈퇴 오류:', error);
       alert('회원 탈퇴 중 오류가 발생했습니다.');
@@ -202,125 +205,121 @@ function UserList() {
       }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2,  color: darkModeEnabled ? '#2d2c28' : '#FFFFFF'}}>
+            <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2, color: darkModeEnabled ? '#2d2c28' : '#FFFFFF'}}>
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" sx={{fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 마이페이지 </Typography>
           </Box>
           <Box />
           <Box>
-          <IconButton 
-          color="inherit" 
-          onClick={() => history.push('/main')}
-          style={{ color: darkModeEnabled ? '#000000' : '#ffffff' }}
-        >
-          <FontAwesomeIcon icon={faHouse} />
-        </IconButton>
-                    </Box>
-
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        anchor="left"
-        open={open}
-        onClose={() => setOpen(false)}
-
-        onOpen={() => setOpen(true)}
-        sx={{zIndex: 999}}
+          <IconButton
+        color="inherit"
+        onClick={() => history.push('/main')}
+        style={{ color: darkModeEnabled ? '#000000' : '#ffffff' }}
       >
-        <List>
-          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
+        <FontAwesomeIcon icon={faHouse} />
+      </IconButton>
+    </Box>
+  </Toolbar>
+</AppBar>
+<Drawer
+  anchor="left"
+  open={open}
+  onClose={() => setOpen(false)}
+  onOpen={() => setOpen(true)}
+  sx={{ zIndex: 999 }}
+>
+  <List>
+    {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
+      <ListItem
+        button
+        key={text}
+        sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
+        onClick={() => handleClickPage(text)}
+      >
+        <ListItemIcon>
+          {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style={{ marginLeft: 3 }} />}
+          {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style={{ marginLeft: 4 }} />}
+          {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{ marginLeft: 3 }} />}
+          {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{ marginLeft: 3 }} />}
+          {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{ marginLeft: 3 }} />}
+          {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{ marginLeft: 3 }} />}
+        </ListItemIcon>
+        <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+          {text}
+        </Typography>
+      </ListItem>
+    ))}
+  </List>
+</Drawer>
 
-            <ListItem
-              button
-              key={text}
-              sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
-              onClick={() => handleClickPage(text)}
-            >
-              <ListItemIcon>
-                {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style={{ marginLeft: 3 }} />}
-                {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style={{ marginLeft: 4 }} />}
-                {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{ marginLeft: 3 }} />}
-                {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{ marginLeft: 3 }} />}
-                {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{ marginLeft: 3 }} />}
-                {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{ marginLeft: 3 }} />}
-              </ListItemIcon>
-              <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-
-                {text}
-              </Typography>
-            </ListItem>
-          ))}
-
-        </List>
-      </Drawer>
-      
-      <Box>
-      <div className="myPage">
-          <div className="user-info-container">
-            <div className="user-info-all">
-              <div className="user-info">
-                <img src={editedUserData.imagePath} alt="프로필 사진" className="User-Image" />
-                <div className="UserText">
-                  <p>{editedUserData.name} 님<br />환영합니다</p>
-                </div>
-                <button onClick={handleEditImage} className="profile-edit-button"><FontAwesomeIcon icon={faCamera} /> 프로필 사진 수정</button>
-              </div>
-              <div className="user-profile_details">
-                {isEditing ? (
-                  <div>
-                    <input type="text" name="email" value={editedUserData.email} onChange={handleInputChange} />
-                    <input type="text" name="phoneNum" value={editedUserData.phoneNum} onChange={handleInputChange} />
-                    <input type="password" name="password" value={editedUserData.password} onChange={handleInputChange} /> {/* 비밀번호 입력 필드 */}
-                    <input type="checkbox" name="license" checked={editedUserData.license} onChange={handleInputChange} />
-                    <button onClick={handleSaveProfile}><FontAwesomeIcon icon={faSave} /> 저장</button>
-                    <button onClick={handleCancelEdit}><FontAwesomeIcon icon={faTimes} /> 취소</button>
-                  </div>
-                ) : (
-                  <div>
-                    <p>ID: {editedUserData.username} <br /><br />
-                      이메일: {editedUserData.email} <br /><br />
-                      전화번호: {editedUserData.phoneNum}</p>
-                    <button className="user-profile__edit-button" onClick={handleEditProfile}>수정</button>
-                  </div>
-                )}
-              </div>
+<Box>
+  <div className="myPage">
+    <div className="user-info-container">
+      <div className="user-info-all">
+        <div className="user-info">
+          <img src={profileImageUrl} alt="프로필 사진" className="User-Image" />
+          <div className="UserText">
+            <p>{editedUserData.name} 님<br />환영합니다</p>
+          </div>
+          <button onClick={handleEditImage} className="profile-edit-button"><FontAwesomeIcon icon={faCamera} /> 프로필 사진 수정</button>
+        </div>
+        <div className="user-profile_details">
+          {isEditing ? (
+            <div>
+              <input type="text" name="email" value={editedUserData.email} onChange={handleInputChange} />
+              <input type="text" name="phoneNum" value={editedUserData.phoneNum} onChange={handleInputChange} />
+              <input type="password" name="password" value={editedUserData.password} onChange={handleInputChange} /> {/* 비밀번호 입력 필드 */}
+              <input type="checkbox" name="license" checked={editedUserData.license} onChange={handleInputChange} />
+              <button onClick={handleSaveProfile}><FontAwesomeIcon icon={faSave} /> 저장</button>
+              <button onClick={handleCancelEdit}><FontAwesomeIcon icon={faTimes} /> 취소</button>
             </div>
-            <div className="license-all">
-              <div className="license-details-item">
-                <img src={editedUserData.licenseImage} alt="Driver's License" className="license-image" />
-              </div>
-              <div className="picture-all">
-                <div className="license-details-verification">
-                  <p>인증여부 : {editedUserData.license ? 'YES' : 'NO'}</p>
-                </div>
-                <div>
-                  <button className="picture-button">운전면허증 등록</button>
-                </div>
-              </div>
+          ) : (
+            <div>
+              <p>ID: {editedUserData.username} <br /><br />
+                이메일: {editedUserData.email} <br /><br />
+                전화번호: {editedUserData.phoneNum}</p>
+              <button className="user-profile__edit-button" onClick={handleEditProfile}>수정</button>
             </div>
-            {isUploading && (
-              <div className="profile-image-upload">
-                <input type="file" accept="image/*" onChange={handleFileChange} />
-                <button onClick={handleUploadImage}><FontAwesomeIcon icon={faSave} /> 수정하기</button>
-                <button onClick={handleCancelUpload}><FontAwesomeIcon icon={faTimes} /> 취소</button>
-              </div>
-            )}
-            {showConfirmation && (
-              <div className="withdrawal-confirmation">
-                <p>정말로 탈퇴하시겠습니까?</p>
-                <button onClick={handleWithdrawal}>확인</button>
-                <button onClick={() => setShowConfirmation(false)}>취소</button>
-              </div>
-            )}
-            {!showConfirmation && (
-              <button onClick={() => setShowConfirmation(true)}>탈퇴하기</button>
-            )}
+          )}
+        </div>
+      </div>
+      <div className="license-all">
+        <div className="license-details-item">
+          <img src={licenseImageUrl} alt="Driver's License" className="license-image" />
+        </div>
+        <div className="picture-all">
+          <div className="license-details-verification">
+            <p>인증여부 : {editedUserData.license ? 'YES' : 'NO'}</p>
+          </div>
+          <div>
+            <button className="picture-button">운전면허증 등록</button>
           </div>
         </div>
-      </Box>
+      </div>
+      {isUploading && (
+        <div className="profile-image-upload">
+          <input type="file" accept="image/*" onChange={handleFileChange} />
+          <button onClick={handleUploadImage}><FontAwesomeIcon icon={faSave} /> 수정하기</button>
+          <button onClick={handleCancelUpload}><FontAwesomeIcon icon={faTimes} /> 취소</button>
+        </div>
+      )}
+      {showConfirmation && (
+        <div className="withdrawal-confirmation">
+          <p>정말로 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
+          <button onClick={handleWithdrawal}>예, 탈퇴합니다</button>
+          <button onClick={() => setShowConfirmation(false)}>아니요, 취소합니다</button>
+        </div>
+      )}
+      <div>
+        <button onClick={() => setShowConfirmation(true)}>회원 탈퇴</button>
+      </div>
     </div>
-  );
+  </div>
+</Box>
+</div>
+);
 }
 
 export default UserList;
+

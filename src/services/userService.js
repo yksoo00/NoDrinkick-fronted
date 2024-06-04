@@ -27,7 +27,7 @@ export const uploadUserImage = async (memberId, selectedFile) => {
   }
 
   const formData = new FormData();
-  formData.append('imgFile', selectedFile);
+  formData.append('imgFile', selectedFile); // 변수명 오타 수정
 
   try {
     const response = await axios.patch(`http://localhost:8080/members/img/${memberId}`, formData, {
@@ -51,3 +51,23 @@ export const deleteUser = async (memberId) => {
     throw error;
   }
 };
+
+export const fetchUserProfileImage = async (memberId) => {
+  try {
+    const response = await axios.get(`http://localhost:8080/api/files/profile/${memberId}`);
+    return response.data; // 이미지 경로를 반환
+  } catch (error) {
+    console.error('프로필 이미지 가져오기 오류:', error);
+    throw error;
+  }
+};
+
+export const fetchLicenseImage = async (memberId) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/files/license/${memberId}`);
+      return response.data; // 이미지 경로를 반환
+    } catch (error) {
+      console.error('운전면허 이미지 가져오기 오류:', error);
+      throw error;
+    }
+  };
