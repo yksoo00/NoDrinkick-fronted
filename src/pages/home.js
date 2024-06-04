@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import BackMp4 from '../assets/Main2_animation.mp4';
+import HomeImage from '../assets/Main.png';
+import Logo2 from '../assets/Logo2.png';
+import Logo2_Dark from '../assets/Logo2_Dark.png';
 import '../styles/App.css';
-import '../styles/home.css'; 
+import '../styles/home.css';
 import DarkMode from '../component/darkmode';
 
 function Home() {
@@ -10,13 +12,11 @@ function Home() {
   );
 
   useEffect(() => {
-    // Update the body class based on darkModeEnabled
     if (darkModeEnabled) {
       document.body.classList.add('dark-mode');
     } else {
       document.body.classList.remove('dark-mode');
     }
-    // Save the dark mode state to localStorage
     localStorage.setItem('darkModeEnabled', darkModeEnabled);
   }, [darkModeEnabled]);
 
@@ -25,14 +25,27 @@ function Home() {
   };
 
   return (
-    <div className={`home-container ${darkModeEnabled ? 'dark-mode' : ''}`} >
-      <div className={`home-gif ${darkModeEnabled ? 'dark-mode' : ''}`}>
-        <video autoPlay loop muted className="background-video">
-          <source src={BackMp4} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+    <div className={`HomeContainer ${darkModeEnabled ? 'dark-mode' : ''}`}>
+      <div className={`ImageAndShape ${darkModeEnabled ? 'dark-mode' : ''}`}>
+        <img src={HomeImage} alt="Home" className="HomeImage" />
+        <div className={`HomeShape ${darkModeEnabled ? 'dark-mode' : ''}`}>
+          <div className={`HomeText ${darkModeEnabled ? 'dark-mode' : ''}`}>노드링킥에 오신 것을 환영합니다</div> 
+          <button className={`HomeLoginButton ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={() => { window.location.href = '/loginform'; }}>로그인</button>
+          <button className={`HomeSignUpButton ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={() => { window.location.href = '/addmemberform'; }}>회원 가입</button>
+          </div>
+            </div>
+      <DarkMode darkModeEnabled={darkModeEnabled} onChange={toggleDarkMode} />
+      <div className="LogoAndText">
+        {darkModeEnabled ? (
+          <img src={Logo2_Dark} alt="Logo2_Dark" className="HomeLogo2_Dark" />
+        ) : (
+          <img src={Logo2} alt="Logo2" className="HomeLogo2" />
+        )}
+        <div className={`Logo-Text2 ${darkModeEnabled ? 'dark-mode' : ''}`}>
+          NO <br /> DRINKICK
+        </div>
       </div>
-    </div> 
+    </div>
   );
 }
 
