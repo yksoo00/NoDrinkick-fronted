@@ -1,3 +1,0 @@
-services
-용도: 백엔드 API와 통신하는 함수들을 저장하는 폴더입니다.
-설계: 기능별로 파일을 분리합니다. 예를 들어, 사용자 관련 API 호출은 userService.js, 상품 관련 API 호출은 productService.js에 정의합니다.

@@ -6,6 +6,7 @@ import MainImageB from '../assets/Main.png';
 import Logo2 from '../assets/Logo2.png';
 import Logo2_Dark from '../assets/Logo2_Dark.png';
 import DarkMode from '../component/darkmode'; 
+import addMembers from '../services/addMembers';
 
 function SignUpPage() {
     const [darkModeEnabled, setDarkModeEnabled] = useState(
@@ -31,12 +32,13 @@ function SignUpPage() {
         password: '',
         phoneNum: '',
         email: '',
+        license: false,
         imagePath: '',
-        licenseImagePath: '' 
+        licenseImagePath: '' // New state for license image path
     });
 
     const [imageFile, setImageFile] = useState(null);
-    const [licenseFile, setLicenseImageFile] = useState(null);
+    const [licenseFile, setLicenseImageFile] = useState(null); // New state for license image file
 
     const history = useHistory();
 
@@ -58,7 +60,7 @@ function SignUpPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         const memberDto = {
             name: userInfo.name,
             username: userInfo.username,
@@ -67,26 +69,29 @@ function SignUpPage() {
             email: userInfo.email,
             license: userInfo.license === "true"
         };
-    
+
         const formData = new FormData();
         formData.append('imgFile', imageFile);
-        formData.append('licenseFile', licenseFile); // Add the license image file
+        formData.append('licenseFile', licenseFile); // 라이선스 파일 추가
         formData.append('memberDto', new Blob([JSON.stringify(memberDto)], { type: 'application/json' }));
-    
+
         try {
             // 회원가입 요청
-            const response = await axios.post('http://13.125.168.244:8080/members/add', formData, {
+            await addMembers(formData);
+
+            /*
+            // 회원가입이 성공하면 이미지 파일과 사용자 이름을 /mypageUpload로 전송
+            const uploadData = new FormData();
+            uploadData.append('file', imageFile);
+            //uploadData.append('licenseFile', licenseFile); // 라이선스 이미지 파일 추가
+            uploadData.append('id', userInfo.username); // 사용자 이름을 'id' 필드에 추가
+
+            await axios.post('http://127.0.0.1:8080/mypageUpload', uploadData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data' // 요청의 Content-Type 설정
+                    'Content-Type': 'multipart/form-data'
                 }
             });
-    
-            console.log('회원가입 성공:', response.data);
-    
-            // 회원가입이 성공하면 이미지 파일과 사용자 이름을 /mypageUpload로 전송
-            
-            
-    
+            */
             window.location.href = '/home';
         } catch (error) {
             console.error('회원가입 에러:', error.response?.data || error.message);
@@ -99,7 +104,7 @@ function SignUpPage() {
     const handleRedirectToHome = () => {
         history.push('/home'); 
     };
-
+    
     return (
         <div className="signup-container">
 
@@ -159,17 +164,15 @@ function SignUpPage() {
                     placeholder="E-mail" />
                 </div>
 
-                <div>
-                    <input type="file" 
-                    name="image" 
-                    onChange={handleFileChange} 
-                    className="input-field-Image" />
-                </div>
-                <div>
-                    <input type="file" 
-                     name="licenseImage" 
-                    onChange={handleLicenseFileChange} 
-                    className="input-field-Image" />
+                <div className='fileChoose'>
+                     <div className={`input-field-Image ${darkModeEnabled ? 'dark-mode' : ''}`}>
+                         <label for="image">회원얼굴 사진 : </label>
+                             <input type="file" name="image" onChange={handleFileChange} className="input-field-Image" />
+                     </div>
+                    <div className="input-field-Image">
+                         <label for="licenseImage">운전면허증 사진 : </label>
+                             <input type="file" name="licenseImage" onChange={handleLicenseFileChange} className="input-field-Image" />
+                     </div>
                 </div>
 
                 <button  className={`Signupbutton ${darkModeEnabled ? 'dark-mode' : ''}`} type="submit">회원가입</button>

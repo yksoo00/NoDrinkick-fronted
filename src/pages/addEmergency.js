@@ -12,8 +12,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import axios from 'axios';
-import { removeToken } from '../services/loginService';
+import { fetchUserData } from '../services/userService'; // userService import 추가
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons'; 
@@ -25,7 +24,7 @@ import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; 
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; 
 import { faBell } from '@fortawesome/free-solid-svg-icons'; 
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+
 
 import addEmergencyContact from '../services/addEmergency.js';
 
@@ -51,18 +50,6 @@ function AddEmergency() {
         localStorage.setItem('darkModeEnabled', darkModeEnabled);
       }, [darkModeEnabled]);
 
-    const fetchUserData = async () => {
-        try {
-
-            const response = await axios.get('http://13.125.168.244:8080/members/info');
-
-            const user = response.data;
-            setUsername(user.name); // 사용자 이름을 설정합니다.
-            setPhoneNum(user.phoneNum); // 사용자 휴대폰 번호를 설정합니다.
-        } catch (error) {
-            console.error('API 서버오류', error);
-        }
-    };
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -119,7 +106,7 @@ function AddEmergency() {
 
         try {
 
-          const messageWithUsername = `이름 : ${username}, 휴대폰 번호 : ${PhoneNum}, 메시지 : ${formData.message}`;
+          const messageWithUsername = `이름 : ${formData.name}, \n휴대폰 번호: ${formData.phoneNum}, \n메시지: ${formData.message}`;
 
             await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum, message: messageWithUsername }); 
             alert('저장되었습니다!');
