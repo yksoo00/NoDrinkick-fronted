@@ -12,16 +12,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box'; 
-
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 아이콘 정의
-import { faUser } from '@fortawesome/free-solid-svg-icons'; //마이페이지 아이콘
-import { faHouse } from '@fortawesome/free-solid-svg-icons'; //마이페이지 아이콘
-import { faClipboard } from '@fortawesome/free-solid-svg-icons'; //이용내역 아이콘
-import { faUserPlus } from '@fortawesome/free-solid-svg-icons'; //비상연락망 추가 아이콘
-import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; //비상연락망 목록 아이콘
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
-import { faBell } from '@fortawesome/free-solid-svg-icons'; //이용약관 아이콘
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faHouse, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell } from '@fortawesome/free-solid-svg-icons';
+import { fetchNotices, createNotice } from '../services/noticesService';
 
 const Notices = () => {
   const [open, setOpen] = useState(false); 
@@ -31,6 +24,7 @@ const Notices = () => {
   const [darkModeEnabled, setDarkModeEnabled] = useState(
     localStorage.getItem('darkModeEnabled') === 'true'
   );
+  const [userRole, setUserRole] = useState('');
   const history = useHistory();
 
   useEffect(() => {
@@ -108,8 +102,24 @@ const Notices = () => {
     const token = localStorage.getItem('jwtToken');
     if (!token) {
       history.push('/loginform');
+    } else {
+      // Assuming the token has user information including role
+      const user = JSON.parse(atob(token.split('.')[1]));
+      setUserRole(user.role);
     }
   }, [history]);
+
+  const handleAddNoticeClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCreateClick = () => {
+    if (userRole !== 'ADMIN') {
+      alert('관리자만 작성 가능합니다.');
+    } else {
+      handleCreate();
+    }
+  };
 
   return (
     <div style={{
@@ -172,26 +182,39 @@ const Notices = () => {
         </List>
       </Drawer>
       <div>
-        <button className="add-button" onClick={() => setIsModalOpen(true)}>공지사항 추가하기</button>
+        <button 
+          className="add-button" 
+          onClick={handleAddNoticeClick}
+        >
+          공지사항 추가하기
+        </button>
         {isModalOpen && (
           <div className="modal">
             <div className="modal-content">
               <input 
                 className="notice-title"
                 type="text"
-                placeholder="제목" 
+                placeholder="제목 (관리자만 작성 가능)" 
                 value={newNotice.title} 
                 onChange={(e) => setNewNotice({ ...newNotice, title: e.target.value })}
               />
               <input 
                 className="notice-text"
                 type="text"
-                placeholder="내용" 
+                placeholder="내용 (관리자만 작성 가능)" 
                 value={newNotice.content} 
                 onChange={(e) => setNewNotice({ ...newNotice, content: e.target.value })}
               />
             </div>
-            <button className="notice-addbutton" onClick={handleCreate}>추가</button>
+            <button 
+              className="notice-addbutton" 
+              onClick={handleCreateClick}
+              style={{ 
+                cursor: userRole === 'ADMIN' ? 'pointer' : 'not-allowed' 
+              }}
+            >
+              추가
+            </button>
           </div>
         )}
         <div className="Full-notice">
@@ -201,11 +224,11 @@ const Notices = () => {
               <span>{notice.title}</span>
               <div className="notice-username-full">
                 <div key={notice.username} className="notice-username">
-                  <p><span style={{ color: 'yellow' }}>{notice.username}</span></p>
+                <p><span style={{ color: 'yellow' }}>{notice.username}</span></p>
                 </div>
               </div>
-            </div>
-          ))}
+            </div>         
+           ))}
         </div>
       </div>
     </div>
@@ -213,4 +236,3 @@ const Notices = () => {
 }
 
 export default Notices;
-

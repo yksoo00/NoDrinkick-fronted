@@ -12,8 +12,8 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import axios from 'axios';
-import { removeToken } from '../services/loginService';
+
+
 import { fetchUserData } from '../services/userService'; // userService import 추가
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -26,8 +26,7 @@ import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; 
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; 
 import { faBell } from '@fortawesome/free-solid-svg-icons'; 
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { faBook } from '@fortawesome/free-solid-svg-icons';
+
 
 import addEmergencyContact from '../services/addEmergency.js';
 
@@ -109,7 +108,9 @@ function AddEmergency() {
 
         try {
 
-          const messageWithUsername = `이름 : ${username}, \n휴대폰 번호: ${PhoneNum}, \n메지지: ${formData.message}`;
+
+          const messageWithUsername = `이름 : ${formData.name}, \n휴대폰 번호: ${formData.phoneNum}, \n메시지: ${formData.message}`;
+
 
             await addEmergencyContact({ ...formData, phoneNum: formattedPhoneNum, message: messageWithUsername }); 
             alert('저장되었습니다!');

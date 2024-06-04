@@ -15,28 +15,29 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSignOutAlt, faBook, faSave, faTimes, faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSave, faTimes, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { removeToken } from '../services/loginService';
 
 function UserList() {
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({});
-  const [editedUserData, setEditedUserData] = useState({ license: false }); // 기본 인증여부를 NO로 설정
+  const [editedUserData, setEditedUserData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showEditConfirmation, setShowEditConfirmation] = useState(false);
   const [profileImageUrl, setProfileImageUrl] = useState('');
   const [licenseImageUrl, setLicenseImageUrl] = useState('');
   const history = useHistory();
   const [darkModeEnabled, setDarkModeEnabled] = useState(localStorage.getItem('darkModeEnabled') === 'true');
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await fetchUserData();
         setUserData(data);
-        setEditedUserData({ ...data, license: false }); // 기본 인증여부를 NO로 설정
+        setEditedUserData(data);
 
         // 프로필 이미지를 가져와 설정합니다.
         const imageUrl = await fetchUserProfileImage(data.memberId);
@@ -51,13 +52,6 @@ function UserList() {
     };
     fetchData();
   }, []);
-
-  useEffect(() => {
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      history.push('/');
-    }
-  }, [history]);
 
   useEffect(() => {
     // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
@@ -101,6 +95,7 @@ function UserList() {
     }
     history.push(path);
   };
+
 
   const handleLogout = () => {
     removeToken();
@@ -148,7 +143,7 @@ function UserList() {
       setEditedUserData(data);
       setIsUploading(false);
       alert('프로필 사진이 성공적으로 업데이트되었습니다.');
-
+  
       // 업로드된 이미지로 프로필 이미지 URL을 다시 가져옴
       const imageUrl = await fetchUserProfileImage(userData.memberId);
       setProfileImageUrl(imageUrl);
@@ -156,21 +151,25 @@ function UserList() {
       const uploadData = new FormData();
       uploadData.append('file', selectedFile); // 올바른 파일 변수로 대체하십시오.
       uploadData.append('id', data.username); // 업데이트된 사용자 데이터의 username을 사용합니다.
-
+  
       // 추가 업로드 요청을 보냅니다.
       await axios.post('http://127.0.0.1:8080/mypageUpload', uploadData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-
+      
     } catch (error) {
       console.error('프로필 사진 업데이트 오류:', error);
       alert('프로필 사진 업데이트 중 오류가 발생했습니다.');
       setIsUploading(false);
+
+      
     }
   };
 
+
+  
   const handleEditImage = () => {
     setIsUploading(true);
   };
@@ -190,6 +189,13 @@ function UserList() {
       alert('회원 탈퇴 중 오류가 발생했습니다.');
     }
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      history.push('/loginform');
+    }
+  }, [history]);
 
   return (
     <div className="terms-container">
@@ -256,25 +262,31 @@ function UserList() {
         <div className="user-info">
           <img src={profileImageUrl} alt="프로필 사진" className="User-Image" />
           <div className="UserText">
-            <p>{editedUserData.name} 님<br />환영합니다</p>
+            <p className='UserText2'>{editedUserData.name} 님<br />환영합니다</p>
           </div>
+          <div className='LogoutAndEdit'>
           <button onClick={handleEditImage} className="profile-edit-button"><FontAwesomeIcon icon={faCamera} /> 프로필 사진 수정</button>
-        </div>
+          <button className="user-logout-button" onClick={handleLogout}  >로그아웃</button>
+          <button className='ExitButton' onClick={() => setShowConfirmation(true)}>회원 탈퇴</button>
+          </div>
+       </div>
         <div className="user-profile_details">
           {isEditing ? (
-            <div>
+            <div className='user-profile_details-all'>
               <input type="text" name="email" value={editedUserData.email} onChange={handleInputChange} />
               <input type="text" name="phoneNum" value={editedUserData.phoneNum} onChange={handleInputChange} />
-              <input type="password" name="password" value={editedUserData.password} onChange={handleInputChange} /> {/* 비밀번호 입력 필드 */}
-              <button onClick={handleSaveProfile}><FontAwesomeIcon icon={faSave} /> 저장</button>
-              <button onClick={handleCancelEdit}><FontAwesomeIcon icon={faTimes} /> 취소</button>
+              <input type="password" name="password" value={editedUserData.password} onChange={handleInputChange} />
+                <div className='StoreAndCancelButton'>
+              <button className="StoreEdit" onClick={handleSaveProfile}><FontAwesomeIcon icon={faSave} /> 저장</button>
+              <button className="CancelEdit" onClick={handleCancelEdit}><FontAwesomeIcon icon={faTimes} /> 취소</button>
+              </div>
             </div>
           ) : (
             <div>
-              <p>ID: {editedUserData.username} <br /><br />
-                이메일: {editedUserData.email} <br /><br />
-                전화번호: {editedUserData.phoneNum}</p>
-              <button className="user-profile__edit-button" onClick={handleEditProfile}>수정</button>
+              <p>ID : {editedUserData.username} <br /><br />
+                이메일 : {editedUserData.email} <br /><br />
+                전화번호 : {editedUserData.phoneNum}</p>
+              <button className="user-profile-edit-button" onClick={handleEditProfile}>수정</button>
             </div>
           )}
         </div>
@@ -285,10 +297,7 @@ function UserList() {
         </div>
         <div className="picture-all">
           <div className="license-details-verification">
-            <p>인증여부 : {userData.license ? 'YES' : 'NO'}</p>
-          </div>
-          <div>
-            <button className="picture-button">운전면허증 등록</button>
+            <p>인증여부 : {editedUserData.license ? 'YES' : 'NO'}</p>
           </div>
         </div>
       </div>
@@ -299,11 +308,21 @@ function UserList() {
           <button onClick={handleCancelUpload}><FontAwesomeIcon icon={faTimes} /> 취소</button>
         </div>
       )}
-      {showConfirmation && (
-        <div className="withdrawal-confirmation">
-          <p>정말로 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
-          <button onClick={handleWithdrawal}>예, 탈퇴합니다</button>
-          <button onClick={() => setShowConfirmation(false)}>아니요, 취소합니다</button>
+       <div>
+            </div>
+            {showConfirmation && (
+              <>
+                <div className="overlay" />
+                <div className="confirmation-popup">
+                  <div className="confirmation-popup-text">정말로 탈퇴하시겠습니까?</div>
+                  <div className="Exit-confirmation">
+                    <button className='ExitYesButton' onClick={handleWithdrawal}>예</button>
+                    <button className='ExitNoButton' onClick={() => setShowConfirmation(false)}>아니요</button>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       )}
       <div>

@@ -5,12 +5,13 @@ import KickBoardImage from '../assets/KickBoard.png';
 import '../styles/Rent.css';
 import Test from '../component/test'
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { faBeerMugEmpty } from '@fortawesome/free-solid-svg-icons';
 import { faFaceLaugh } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 아이콘 정의
 import { useMediaQuery } from '@mui/material';
+import { sendEmergencyMessage } from'../services/rent';
+import { fetchUserData } from '../services/userService';
 function Rent({ open, onClose }) {
  
   let [Alc, setAlc] = useState(false); 
@@ -26,42 +27,38 @@ function Rent({ open, onClose }) {
   };
 
 
-    const fetchMemberInfoAndConnect = async () => {
-      try {
-        const memberInfo = await fetchUserData();
-        setMemberInfo(memberInfo);
+  const fetchMemberInfoAndConnect = async () => {
+    try {
+      const memberInfo = await fetchUserData();
+      setMemberInfo(memberInfo);
 
-        const username = encodeURIComponent(memberInfo.username); // 회원 정보 중 username 추출
+      const username = encodeURIComponent(memberInfo.username); // 회원 정보 중 username 추출
 
-        const wsUrl = `ws://192.168.42.197:8765/ws?username=${username}`;
-        const newWs = new WebSocket(wsUrl);
+      const wsUrl = `ws://192.168.42.197:8765/ws?username=${username}`;
+      const newWs = new WebSocket(wsUrl);
 
-        newWs.onopen = () => console.log("WebSocket 연결 성공");
+      newWs.onopen = () => console.log("WebSocket 연결 성공");
 
-        sendNumber();
-        newWs.onmessage = (event) => {
-          console.log("서버로부터 받은 메시지:", event.data);
-          setWsMessages(prevMessages => [...prevMessages, event.data]); // 새로운 메시지를 상태에 추가
+      sendNumber();
+      newWs.onmessage = (event) => {
+        console.log("서버로부터 받은 메시지:", event.data);
+        setWsMessages(prevMessages => [...prevMessages, event.data]); // 새로운 메시지를 상태에 추가
 
-          if (event.data === "33") {
-            sendMessageToAll();
-          }
+        if (event.data === "33") {
+          sendMessageToAll();
+        }
 
-          if(event.data === "5"){
-            Alc = true;
-            setAlc(Alc);
-          }
-        };
+        if(event.data === "5"){
+          Alc = true;
+          setAlc(Alc);
+        }
+      };
 
-        setWs(newWs);
-      } catch (error) {
-        console.error('API 호출 또는 WebSocket 연결 중 오류 발생:', error);
-      }
-    };
-
-   
-  
-
+      setWs(newWs);
+    } catch (error) {
+      console.error('API 호출 또는 WebSocket 연결 중 오류 발생:', error);
+    }
+  };
 
   const sendNumber = () => {
     if (ws && ws.readyState === WebSocket.OPEN) {

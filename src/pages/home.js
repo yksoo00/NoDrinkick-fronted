@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import HomeImage from '../assets/Main2.png';
 import Logo2 from '../assets/Logo2.png';
 import Logo2_Dark from '../assets/Logo2_Dark.png';
 import '../styles/App.css';
@@ -32,13 +31,13 @@ function Home() {
   return (
     <div className={`HomeContainer ${darkModeEnabled ? 'dark-mode' : ''}`}>
       <div className={`ImageAndShape ${darkModeEnabled ? 'dark-mode' : ''}`}>
-        <img src={HomeImage} alt="Home" className="HomeImage" />
+      <img className="HomeImage" src="https://s3.ap-northeast-2.amazonaws.com/nodrinkick.com/Animation.gif" alt="Animation" />
         <div className={`HomeShape ${darkModeEnabled ? 'dark-mode' : ''}`}>
           <div className={`HomeText ${darkModeEnabled ? 'dark-mode' : ''}`}>노드링킥에 오신 것을 환영합니다</div> 
           <button className={`HomeLoginButton ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={() => { window.location.href = '/loginform'; }}>로그인</button>
           <button className={`HomeSignUpButton ${darkModeEnabled ? 'dark-mode' : ''}`} onClick={() => { window.location.href = '/addmemberform'; }}>회원 가입</button>
-          </div>
-            </div>
+        </div>
+      </div>
       <DarkMode darkModeEnabled={darkModeEnabled} onChange={toggleDarkMode} />
       <div className="LogoAndText">
         {darkModeEnabled ? (

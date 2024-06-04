@@ -24,6 +24,7 @@ const NoticeDetail = () => {
   const [darkModeEnabled, setDarkModeEnabled] = useState(
     localStorage.getItem('darkModeEnabled') === 'true'
   );
+  const [userRole, setUserRole] = useState('');
   const history = useHistory();
 
   const toggleDrawer = () => {
@@ -49,6 +50,10 @@ const NoticeDetail = () => {
   };
 
   const handleEdit = async () => {
+    if (userRole !== 'ADMIN') {
+      alert('관리자만 수정 가능합니다.');
+      return;
+    }
     try {
       await editNotice(noticeId, editedNotice);
       fetchNotice();
@@ -60,6 +65,10 @@ const NoticeDetail = () => {
   };
 
   const handleDelete = async () => {
+    if (userRole !== 'ADMIN') {
+      alert('관리자만 삭제 가능합니다.');
+      return;
+    }
     try {
       await deleteNotice(noticeId);
       history.push('/notice');
@@ -76,6 +85,10 @@ const NoticeDetail = () => {
     const token = localStorage.getItem('jwtToken');
     if (!token) {
       history.push('/loginform');
+    } else {
+      // Assuming the token has user information including role
+      const user = JSON.parse(atob(token.split('.')[1]));
+      setUserRole(user.role);
     }
   }, [history]);
 
@@ -179,39 +192,38 @@ const NoticeDetail = () => {
         </div>
         <p className="NoticeContent">{notice.content}</p>
 
-        <div className="edit-form">
-          <div className="edit-form-button">
-            <input
-              className="notice-detail-edit-title"
-              type="text"
-              placeholder="수정할 제목"
-              value={editedNotice.title}
-              onChange={(e) => setEditedNotice({ ...editedNotice, title: e.target.value })}
-            />
-            <button 
-              className="notice-edit-edit" 
-              onClick={handleEdit}
-              disabled={!editedNotice.title || !editedNotice.content}
-              style={{ 
-                backgroundColor: editedNotice.title && editedNotice.content? '#F4E00B' : '',
-                borderColor: editedNotice.title && editedNotice.content 
-                ? '#F4E00B' : '',
-                transition: 'background-color 0.3s, border-color 0.3s',
-              }}
-            >
-              수정
-            </button>
-            <button className="notice-edit-delete" onClick={handleDelete}>삭제</button>
-          </div>
-          <input
-            className="notice-detail-edit-text"
-            type="text"
-            placeholder="수정할 내용"
-            value={editedNotice.content}
-            onChange={(e) => setEditedNotice({ ...editedNotice, content: e.target.value })}
-          />
+      <div className="edit-form">
+        <div className="edit-form-button">
+        <input
+          className="notice-detail-edit-title"
+          type="text"
+          placeholder="수정할 제목"
+          value={editedNotice.title}
+          onChange={(e) => setEditedNotice({ ...editedNotice, title: e.target.value })}
+        />
+           <button 
+  className="notice-edit-edit" 
+  onClick={handleEdit}
+  disabled={!editedNotice.title || !editedNotice.content}
+  style={{ 
+    backgroundColor: editedNotice.title && editedNotice.content ? '#F4E00B' : '',
+    borderColor: editedNotice.title && editedNotice.content ? '#F4E00B' : '',
+    transition: 'background-color 0.3s, border-color 0.3s',
+  }}
+>
+  수정
+</button>
+           <button className="notice-edit-delete"onClick={handleDelete}>삭제</button>
         </div>
+        <input
+          className="notice-detail-edit-text"
+          type="text"
+          placeholder="수정할 내용"
+          value={editedNotice.content}
+          onChange={(e) => setEditedNotice({ ...editedNotice, content: e.target.value })}
+        />
       </div>
+    </div>
     </div>
   );
 };

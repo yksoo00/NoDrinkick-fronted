@@ -14,8 +14,6 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 
-import { removeToken } from '../services/loginService';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons'; 
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
@@ -24,7 +22,6 @@ import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; 
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; 
 import { faBell } from '@fortawesome/free-solid-svg-icons'; 
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 function UserRecord() {
 

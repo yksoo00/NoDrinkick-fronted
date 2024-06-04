@@ -14,7 +14,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-import { removeToken } from '../services/loginService';
 import { getContacts, deleteContact, sendMessageToAll } from '../services/Emergency';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,8 +27,6 @@ import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { fa1 } from '@fortawesome/free-solid-svg-icons';
 import { fa2 } from '@fortawesome/free-solid-svg-icons';
 import { fa3 } from '@fortawesome/free-solid-svg-icons';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { faBook } from '@fortawesome/free-solid-svg-icons';
 
 function EmergencyContactsList() {
     const [contacts, setContacts] = useState([]);
