@@ -6,6 +6,7 @@ import { sendEmergencyMessage } from '../services/rent';
 import { fetchUserData, fetchUserProfileImage } from '../services/userService';
 import axios from 'axios';
 
+
 function Test({ isOpen, onClose}) {
   const [showMessage, setShowMessage] = useState(false);
   const [countdown, setCountdown] = useState(3);
@@ -21,14 +22,18 @@ function Test({ isOpen, onClose}) {
   const [profileImageUrl, setProfileImageUrl] = useState('');
   const [wsMessages, setWsMessages] = useState([]);
   const [ws, setWs] = useState(null);
-  const [buttonText, setButtonText] = useState("인증시작");
+  const [buttonText, setButtonText] = useState("대여하기 인증시작");
   const [AuthState, setAuthState] = useState();
+  const [StartReturn, setStartReturn] = useState(false);
+  const [showFailureMessage, setShowFailureMessage] = useState(false);
+  
 
-
+  // 메시지 출력
   const handleWebSocketMessage = (data) => {
     console.log("서버로부터 받은 메시지:", data);
     setWsMessages(prevMessages => [...prevMessages, data]);
 
+    // 메시지 상태
     switch (data) {
       case "33":
         sendMessageToAll();
@@ -46,7 +51,7 @@ function Test({ isOpen, onClose}) {
         setReturnFace(true);
         break;
       case "10":
-       setReturnFace(true);
+        setStartReturn(true);
         break;
 
       default:
@@ -54,17 +59,18 @@ function Test({ isOpen, onClose}) {
     }
   };
 
+    // 반납하기 메시지 전송 
     const sendNumber10 = () => {
       if (ws && ws.readyState === WebSocket.OPEN) {
-    ws.send('10');
+        console.log("웹소켓 연결 상태:", ws.readyState);
+        ws.send('10');
       } else {
         console.error('WebSocket이 연결 상태가 아닙니다.');
-         fetchMemberInfoAndConnect(); // WebSocket 연결이 없으면 다시 연결을 시도합니다.
-           ws.send('6');
-        }
-      };
+      }
+    };
 
-  const fetchMemberInfoAndConnect = async () => {
+  // 웹소켓 접속
+  const ConnectWebSocket = async () => {
     try {
       const memberInfo = await fetchUserData();
       setMemberInfo(memberInfo);
@@ -101,7 +107,6 @@ function Test({ isOpen, onClose}) {
         console.log('대여상태 변경:', response.data);
         setAuthState(response.data)
         onClose(); 
-        window.location.reload();
       } else {
         sendNumber(); 
         setShowMessage(true);
@@ -128,7 +133,6 @@ function Test({ isOpen, onClose}) {
   const handleAAA = async () => {
     try {
       await AAA();
-      window.location.reload(); 
     } catch (error) {
       console.error('AAA 함수 실행 중 오류 발생:', error);
     }
@@ -162,16 +166,17 @@ function Test({ isOpen, onClose}) {
     }
 
     return () => clearTimeout(timer);
-  }, [showMessage, showBreathMessage, showFaceRecognitionMessage, countdown, Alc, face]);
+  }, [showMessage, showBreathMessage, showFaceRecognitionMessage, countdown, Alc, face, StartReturn]);
 
   
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://13.125.168.244:8080/rent');
-        if (response.data !== "True") {
-          fetchMemberInfoAndConnect();
-        }
+        setAuthState(response.data);
+        
+          ConnectWebSocket();
+        
       } catch (error) {
         console.error('대여 상태 확인 중 오류 발생:', error);
       }
@@ -179,9 +184,6 @@ function Test({ isOpen, onClose}) {
   
     fetchData();
   }, []);
-  
-
-  
     
   useEffect(() => {
     if (Alc) {
@@ -264,7 +266,7 @@ function Test({ isOpen, onClose}) {
         )}
         {showFaceRecognitionMessage && (
           <>
-            <Typography variant="body1" sx={{ position: 'absolute', fontSize: 14, fontFamily: 'Pretendard-Bold', top: '80px', textAlign: 'center' }}>
+            <Typography variant="body1" sx={{ position: 'absolute', fontSize: 14, fontFamily: 'Pretendard-Bold', top: '100px', textAlign: 'center' }}>
               <span style={{ color: 'red' }}>얼굴 인식을 진행 중입니다.<br></br> 카메라에 얼굴을 인식해주세요</span>
             </Typography>
             <Typography variant="body1" sx={{ position: 'absolute', fontSize: 100, fontFamily: 'Pretendard-Bold', top: '120px', textAlign: 'center' }}>
@@ -294,7 +296,7 @@ function Test({ isOpen, onClose}) {
         <div className='testButton' >
         <Button
           variant="contained"
-          sx={{ position: 'absolute', backgroundColor: '#2d2c28', fontSize: 12, fontFamily: 'Pretendard-Bold', width: '30%', left: '50px',top:'360px'}}
+          sx={{ position: 'absolute', backgroundColor: '#2d2c28', fontSize: 12, fontFamily: 'Pretendard-Bold', width: '40%', left: '20px',top:'360px'}}
           onClick={handleStartAuth}
           disabled={isButtonDisabled}
         >
@@ -303,11 +305,11 @@ function Test({ isOpen, onClose}) {
 
         <Button
           variant="contained"
-          sx={{ position: 'absolute', backgroundColor: '#2d2c28', fontSize: 12, fontFamily: 'Pretendard-Bold', width: '30%', right: '50px', top:'360px'}}
+          sx={{ position: 'absolute', backgroundColor: '#2d2c28', fontSize: 12, fontFamily: 'Pretendard-Bold', width: '40%', right: '20px', top:'360px'}}
           onClick={sendNumber10}
           disabled={isButtonDisabled}
         >
-         반납하기
+         반납하기 인증시작
         </Button>
         </div>
       </div>

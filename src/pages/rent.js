@@ -1,11 +1,10 @@
-// Rent.js
 import React, { useState, useEffect } from 'react';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import KickBoardImage from '../assets/KickBoard.png';
 import '../styles/Rent.css';
-import Test from '../component/test'; // 파일명 대소문자 주의
+import Test from '../component/test'; 
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { faBeerMugEmpty, faFaceLaugh } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,18 +27,23 @@ function Rent({ open, onClose }) {
   const [AuthRentState, setAuthRentState] = useState(false); 
 
   useEffect(() => {
-    
-    fetchRentState()
-  }, [AuthRentState]);
+    fetchUserData().then(userData => {
+      setMemberInfo(userData);
+    }).catch(error => {
+      console.error('사용자 정보 가져오기 오류', error);
+    });
+
+    fetchRentState();
+  }, []);
+
   const fetchRentState = async () => {
     try {
       const response = await axios.get('http://13.125.168.244:8080/rent');
-      setAuthRentState(response.data); 
+      setAuthRentState(response.data);
     } catch (error) {
-      console.error('API 서버오류', error);
+      console.error('API 서버 오류', error);
     }
-};
-
+  };
 
   const handleWebSocketMessage = (data) => {
     console.log("서버로부터 받은 메시지:", data);
@@ -61,20 +65,12 @@ function Rent({ open, onClose }) {
       case "50":
         setReturnFace(true);
         break;
+   
       default:
         break;
-    }
-  };
-
-  // const sendNumber6 = () => {
-  //   if (ws && ws.readyState === WebSocket.OPEN) {
-  //     ws.send('6');
-  //   } else {
-  //     console.error('WebSocket이 연결 상태가 아닙니다.');
-  //     fetchMemberInfoAndConnect(); // WebSocket 연결이 없으면 다시 연결을 시도합니다.
-  //     ws.send('6');
-  //   }
-  // };
+       }
+     };
+  
 
   // const fetchMemberInfoAndConnect = async () => {
   //   try {
@@ -109,6 +105,8 @@ function Rent({ open, onClose }) {
     setIsTestOpen(false);
   };
 
+  const isLicenseValid = memberInfo.license === true;
+
 
   return (
     <div>
@@ -131,17 +129,19 @@ function Rent({ open, onClose }) {
             <h2 className="KickBoardName">노드링킥 1</h2>
           </div>
           <div className="Test-Both">
-            <Button 
+          <Button 
               className="Face" 
               style={{backgroundColor: '#e8e8e8', marginBottom:'20px', marginLeft: '20px', marginRight: '10px', padding:'20px' }} 
               onClick={handleFaceButtonClick}
-              disabled={AuthRentState}
+              disabled={AuthRentState || !isLicenseValid}
             >
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <FontAwesomeIcon icon={faFaceLaugh} style={{fontSize: '25px', color:'#000000', marginRight:'20px'}} />
                 <FontAwesomeIcon icon={faBeerMugEmpty} style={{fontSize: '25px', color:'#000000'}} />
               </div>
-              <label className="Face-Test" style={{ color: AuthRentState ? 'red' : '#000000' }}> {AuthRentState ? '대여 중 입니다' : '대여하기'} </label>
+              <label className="Face-Test" style={{ color: AuthRentState || !isLicenseValid ? 'red' : '#000000' }}>
+                {AuthRentState ? '대여 중 입니다' : (!isLicenseValid ? '면허증 등록이 필요합니다' : '대여하기')}
+              </label>
             </Button>
             <Button className="Bell" style={{backgroundColor: '#e8e8e8' , marginBottom:'20px', marginRight: '20px', marginLeft: '10px', padding:'20px'}} 
                           disabled={AuthRentState}>
