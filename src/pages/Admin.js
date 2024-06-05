@@ -33,7 +33,7 @@ function Admin() {
       console.log(response.data); // API 응답 데이터 콘솔에 출력
       setUsers(response.data);
     } catch (error) {
-      console.error('API 서버오류', error);
+      console.error('API 서버 오류', error);
     }
   };
 
@@ -52,11 +52,12 @@ function Admin() {
     localStorage.setItem('darkModeEnabled', darkModeEnabled);
   }, [darkModeEnabled]);
 
-  // 사용자 인증 체크를 위한 useEffect
+  // 사용자 인증 체크 및 관리자 여부 확인을 위한 useEffect
   useEffect(() => {
     const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      history.push('/');
+    const role = localStorage.getItem('userRole'); // 사용자 역할 정보 가져오기
+    if (!token || role !== 'admin') {
+      history.push('/main'); // 비관리자 사용자는 다른 페이지로 리디렉션
     }
   }, [history]);
 
@@ -116,13 +117,6 @@ function Admin() {
       console.error('회원 정보 업데이트 오류:', error);
     }
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      history.push('/loginform');
-    }
-  }, [history]);
 
   return (
     <div style={{ backgroundColor: '#e8e8e8', paddingTop: '80px' }}> {/* 상단에 여백 추가 */}
