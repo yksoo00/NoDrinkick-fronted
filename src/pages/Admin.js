@@ -117,6 +117,13 @@ function Admin() {
     }
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      history.push('/loginform');
+    }
+  }, [history]);
+
   return (
     <div style={{ backgroundColor: '#e8e8e8', paddingTop: '80px' }}> {/* 상단에 여백 추가 */}
       <CssBaseline />
