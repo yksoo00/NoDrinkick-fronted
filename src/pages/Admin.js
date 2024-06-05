@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import '../styles/UserRecord.css';
+import { fetchUserData } from '../services/userService';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,34 +15,73 @@ import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import axios from 'axios';
+import { fetchLicenseImage } from '../services/userService';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHouse, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell } from '@fortawesome/free-solid-svg-icons';
 
 function Admin() {
   const history = useHistory();
-  const [open, setOpen] = useState(false); // 좌측 메뉴 상태
+  const [open, setOpen] = useState(false);
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null); // 선택된 사용자 상태
+  const [selectedUser, setSelectedUser] = useState(null);
   const [darkModeEnabled, setDarkModeEnabled] = useState(localStorage.getItem('darkModeEnabled') === 'true');
+  const [userData, setUserData] = useState(null);
+  const [licenseImages, setLicenseImages] = useState({});
 
-  // 사용자 목록을 불러오는 useEffect
-  const fetchFalseList = async () => {
+  const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/members/falselist');
-      console.log(response.data); // API 응답 데이터 콘솔에 출력
-      setUsers(response.data);
+      const userData = await fetchUserData();
+      setUserData(userData); // userData 전체 설정
+      console.log(userData.role);
     } catch (error) {
-      console.error('API 서버 오류', error);
+      console.error('사용자 정보 가져오기 오류:', error);
     }
   };
 
-  // 사용자 목록을 불러오는 useEffect
+  const fetchFalseList = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/members/falselist');
+      console.log(response.data);
+      setUsers(response.data);
+
+      // 라이센스 이미지들을 비동기적으로 가져옵니다.
+      const images = await Promise.all(
+        response.data.map(async (user) => {
+          if (user.license === false) {
+            const image = await fetchLicenseImage(user.memberId);
+            return { memberId: user.memberId, image };
+          }
+          return { memberId: user.memberId, image: null };
+        })
+      );
+
+      const imagesMap = images.reduce((acc, cur) => {
+        acc[cur.memberId] = cur.image;
+        return acc;
+      }, {});
+
+      setLicenseImages(imagesMap);
+    } catch (error) {
+      console.error('API 서버오류', error);
+    }
+  };
+
   useEffect(() => {
-    fetchFalseList();
+    fetchData();
   }, []);
 
-  // 다크 모드 설정을 위한 useEffect
+  useEffect(() => {
+    if (userData) {
+      console.log(userData);
+      if (userData.role === 'ADMIN') {
+        fetchFalseList(); // 사용자 목록 불러오기
+      } else {
+        history.push('/main'); // ADMIN이 아닌 경우 '/main'으로 리다이렉션
+      }
+    }
+  }, [userData, history]);
+
   useEffect(() => {
     if (darkModeEnabled) {
       document.body.classList.add('dark-mode');
@@ -52,21 +91,10 @@ function Admin() {
     localStorage.setItem('darkModeEnabled', darkModeEnabled);
   }, [darkModeEnabled]);
 
-  // 사용자 인증 체크 및 관리자 여부 확인을 위한 useEffect
-  useEffect(() => {
-    const token = localStorage.getItem('jwtToken');
-    const role = localStorage.getItem('userRole'); // 사용자 역할 정보 가져오기
-    if (!token || role !== 'admin') {
-      history.push('/main'); // 비관리자 사용자는 다른 페이지로 리디렉션
-    }
-  }, [history]);
-
-  // 좌측 메뉴 toggle 함수
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  // 페이지 이동 처리 함수
   const handleClickPage = (pageName) => {
     let path;
     switch (pageName) {
@@ -95,21 +123,19 @@ function Admin() {
     history.push(path);
   };
 
-  // 사용자 선택 처리 함수
   const handleSelectUser = (user) => {
-    console.log('사용자 선택:', user); // 선택된 사용자 정보 확인용 로그
+    console.log('사용자 선택:', user);
     setSelectedUser(user);
   };
 
-  // 사용자 라이센스 승인 처리 함수
   const handleApproveUser = async () => {
     try {
       if (selectedUser && selectedUser.memberId) {
         await axios.patch(`http://localhost:8080/members/${selectedUser.memberId}`, {
-          license: true, // 라이센스를 true로 업데이트
+          license: true,
         });
-        setSelectedUser(null); // 선택된 사용자 초기화
-        fetchFalseList(); // 사용자 목록을 다시 불러오거나 다른 작업을 수행할 수 있습니다.
+        setSelectedUser(null);
+        fetchFalseList();
       } else {
         console.error('선택된 사용자가 없습니다.');
       }
@@ -119,7 +145,7 @@ function Admin() {
   };
 
   return (
-    <div style={{ backgroundColor: '#e8e8e8', paddingTop: '80px' }}> {/* 상단에 여백 추가 */}
+    <div style={{ backgroundColor: '#e8e8e8', paddingTop: '80px' }}>
       <CssBaseline />
       <AppBar position="fixed" sx={{
         zIndex: 9999,
@@ -157,7 +183,7 @@ function Admin() {
             <ListItem
               button
               key={text}
-              sx={{ width: 150, paddingTop: 1, paddingBottom: 1, display: 'flex', alignItems: 'center', textAlign: 'center' }} // padding을 줄여 간격을 좁힘
+              sx={{ width: 150, paddingTop: 1, paddingBottom: 1, display: 'flex', alignItems: 'center', textAlign: 'center' }}
               onClick={() => handleClickPage(text)}
             >
               <ListItemIcon>
@@ -167,7 +193,7 @@ function Admin() {
                 {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{ marginLeft: 3 }} />}
                 {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{ marginLeft: 3 }} />}
                 {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{ marginLeft: 3 }} />}
-              </ListItemIcon>
+                </ListItemIcon>
               <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                 {text}
               </Typography>
@@ -176,12 +202,11 @@ function Admin() {
         </List>
       </Drawer>
       <div className="Admin">
-        {/* 사용자 목록 렌더링 */}
         {users.map((user) => (
           <div className="Records" key={user.memberId} onClick={() => handleSelectUser(user)}>
             <Checkbox
-              checked={selectedUser && selectedUser.memberId === user.memberId} // 선택된 사용자에 따라 체크 여부 설정
-              readOnly // 읽기 전용 설정
+              checked={selectedUser && selectedUser.memberId === user.memberId}
+              readOnly
             />
             <Typography variant="body1">
               {user.name} ({user.email})
@@ -191,24 +216,23 @@ function Admin() {
             ) : (
               <span style={{ color: 'red' }}>Pending Approval</span>
             )}
-            {/* 라이센스 이미지 표시 */}
-            {user.licenseImage && <img src={user.licenseImage} alt="License" width={100} />}
+            {licenseImages[user.memberId] && <img src={licenseImages[user.memberId]} alt="License" width={100} />}
           </div>
         ))}
-        {/* 선택된 사용자가 있을 경우, 승인 버튼 렌더링 */}
         {selectedUser && (
-          <div className="SelectedUser">
-            <Typography variant="body1">
-              선택된 사용자: {selectedUser.name} ({selectedUser.email})
-            </Typography>
-            <Button onClick={handleApproveUser}>
-              Approve License
-            </Button>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-export default Admin;
+                    <div className="SelectedUser">
+                    <Typography variant="body1">
+                      선택된 사용자: {selectedUser.name} ({selectedUser.email})
+                    </Typography>
+                    <Button onClick={handleApproveUser}>
+                      Approve License
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        }
+        
+        export default Admin;
+        
