@@ -79,19 +79,19 @@ function SignUpPage() {
             // 회원가입 요청
             await addMembers(formData);
 
-            /*
+            
             // 회원가입이 성공하면 이미지 파일과 사용자 이름을 /mypageUpload로 전송
             const uploadData = new FormData();
             uploadData.append('file', imageFile);
             //uploadData.append('licenseFile', licenseFile); // 라이선스 이미지 파일 추가
             uploadData.append('id', userInfo.username); // 사용자 이름을 'id' 필드에 추가
 
-            await axios.post('http://127.0.0.1:8080/mypageUpload', uploadData, {
+            await axios.post('http://192.168.110.176:5000/mypageUpload', uploadData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            */
+            
             window.location.href = '/home';
         } catch (error) {
             console.error('회원가입 에러:', error.response?.data || error.message);

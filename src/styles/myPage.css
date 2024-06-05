@@ -280,7 +280,7 @@
     flex-direction: row;
     gap: 10px;
     bottom: 10px;
-    left: 58%;
+    left: 55%;
     transform: translateX(-50%);
   }
   
@@ -296,7 +296,7 @@
     border-radius: 3px;
     cursor: pointer;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    margin-right: 80px;
+    margin-right: 50px;
   }
 
   .StoreAndCancelButton {
@@ -305,7 +305,7 @@
     align-items: center;
     flex-direction: column;
     position: absolute;
-    left: 72%;
+    left: 60%;
     top: 35%;
     transform: translateX(-50%);
     gap: 20px;
@@ -328,6 +328,115 @@
     width: 100px;
     height: 45px;
     font-size: 12px;
+    font-family: 'Pretendard-Bold'; 
+    background-color: #2d2c28;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .profile-edit-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20vw;
+    height: 30vh;
+    background-color: white;
+    border: 1px solid #2d2c28;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* 상단에 위치하도록 설정 */
+  }
+  
+  .profile-edit-popup-content {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .profile-edit-popup-title {
+    position: fixed;
+    display: flex;
+    text-align: center;
+    bottom: 6vw;
+    left: 75%;
+    width: 200px;
+    transform: translateX(-50%);
+    font-size: 20px;
+    font-family: 'Pretendard-Bold';
+  }
+  
+  .custom-file-upload {
+    position: absolute;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    width: 130px;
+    height: 30px;
+    font-size: 10px;
+    font-family: 'Pretendard-Bold'; 
+    background-color: #2d2c28;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 20px;
+    margin-top: 130px;
+  }
+  
+  
+  .custom-file-upload input[type="file"] {
+    display: none;
+  }
+  
+  .profile-edit-popup-file-input {
+    margin-left: 100px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .profile-edit-popup-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+  }
+  
+  .profile-edit-popup-Yes {
+    width: 60px;
+    height: 30px;
+    font-size: 10px;
+    font-family: 'Pretendard-Bold'; 
+    background-color: #2d2c28;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin-right: 10px;
+  }
+  
+  .profile-edit-popup-No {
+    width: 60px;
+    height: 30px;
+    font-size: 10px;
     font-family: 'Pretendard-Bold'; 
     background-color: #2d2c28;
     color: white;
@@ -366,7 +475,7 @@
   height: 70%;
   background-color: #D9D9D9;
   
-  margin-top: 15%;
+  margin-top: 12%;
   margin-left: 0;
   margin-right: 0;
 }
@@ -529,7 +638,7 @@
   padding-right: 10px;
   padding-bottom: 10px;
   background-color: #D9D9D9;
-  margin-top: 10%;
+  margin-top: 5%;
   width: 80%;
   height: 27vh;
 }
@@ -686,4 +795,112 @@ box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   z-index: 999; /* 팝업 뒤에 배경을 흐리게 하는 오버레이 */
 }
 
+.profile-edit-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: 30vh;
+  background-color: white;
+  border: 1px solid #2d2c28;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 상단에 위치하도록 설정 */
+}
+
+.profile-edit-popup-content {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.profile-edit-popup-title {
+  position: fixed;
+  display: flex;
+  text-align: center;
+  bottom: 25vw;
+  left: 52%;
+  width: 100%;
+  transform: translateX(-50%);
+  font-size: 18px;
+  font-family: 'Pretendard-Bold';
+}
+
+.custom-file-upload {
+  position: absolute;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  width: 130px;
+  height: 30px;
+  font-size: 10px;
+  font-family: 'Pretendard-Bold'; 
+  background-color: #2d2c28;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 20px;
+  margin-top: 130px;
+}
+
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+
+.profile-edit-popup-file-input {
+  margin-left: 100px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.profile-edit-popup-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 60px;
+}
+
+.profile-edit-popup-Yes {
+  width: 60px;
+  height: 30px;
+  font-size: 10px;
+  font-family: 'Pretendard-Bold'; 
+  background-color: #2d2c28;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  margin-right: 10px;
+}
+
+.profile-edit-popup-No {
+  width: 60px;
+  height: 30px;
+  font-size: 10px;
+  font-family: 'Pretendard-Bold'; 
+  background-color: #2d2c28;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
 }

@@ -152,7 +152,7 @@ function UserList() {
       uploadData.append('id', data.username); // 업데이트된 사용자 데이터의 username을 사용합니다.
   
       // 추가 업로드 요청을 보냅니다.
-      await axios.post('http://127.0.0.1:8080/mypageUpload', uploadData, {
+      await axios.post('http://192.168.15.176:5000/mypageUpload', uploadData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -166,8 +166,6 @@ function UserList() {
       
     }
   };
-
-
   
   const handleEditImage = () => {
     setIsUploading(true);
@@ -300,13 +298,6 @@ function UserList() {
           </div>
         </div>
       </div>
-      {isUploading && (
-        <div className="profile-image-upload">
-          <input type="file" accept="image/*" onChange={handleFileChange} />
-          <button onClick={handleUploadImage}><FontAwesomeIcon icon={faSave} /> 수정하기</button>
-          <button onClick={handleCancelUpload}><FontAwesomeIcon icon={faTimes} /> 취소</button>
-        </div>
-      )}
        <div>
             </div>
             {showConfirmation && (
@@ -321,6 +312,26 @@ function UserList() {
                 </div>
               </>
             )}
+         {isUploading && (
+  <>
+    <div className="overlay" />
+    <div className="profile-edit-popup">
+      <div className="profile-edit-popup-content">
+        <div className="profile-edit-popup-title">프로필 사진 수정</div>
+        <div className="profile-edit-popup-file-input">
+          <label className="custom-file-upload">
+            <input type="file" accept="image/*" onChange={handleFileChange} />
+            파일 선택
+          </label>
+        </div>
+        <div className="profile-edit-popup-buttons">
+          <button className="profile-edit-popup-Yes" onClick={handleUploadImage}><FontAwesomeIcon icon={faSave} /> 저장</button>
+          <button className="profile-edit-popup-No" onClick={handleCancelUpload}><FontAwesomeIcon icon={faTimes} /> 취소</button>
+        </div>
+      </div>
+    </div>
+  </>
+)}
           </div>
         </div>
       </Box>

@@ -16,7 +16,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import LogoDrawer from './Rent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSun, faMoon, } from '@fortawesome/free-solid-svg-icons';
+import { faPerson,faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSun, faMoon, } from '@fortawesome/free-solid-svg-icons';
 import Userinfo from '../component/userinfo';
 
 const Main = () => {
@@ -26,11 +26,11 @@ const Main = () => {
   const [map, setMap] = useState(null);
   const [darkModeEnabled, setDarkModeEnabled] = useState(localStorage.getItem('darkModeEnabled') === 'true');
   const [logoMarker, setLogoMarker] = useState(null);
+  const [userRole, setUserRole] = useState('');
 
   const history = useHistory();
   const location = useLocation();
 
-  
   useEffect(() => {
     if (darkModeEnabled) {
       document.body.classList.add('dark-mode');
@@ -72,6 +72,9 @@ const Main = () => {
         break;
       case '이용기록':
         path = '/UserRecord';
+        break;
+      case '관리자':
+        path = '/Admin';
         break;
 
       default:
@@ -153,6 +156,9 @@ const Main = () => {
     const token = localStorage.getItem('jwtToken');
     if (!token) {
       history.push('/loginform');
+    } else {
+      const user = JSON.parse(atob(token.split('.')[1]));
+      setUserRole(user.role);
     }
   }, [history]);
 
@@ -193,7 +199,7 @@ const Main = () => {
         sx={{ zIndex: 999 }}
       >
         <List>
-          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
+        {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항', ...(userRole === 'ADMIN' ? ['관리자'] : [])].map((text, index) => (
             <ListItem
               button
               key={text}
@@ -207,6 +213,7 @@ const Main = () => {
                 {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{ marginLeft: 3 }} />}
                 {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{ marginLeft: 3 }} />}
                 {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{ marginLeft: 3 }} />}
+                {text === '관리자' && <FontAwesomeIcon icon={faPerson} style={{ marginLeft: 3 }} />}
               </ListItemIcon>
               <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                 {text}

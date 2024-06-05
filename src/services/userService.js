@@ -63,11 +63,11 @@ export const fetchUserProfileImage = async (memberId) => {
 };
 
 export const fetchLicenseImage = async (memberId) => {
-    try {
-      const response = await axios.get(`http://13.125.168.244:8080/api/files/license/${memberId}`);
-      return response.data; // 이미지 경로를 반환
-    } catch (error) {
-      console.error('운전면허 이미지 가져오기 오류:', error);
-      throw error;
-    }
-  };
+  try {
+    const response = await axios.get(`http://13.125.168.244:8080/api/files/license/${memberId}`);
+    return response.data; // 이미지 경로를 반환
+  } catch (error) {
+    console.error('운전면허 이미지 가져오기 오류:', error);
+    throw error;
+  }
+};
