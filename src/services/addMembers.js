@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const addMembers = async (formData) => {
     try {
-        const response = await axios.post('http://localhost:8080/members/add', formData, {
+        const response = await axios.post('http://13.125.168.244:8080/members/add', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8080/notices';
+const BASE_URL = 'http://13.125.168.244:8080/notices';
 
 export const fetchNoticeDetail = async (noticeId) => {
     try {

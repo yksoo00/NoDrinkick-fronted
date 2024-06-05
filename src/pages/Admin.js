@@ -41,7 +41,7 @@ function Admin() {
 
   const fetchFalseList = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/members/falselist');
+      const response = await axios.get('http://13.125.168.244:8080/members/falselist');
       console.log(response.data);
       setUsers(response.data);
 
@@ -136,7 +136,7 @@ function Admin() {
     try {
       await Promise.all(
         selectedUsers.map(async (user) => {
-          await axios.patch(`http://localhost:8080/members/${user.memberId}`, {
+          await axios.patch(`http://13.125.168.244:8080/members/${user.memberId}`, {
             license: true,
           });
         })
