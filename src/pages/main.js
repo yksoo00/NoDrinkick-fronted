@@ -16,7 +16,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import LogoDrawer from './rent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
+import { faPerson,faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSun, faMoon, } from '@fortawesome/free-solid-svg-icons';
 import Userinfo from '../component/userinfo';
 
 const Main = () => {
@@ -27,9 +27,11 @@ const Main = () => {
   const [darkModeEnabled, setDarkModeEnabled] = useState(localStorage.getItem('darkModeEnabled') === 'true');
   const [logoMarker, setLogoMarker] = useState(null);
   const [userRole, setUserRole] = useState('');
+  const [userRole, setUserRole] = useState('');
 
   const history = useHistory();
   const location = useLocation();
+
 
   useEffect(() => {
     if (darkModeEnabled) {
@@ -72,6 +74,9 @@ const Main = () => {
         break;
       case '이용기록':
         path = '/UserRecord';
+        break;
+      case '관리자':
+        path = '/Admin';
         break;
       case '관리자':
         path = '/Admin';
@@ -156,6 +161,9 @@ const Main = () => {
     const token = localStorage.getItem('jwtToken');
     if (!token) {
       history.push('/loginform');
+    } else {
+      const user = JSON.parse(atob(token.split('.')[1]));
+      setUserRole(user.role);
     } else {
       const user = JSON.parse(atob(token.split('.')[1]));
       setUserRole(user.role);

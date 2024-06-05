@@ -129,11 +129,11 @@ function UserList() {
       setProfileImageUrl(imageUrl);
 
       const uploadData = new FormData();
-      uploadData.append('file', selectedFile);
-      uploadData.append('id', data.username);
-
-      // Send additional upload request
-      await axios.post('http://127.0.0.1:8080/mypageUpload', uploadData, {
+      uploadData.append('file', selectedFile); // 올바른 파일 변수로 대체하십시오.
+      uploadData.append('id', data.username); // 업데이트된 사용자 데이터의 username을 사용합니다.
+  
+      // 추가 업로드 요청을 보냅니다.
+      await axios.post('http://192.168.15.176:5000/mypageUpload', uploadData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -144,7 +144,7 @@ function UserList() {
       setIsUploading(false);
     }
   };
-
+  
   const handleEditImage = () => {
     setIsUploading(true);
   };
@@ -226,59 +226,54 @@ function UserList() {
         </List>
       </Drawer>
 
-      <Box>
-        <div className="myPage">
-          <div className="user-info-container">
-            <div className="user-info-all">
-              <div className="user-info">
-                <img src={profileImageUrl} alt="프로필 사진" className="User-Image" />
-                <div className="UserText">
-                  <p className='UserText2'>{editedUserData.name} 님<br />환영합니다</p>
-                </div>
-                <div className='LogoutAndEdit'>
-                  <button onClick={handleEditImage} className="profile-edit-button"><FontAwesomeIcon icon={faCamera} /> 프로필 사진 수정</button>
-                  <button className="user-logout-button" onClick={handleLogout}>로그아웃</button>
-                  <button className='ExitButton' onClick={() => setShowConfirmation(true)}>회원 탈퇴</button>
-                </div>
-              </div>
-              <div className="user-profile_details">
-                {isEditing ? (
-                  <div className='user-profile_details-all'>
-                    <input type="text" name="email" value={editedUserData.email} onChange={handleInputChange} />
-                    <input type="text" name="phoneNum" value={editedUserData.phoneNum} onChange={handleInputChange} />
-                    <input type="password" name="password" value={editedUserData.password} onChange={handleInputChange} />
-                    <div className='StoreAndCancelButton'>
-                      <button className="StoreEdit" onClick={handleSaveProfile}><FontAwesomeIcon icon={faSave} /> 저장</button>
-                      <button className="CancelEdit" onClick={handleCancelEdit}><FontAwesomeIcon icon={faTimes} /> 취소</button>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <p>ID : {editedUserData.username} <br /><br />
-                      이메일 : {editedUserData.email} <br /><br />
-                      전화번호 : {editedUserData.phoneNum}</p>
-                    <button className="user-profile-edit-button" onClick={handleEditProfile}>수정</button>
-                  </div>
-                )}
+<Box>
+  <div className="myPage">
+    <div className="user-info-container">
+      <div className="user-info-all">
+        <div className="user-info">
+          <img src={profileImageUrl} alt="프로필 사진" className="User-Image" />
+          <div className="UserText">
+            <p className='UserText2'>{editedUserData.name} 님<br />환영합니다</p>
+          </div>
+          <div className='LogoutAndEdit'>
+          <button onClick={handleEditImage} className="profile-edit-button"><FontAwesomeIcon icon={faCamera} /> 프로필 사진 수정</button>
+          <button className="user-logout-button" onClick={handleLogout}  >로그아웃</button>
+          <button className='ExitButton' onClick={() => setShowConfirmation(true)}>회원 탈퇴</button>
+          </div>
+       </div>
+        <div className="user-profile_details">
+          {isEditing ? (
+            <div className='user-profile_details-all'>
+              <input type="text" name="email" value={editedUserData.email} onChange={handleInputChange} />
+              <input type="text" name="phoneNum" value={editedUserData.phoneNum} onChange={handleInputChange} />
+              <input type="password" name="password" value={editedUserData.password} onChange={handleInputChange} />
+                <div className='StoreAndCancelButton'>
+              <button className="StoreEdit" onClick={handleSaveProfile}><FontAwesomeIcon icon={faSave} /> 저장</button>
+              <button className="CancelEdit" onClick={handleCancelEdit}><FontAwesomeIcon icon={faTimes} /> 취소</button>
               </div>
             </div>
-            <div className="license-all">
-              <div className="license-details-item">
-                <img src={licenseImageUrl} alt="Driver's License" className="license-image" />
-              </div>
-              <div className="picture-all">
-                <div className="license-details-verification">
-                  <p>인증여부 : {editedUserData.license ? 'YES' : 'NO'}</p>
-                </div>
-              </div>
+          ) : (
+            <div>
+              <p>ID : {editedUserData.username} <br /><br />
+                이메일 : {editedUserData.email} <br /><br />
+                전화번호 : {editedUserData.phoneNum}</p>
+              <button className="user-profile-edit-button" onClick={handleEditProfile}>수정</button>
             </div>
-            {isUploading && (
-              <div className="profile-image-upload">
-                <input type="file" accept="image/*" onChange={handleFileChange} />
-                <button onClick={handleUploadImage}><FontAwesomeIcon icon={faSave} /> 수정하기</button>
-                <button onClick={handleCancelUpload}><FontAwesomeIcon icon={faTimes} /> 취소</button>
-              </div>
-            )}
+          )}
+        </div>
+      </div>
+      <div className="license-all">
+        <div className="license-details-item">
+          <img src={licenseImageUrl} alt="Driver's License" className="license-image" />
+        </div>
+        <div className="picture-all">
+          <div className="license-details-verification">
+            <p>인증여부 : {editedUserData.license ? 'YES' : 'NO'}</p>
+          </div>
+        </div>
+      </div>
+       <div>
+            </div>
             {showConfirmation && (
               <>
                 <div className="overlay" />
@@ -291,21 +286,26 @@ function UserList() {
                 </div>
               </>
             )}
-            {isUploading && (
-              <>
-                <div className="overlay" />
-                <div className="profile-edit-popup">
-                  <div className="profile-edit-popup-content">
-                    <h2>프로필 사진 수정</h2>
-                    <input type="file" accept="image/*" onChange={handleFileChange} />
-                    <div className="profile-edit-popup-buttons">
-                      <button onClick={handleUploadImage}><FontAwesomeIcon icon={faSave} /> 저장</button>
-                      <button onClick={handleCancelUpload}><FontAwesomeIcon icon={faTimes} /> 취소</button>
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
+         {isUploading && (
+  <>
+    <div className="overlay" />
+    <div className="profile-edit-popup">
+      <div className="profile-edit-popup-content">
+        <div className="profile-edit-popup-title">프로필 사진 수정</div>
+        <div className="profile-edit-popup-file-input">
+          <label className="custom-file-upload">
+            <input type="file" accept="image/*" onChange={handleFileChange} />
+            파일 선택
+          </label>
+        </div>
+        <div className="profile-edit-popup-buttons">
+          <button className="profile-edit-popup-Yes" onClick={handleUploadImage}><FontAwesomeIcon icon={faSave} /> 저장</button>
+          <button className="profile-edit-popup-No" onClick={handleCancelUpload}><FontAwesomeIcon icon={faTimes} /> 취소</button>
+        </div>
+      </div>
+    </div>
+  </>
+)}
           </div>
         </div>
       </Box>

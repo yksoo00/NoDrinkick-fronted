@@ -520,5 +520,10 @@ input:focus, textarea:focus, select:focus {
     font-family: 'Pretendard-SemiBold';
     font-size: 10px;
     padding-bottom: 12px;
+    transition: color 0.5s ease; /* 다크 모드 전환에 대한 전환 효과 추가 */
   }
+
+  .dark-mode .input-field-Image label {
+    color: #000000; /* 다크 모드일 때 라벨 텍스트 색상 변경 */
+}
 }

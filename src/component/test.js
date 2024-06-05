@@ -4,8 +4,9 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { sendEmergencyMessage } from '../services/rent';
 import { fetchUserData, fetchUserProfileImage } from '../services/userService';
+import axios from 'axios';
 
-function Test({ isOpen, onClose, setAuthState }) {
+function Test({ isOpen, onClose}) {
   const [showMessage, setShowMessage] = useState(false);
   const [countdown, setCountdown] = useState(3);
   const [showBreathMessage, setShowBreathMessage] = useState(false);
@@ -21,6 +22,8 @@ function Test({ isOpen, onClose, setAuthState }) {
   const [wsMessages, setWsMessages] = useState([]);
   const [ws, setWs] = useState(null);
   const [buttonText, setButtonText] = useState("인증시작");
+  const [AuthState, setAuthState] = useState();
+
 
   const handleWebSocketMessage = (data) => {
     console.log("서버로부터 받은 메시지:", data);
@@ -42,10 +45,24 @@ function Test({ isOpen, onClose, setAuthState }) {
       case "50":
         setReturnFace(true);
         break;
+      case "10":
+       setReturnFace(true);
+        break;
+
       default:
         break;
     }
   };
+
+    const sendNumber10 = () => {
+      if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.send('10');
+      } else {
+        console.error('WebSocket이 연결 상태가 아닙니다.');
+         fetchMemberInfoAndConnect(); // WebSocket 연결이 없으면 다시 연결을 시도합니다.
+           ws.send('6');
+        }
+      };
 
   const fetchMemberInfoAndConnect = async () => {
     try {
@@ -76,14 +93,23 @@ function Test({ isOpen, onClose, setAuthState }) {
     }
   };
 
-  const handleStartAuth = () => {
-    if (buttonText === "확인") {
-      onClose(); // 확인 버튼일 때는 모달을 닫음
-    } else {
-      sendNumber(); // 다른 동작 수행
-      setShowMessage(true);
-      setCountdown(3);
-      setIsButtonDisabled(true);
+  const handleStartAuth = async () => {
+    try {
+         let response ;
+      if (buttonText === "확인") {
+        response = await axios.post('http://13.125.168.244:8080/rent');
+        console.log('대여상태 변경:', response.data);
+        setAuthState(response.data)
+        onClose(); 
+        window.location.reload();
+      } else {
+        sendNumber(); 
+        setShowMessage(true);
+        setCountdown(3);
+        setIsButtonDisabled(true);
+      }
+    } catch (error) {
+      console.error('API 요청 중 오류 발생:', error);
     }
   };
 
@@ -92,6 +118,19 @@ function Test({ isOpen, onClose, setAuthState }) {
       ws.send('1');
     } else {
       console.error('WebSocket이 연결 상태가 아닙니다.');
+    }
+  };
+
+  const AAA = async ()  => {
+    const response = await axios.post('http://13.125.168.244:8080/rent');
+  };
+
+  const handleAAA = async () => {
+    try {
+      await AAA();
+      window.location.reload(); 
+    } catch (error) {
+      console.error('AAA 함수 실행 중 오류 발생:', error);
     }
   };
 
@@ -125,17 +164,32 @@ function Test({ isOpen, onClose, setAuthState }) {
     return () => clearTimeout(timer);
   }, [showMessage, showBreathMessage, showFaceRecognitionMessage, countdown, Alc, face]);
 
+  
   useEffect(() => {
-    fetchMemberInfoAndConnect();
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://13.125.168.244:8080/rent');
+        if (response.data !== "True") {
+          fetchMemberInfoAndConnect();
+        }
+      } catch (error) {
+        console.error('대여 상태 확인 중 오류 발생:', error);
+      }
+    };
+  
+    fetchData();
   }, []);
+  
 
+  
+    
   useEffect(() => {
     if (Alc) {
       const timer = setTimeout(() => {
         setShowFaceRecognitionMessage(true);
         setCountdown(18);
         setAlc(false);
-      }, 2000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
@@ -143,7 +197,7 @@ function Test({ isOpen, onClose, setAuthState }) {
 
   useEffect(() => {
     if (face) {
-      setShowFaceRecognitionMessage(false); // 얼굴 인식 화면을 숨김
+      setShowFaceRecognitionMessage(false); 
       setfaceMessage(true);
       setFace(false);
       setButtonText("확인");
@@ -170,8 +224,16 @@ function Test({ isOpen, onClose, setAuthState }) {
         alignItems: 'center',
         position: 'relative'
       }}>
+
+        <Button
+          variant="contained"
+          sx={{ backgroundColor: '#2d2c28', fontSize: 12, fontFamily: 'Pretendard-Bold', width: '50%', marginTop: '10px' }}
+          onClick={handleAAA}
+          >대여상태 토글
+        </Button>
+
         <Typography variant="h5" id="auth-modal-title" sx={{ fontSize: 20, fontFamily: 'Pretendard-Bold', marginBottom: '20px', textAlign: 'center' }}>
-          인증을 진행 중
+          인증 진행
         </Typography>
         {showMessage && (
           <>
@@ -228,14 +290,26 @@ function Test({ isOpen, onClose, setAuthState }) {
             </Typography>
           </>
         )}
+
+        <div className='testButton' >
         <Button
           variant="contained"
-          sx={{ backgroundColor: '#2d2c28', fontSize: 12, fontFamily: 'Pretendard-Bold', width: '50%', marginTop: 'auto' }}
+          sx={{ position: 'absolute', backgroundColor: '#2d2c28', fontSize: 12, fontFamily: 'Pretendard-Bold', width: '30%', left: '50px',top:'360px'}}
           onClick={handleStartAuth}
           disabled={isButtonDisabled}
         >
           {buttonText}
         </Button>
+
+        <Button
+          variant="contained"
+          sx={{ position: 'absolute', backgroundColor: '#2d2c28', fontSize: 12, fontFamily: 'Pretendard-Bold', width: '30%', right: '50px', top:'360px'}}
+          onClick={sendNumber10}
+          disabled={isButtonDisabled}
+        >
+         반납하기
+        </Button>
+        </div>
       </div>
     </Modal>
   );
