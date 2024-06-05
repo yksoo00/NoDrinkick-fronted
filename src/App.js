@@ -14,6 +14,7 @@ import Fail from './pages/fail';
 import NoticeDetail from './pages/NoticeDetail'; 
 import UserRecord from './pages/UserRecord';
 import Emergency from './pages/Emergency';
+import Admin from './pages/Admin';
 
 import './styles/App.css';
 
@@ -66,6 +67,7 @@ function App() {
         <Route path="/payment" component={Payment} /> 
         <Route path="/success" component={PaymentResult} />
         <Route path="/fail" component={Fail} />
+        <Route path="/Admin" component={Admin} />
         <Route exact path="/">
           <Redirect to="/home" />
         </Route>

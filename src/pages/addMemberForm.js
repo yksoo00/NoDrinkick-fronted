@@ -67,7 +67,7 @@ function SignUpPage() {
             password: userInfo.password,
             phoneNum: userInfo.phoneNum,
             email: userInfo.email,
-            license: userInfo.license === "true"
+            license: userInfo.license === "false"
         };
 
         const formData = new FormData();
