@@ -25,6 +25,7 @@ function Rent({ open, onClose }) {
   const [AuthState, setAuthState] = useState(false); // 인증 상태를 관리합니다.
   const isLargeScreen = useMediaQuery('(min-width:1440px) and (max-height:1440px)');
   const [AuthRentState, setAuthRentState] = useState(false); 
+  const [gpsData, setGpsData] = useState([]);
 
   useEffect(() => {
     fetchUserData().then(userData => {
@@ -34,6 +35,7 @@ function Rent({ open, onClose }) {
     });
 
     fetchRentState();
+    fetchGpsData();
   }, []);
 
   const fetchRentState = async () => {
@@ -42,6 +44,15 @@ function Rent({ open, onClose }) {
       setAuthRentState(response.data);
     } catch (error) {
       console.error('API 서버 오류', error);
+    }
+  };
+
+  const fetchGpsData = async () => {
+    try {
+      const response = await axios.get('http://13.125.168.244:8080/gps');
+      setGpsData(response.data);
+    } catch (error) {
+      console.error('API 서버오류', error);
     }
   };
 
@@ -65,24 +76,10 @@ function Rent({ open, onClose }) {
       case "50":
         setReturnFace(true);
         break;
-   
       default:
         break;
-       }
-     };
-  
-
-  // const fetchMemberInfoAndConnect = async () => {
-  //   try {
-  //     const memberInfo = await fetchUserData();
-  //     setMemberInfo(memberInfo);
-  //     const username = encodeURIComponent(memberInfo.username);
-  //     const wsUrl = `ws://192.168.15.197:8765/ws?username=${username}`;
-  //     setWs(new WebSocket(wsUrl));
-  //   } catch (error) {
-  //     console.error('API 호출 또는 WebSocket 연결 중 오류 발생:', error);
-  //   }
-  // };
+    }
+  };
 
   const sendMessageToAll = async () => {
     try {
@@ -107,7 +104,6 @@ function Rent({ open, onClose }) {
 
   const isLicenseValid = memberInfo.license === true;
 
-
   return (
     <div>
       <SwipeableDrawer
@@ -126,10 +122,10 @@ function Rent({ open, onClose }) {
         <div className='Rent-All'>
           <div className="Box-1">
             <img className="KickBoardImage" src={KickBoardImage} alt="KickBoardImage" />
-            <h2 className="KickBoardName">노드링킥 1</h2>
+            <h2 className="KickBoardName">{gpsData.length > 0 && gpsData[0].gpsId}</h2>
           </div>
           <div className="Test-Both">
-          <Button 
+            <Button 
               className="Face" 
               style={{backgroundColor: '#e8e8e8', marginBottom:'20px', marginLeft: '20px', marginRight: '10px', padding:'20px' }} 
               onClick={handleFaceButtonClick}
@@ -144,10 +140,10 @@ function Rent({ open, onClose }) {
               </label>
             </Button>
             <Button className="Bell" style={{backgroundColor: '#e8e8e8' , marginBottom:'20px', marginRight: '20px', marginLeft: '10px', padding:'20px'}} 
-                          disabled={AuthRentState}>
-                <FontAwesomeIcon icon={faBell} style={{fontSize: '25px', color:'#000000'}}></FontAwesomeIcon>
-                    <label className="Bell-Text">{AuthRentState ? 'X' : '벨 울리기'}</label>
-              </Button>
+              disabled={AuthRentState}>
+              <FontAwesomeIcon icon={faBell} style={{fontSize: '25px', color:'#000000'}}></FontAwesomeIcon>
+              <label className="Bell-Text">{AuthRentState ? 'X' : '벨 울리기'}</label>
+            </Button>
           </div>
         </div>
         <Button
@@ -162,15 +158,14 @@ function Rent({ open, onClose }) {
           disabled={!AuthRentState} 
         >
           <Typography variant="h6" onClick={ReturnKickBoard} sx={{fontFamily: 'Pretendard-Bold', fontSize : '20px' }}>반납하기</Typography>
-          </Button>
-         
+        </Button>
       </SwipeableDrawer>
       <Test
         isOpen={isTestOpen}
         onClose={() => setIsTestOpen(false)}
         onStartTest={handleStartTest}
         setAuthState={setAuthState} 
-        ws={ws} // 
+        ws={ws} 
         handleWebSocketMessage={handleWebSocketMessage} 
       />
     </div>
@@ -179,4 +174,3 @@ function Rent({ open, onClose }) {
 
 export default Rent;
 
-       

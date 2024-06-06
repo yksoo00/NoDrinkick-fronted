@@ -165,9 +165,14 @@ const Main = () => {
     };
   }, [location.search, zoomLevel]);
 
-  const handleRent = () => {
-    const newCenter = new window.kakao.maps.LatLng(37.38131763, 126.9288372);
+  const handleRent = async() => {
+    try{
+    const gpsData = await fetchGpsData();
+    const newCenter = new window.kakao.maps.LatLng(gpsData[0].longitude, gpsData[0].latitude);
     map.setCenter(newCenter);
+    }catch (error) {
+      console.error('Error fetching GPS data:', error);
+    }
   };
 
   useEffect(() => {
