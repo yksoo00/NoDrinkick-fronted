@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import axios from 'axios';
 import LogoImage from '../assets/Logo2_Dark.png';
 import '../styles/main.css';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,19 +15,9 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import LogoDrawer from './rent';
+import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faPerson,
-  faUser,
-  faClipboard,
-  faUserPlus,
-  faAddressBook,
-  faCircleInfo,
-  faBell,
-  faSun,
-  faMoon,
-} from '@fortawesome/free-solid-svg-icons';
-
+import { faPerson, faUser, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell, faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 import Userinfo from '../component/userinfo';
 
 const Main = () => {
@@ -39,7 +28,6 @@ const Main = () => {
   const [darkModeEnabled, setDarkModeEnabled] = useState(localStorage.getItem('darkModeEnabled') === 'true');
   const [logoMarker, setLogoMarker] = useState(null);
   const [userRole, setUserRole] = useState('');
-  const [gpsData, setGpsData] = useState([]);
 
   const history = useHistory();
   const location = useLocation();
@@ -89,12 +77,29 @@ const Main = () => {
       case '관리자':
         path = '/Admin';
         break;
+
       default:
         path = '/';
         break;
     }
     history.push(path);
   };
+
+  const fetchGpsData = async () => {
+    try{
+    const response = await axios.get('http://13.125.168.244:8080/gps');
+    return response.data;
+  }catch (error) {
+    console.error('API 서버오류', error);
+    throw error;
+  }
+};
+
+  useEffect(() => {
+    if (map) {
+      map.setLevel(zoomLevel);
+    }
+  }, [map, zoomLevel]);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -103,7 +108,7 @@ const Main = () => {
     document.head.appendChild(script);
 
     script.onload = () => {
-      window.kakao.maps.load(() => {
+      window.kakao.maps.load(async () => {
         const container = document.getElementById('map');
         const options = {
           center: new window.kakao.maps.LatLng(37.380833, 126.928333),
@@ -111,14 +116,30 @@ const Main = () => {
         };
         const newMap = new window.kakao.maps.Map(container, options);
 
-        const LogoPosition = new window.kakao.maps.LatLng(37.38131763, 126.9288372);
-        const LogoImageSize = new window.kakao.maps.Size(40, 40);
-        const LogoMarkerImage = new window.kakao.maps.MarkerImage(LogoImage, LogoImageSize);
-        const LogoMarker = new window.kakao.maps.Marker({
-          position: LogoPosition,
-          image: LogoMarkerImage,
-        });
-        LogoMarker.setMap(newMap);
+        try {
+          const gpsData = await fetchGpsData();
+          console.log(gpsData);
+          console.log('Latitude:', gpsData[0].latitude, 'Longitude:', gpsData[0].longitude);
+          const logoPosition = new window.kakao.maps.LatLng(gpsData[0].longitude, gpsData[0].latitude);
+
+          const logoImageSize = new window.kakao.maps.Size(40, 40);
+          const logoMarkerImage = new window.kakao.maps.MarkerImage(LogoImage, logoImageSize);
+          const logoMarker = new window.kakao.maps.Marker({
+            position: logoPosition,
+            image: logoMarkerImage,
+          });
+          console.log(gpsData[0].latitude, gpsData[0].longitude);
+
+          logoMarker.setMap(newMap);
+
+          window.kakao.maps.event.addListener(logoMarker, 'click', function () {
+            handleMenuToggle();
+          });
+
+          setLogoMarker(logoMarker);
+        } catch (error) {
+          console.error('Error fetching GPS data:', error);
+        }
 
         const markerPosition = new window.kakao.maps.LatLng(37.380833, 126.928333);
         const marker = new window.kakao.maps.Marker({
@@ -130,14 +151,8 @@ const Main = () => {
           setZoomLevel(newMap.getLevel());
         });
 
-        window.kakao.maps.event.addListener(LogoMarker, 'click', function () {
-          handleMenuToggle();
-        });
-
         setMap(newMap);
-        setLogoMarker(LogoMarker);
 
-        // URL 파라미터 확인하여 LogoDrawer 활성화
         const queryParams = new URLSearchParams(location.search);
         if (queryParams.get('qr') === 'true') {
           handleMenuToggle();
@@ -148,18 +163,10 @@ const Main = () => {
     return () => {
       document.head.removeChild(script);
     };
-  }, []);
-
-  useEffect(() => {
-    if (map) {
-      map.setLevel(zoomLevel);
-    }
-  }, [map, zoomLevel]);
+  }, [location.search, zoomLevel]);
 
   const handleRent = () => {
-    // 새로운 중심 좌표
     const newCenter = new window.kakao.maps.LatLng(37.38131763, 126.9288372);
-    // 지도의 중심 좌표 변경
     map.setCenter(newCenter);
   };
 
@@ -172,35 +179,6 @@ const Main = () => {
       setUserRole(user.role);
     }
   }, [history]);
-
-  // Fetch GPS data from the server and add markers to the map
-  useEffect(() => {
-    const fetchGpsData = async () => {
-      try {
-        const response = await axios.get('http://13.125.168.244:8080/gps'); // Adjust the endpoint as needed
-        const gpsData = response.data;
-        setGpsData(gpsData);
-
-        // Add markers to the map
-        gpsData.forEach(gps => {
-          const position = new window.kakao.maps.LatLng(gps.latitude, gps.longitude);
-          const marker = new window.kakao.maps.Marker({
-            position,
-          });
-          marker.setMap(map);
-        });
-      } catch (error) {
-        console.error('Failed to fetch GPS data', error);
-      }
-    };
-
-    if (map) {
-      fetchGpsData();
-      // 주기적으로 GPS 데이터를 업데이트 (예: 10초마다)
-      const intervalId = setInterval(fetchGpsData, 10000);
-      return () => clearInterval(intervalId);
-    }
-  }, [map]);
 
   return (
     <div>
@@ -222,28 +200,10 @@ const Main = () => {
       >
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={toggleDrawer}
-              sx={{ mr: 2, color: darkModeEnabled ? '#2d2c28' : '#FFFFFF' }}
-            >
+            <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2, color: darkModeEnabled ? '#2d2c28' : '#FFFFFF' }}>
               <MenuIcon />
             </IconButton>
-            <Typography
-              variant="h6"
-              sx={{
-                fontSize: 12,
-                fontFamily: 'Pretendard-Bold',
-                textAlign: 'center',
-                color: darkModeEnabled ? '#2d2c28' : '#FFFFFF',
-                transition: 'color 0.5s ease',
-              }}
-              component="div"
-            >
-              노드링킥
-            </Typography>
+            <Typography variant="h6" sx={{ fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease' }} component="div"> 노드링킥 </Typography>
           </Box>
           <Box />
         </Toolbar>
@@ -256,32 +216,27 @@ const Main = () => {
         sx={{ zIndex: 999 }}
       >
         <List>
-          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항', ...(userRole === 'ADMIN' ? ['관리자'] : [])].map(
-            (text, index) => (
-              <ListItem
-                button
-                key={text}
-                sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
-                onClick={() => handleClickPage(text)}
-              >
-                <ListItemIcon>
-                  {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style={{ marginLeft: 3 }} />}
-                  {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style={{ marginLeft: 4 }} />}
-                  {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{ marginLeft: 3 }} />}
-                  {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{ marginLeft: 3 }} />}
-                  {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{ marginLeft: 3 }} />}
-                  {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{ marginLeft: 3 }} />}
-                  {text === '관리자' && <FontAwesomeIcon icon={faPerson} style={{ marginLeft: 3 }} />}
-                </ListItemIcon>
-                <Typography
-                  variant="body1"
-                  sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}
-                >
-                  {text}
-                </Typography>
-              </ListItem>
-            )
-          )}
+          {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항', ...(userRole === 'ADMIN' ? ['관리자'] : [])].map((text, index) => (
+            <ListItem
+              button
+              key={text}
+              sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
+              onClick={() => handleClickPage(text)}
+            >
+              <ListItemIcon>
+                {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style={{ marginLeft: 3 }} />}
+                {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style={{ marginLeft: 4 }} />}
+                {text === 'SOS 추가' && <FontAwesomeIcon icon={faUserPlus} style={{ marginLeft: 3 }} />}
+                {text === 'SOS 목록' && <FontAwesomeIcon icon={faAddressBook} style={{ marginLeft: 3 }} />}
+                {text === '이용약관' && <FontAwesomeIcon icon={faCircleInfo} style={{ marginLeft: 3 }} />}
+                {text === '공지사항' && <FontAwesomeIcon icon={faBell} style={{ marginLeft: 3 }} />}
+                {text === '관리자' && <FontAwesomeIcon icon={faPerson} style={{ marginLeft: 3 }} />}
+              </ListItemIcon>
+              <Typography variant="body1" sx={{ marginLeft: -1.5, fontSize: 15, fontFamily: 'Pretendard-Bold', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                {text}
+              </Typography>
+            </ListItem>
+          ))}
         </List>
       </Drawer>
 
