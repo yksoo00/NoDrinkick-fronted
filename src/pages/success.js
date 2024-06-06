@@ -1,4 +1,3 @@
-// src/components/Success.js
 import React, { useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import axios from 'axios';
@@ -15,12 +14,23 @@ const Success = () => {
   useEffect(() => {
     const approvePayment = async () => {
       try {
-        const response = await axios.post('http://13.125.168.244:8080/api/payment-result', {
+        const authToken = 'Basic ' + btoa('test_sk_QbgMGZzorzDNmGElEvov3l5E1em4:'); // 시크릿 키를 Base64로 인코딩
+
+        // 인스턴스 생성
+        const instance = axios.create({
+          headers: {
+            'Authorization': authToken,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        // 인스턴스로 요청 보내기
+        const response = await instance.post('https://api.tosspayments.com/v1/payments/confirm', {
           paymentKey,
           orderId,
           amount,
-          success: true,
         });
+
         console.log('Payment approved:', response.data);
       } catch (error) {
         console.error('Failed to approve payment:', error);
@@ -33,10 +43,14 @@ const Success = () => {
 
     const redirectTimer = setTimeout(() => {
       history.push('/main');
-    }, 10000);
+    }, 100000);
 
     return () => clearTimeout(redirectTimer);
   }, [paymentKey, orderId, amount, history]);
+
+  const handleConfirm = () => {
+    history.push('/main');
+  };
 
   return (
     <div style={styles.container}>
@@ -44,6 +58,7 @@ const Success = () => {
         <h2>결제 성공</h2>
         <p>주문번호: {orderId}</p>
         <p>결제 금액: {amount}원</p>
+        <button onClick={handleConfirm}>확인</button>
       </div>
     </div>
   );

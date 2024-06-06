@@ -1,5 +1,3 @@
-/*
-// src/pages/payment.js
 import React, { useEffect } from 'react';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 
@@ -18,7 +16,7 @@ function Payment() {
 
     return () => {
       if (tossPayments) {
-        tossPayments.cancelPayment();
+        // tossPayments.cancelPayment();
       }
     };
   }, []);
@@ -32,21 +30,38 @@ function Payment() {
     const orderName = '킥보드 이용 결제 1건';
     const customerName = '노드링킥 결제';
 
+    const convertAppScheme = (url) => {
+      const intentRegex = /^intent:\/\/(.+?)#Intent;(.+);end;$/;
+      const match = url.match(intentRegex);
+      if (match) {
+        // 앱 스킴 URL로 변환
+        return `supertoss://${match[1]}`;
+      }
+      return url;
+    };
+
     if (window.tossPayments) {
       window.tossPayments.requestPayment('카드', {
         amount,
         orderId,
         orderName,
         customerName,
-        successUrl: `http://localhost:3000/success?orderId=${orderId}&amount=${amount}`,
-        failUrl: `http://localhost:3000/fail?orderId=${orderId}&amount=${amount}`,
+        successUrl: `http://nodrinkick.com/success?orderId=${orderId}&amount=${amount}`,
+        failUrl: `http://nodrinkick.com/fail?orderId=${orderId}&amount=${amount}`,
         flowMode: 'DIRECT',
         easyPay: '토스페이',
+      }).then((response) => {
+        if (response.paymentUrl) {
+          const appSchemeUrl = convertAppScheme(response.paymentUrl); // URL 변환 함수 호출
+          window.location.href = appSchemeUrl; // 변환된 URL로 이동
+        }
       }).catch(function (error) {
         if (error.code === 'USER_CANCEL') {
           // 결제 고객이 결제창을 닫았을 때 에러 처리
         } else if (error.code === 'INVALID_CARD_COMPANY') {
           // 유효하지 않은 카드 코드에 대한 에러 처리
+        } else {
+          console.error('Payment error:', error);
         }
       });
     } else {
@@ -63,5 +78,3 @@ function Payment() {
 }
 
 export default Payment;
-
-*/
