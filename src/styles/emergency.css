@@ -11,12 +11,10 @@
   margin-top: 150px;
 }
 
-
 .send-Allbutton {
-  position: absolute;
+  position: relative;
   width: 150px;
   height: 40px;
-  bottom: 40%;
   background-color: #2d2c28;
   color: #fff;
   border: none;
@@ -28,10 +26,9 @@
   flex-direction: column; 
   justify-content: center; 
   align-items: center; 
-  left: 50%;
-  transform: translateX(-50%);
-}
+  margin: 10px; 
 
+}
 .card-container {
   display: flex;
   justify-content: space-between;

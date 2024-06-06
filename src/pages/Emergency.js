@@ -95,9 +95,7 @@ function EmergencyContactsList() {
 
   const handleDeleteContact = async (id) => {
     try {
-
         await deleteContact(id);
-
         fetchContacts();
     } catch (error) {
         // 오류 처리
@@ -188,7 +186,10 @@ function EmergencyContactsList() {
                         </div>
                     ))}
                 </div>
-                <button className="send-Allbutton" onClick={sendMessageToAll}>목록 연락처에 메시지 전송</button>
+                <div className="button-container">
+                    <button className="send-Allbutton" onClick={sendMessageToAll}>목록 연락처에 메시지 전송</button>
+                    <button className="send-Allbutton" onClick={() => history.push('/addEmergency')}>비상연락망 추가</button>
+                </div>
             </div>
         </div>
     );
