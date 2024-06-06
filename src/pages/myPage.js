@@ -22,6 +22,7 @@ function UserList() {
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({});
   const [editedUserData, setEditedUserData] = useState({});
+  const [memberInfo, setMemberInfo] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -29,6 +30,7 @@ function UserList() {
   const [showEditConfirmation, setShowEditConfirmation] = useState(false);
   const [profileImageUrl, setProfileImageUrl] = useState('');
   const [licenseImageUrl, setLicenseImageUrl] = useState('');
+  const [AuthRentState, setAuthRentState] = useState(false); 
   const history = useHistory();
   const [darkModeEnabled, setDarkModeEnabled] = useState(localStorage.getItem('darkModeEnabled') === 'true');
   
@@ -190,6 +192,23 @@ function UserList() {
       alert('회원 탈퇴 중 오류가 발생했습니다.');
     }
   };
+  
+
+  const fetchRentState = async () => {
+    try {
+      const response = await axios.get('http://13.125.168.244:8080/rent');
+      setAuthRentState(response.data);
+    } catch (error) {
+      console.error('API 서버 오류', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRentState();
+}, []);
+
+ 
+
 
   useEffect(() => {
     const token = localStorage.getItem('jwtToken');
@@ -266,7 +285,9 @@ function UserList() {
             <p className='UserText2'>{editedUserData.name} 님<br />환영합니다</p>
           </div>
           <div className='LogoutAndEdit'>
-          <button onClick={handleEditImage} className="profile-edit-button"><FontAwesomeIcon icon={faCamera} /> 프로필 사진 수정</button>
+          <button onClick={handleEditImage} className="profile-edit-button" disabled={AuthRentState}>
+          <FontAwesomeIcon icon={faCamera} /> 프로필 사진 수정
+          </button>
           <button className="user-logout-button" onClick={handleLogout}  >로그아웃</button>
           <button className='ExitButton' onClick={() => setShowConfirmation(true)}>회원 탈퇴</button>
           </div>
