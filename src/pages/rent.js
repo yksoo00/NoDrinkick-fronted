@@ -13,7 +13,7 @@ import { sendEmergencyMessage } from '../services/rent';
 import { fetchUserData } from '../services/userService';
 import axios from 'axios';
 
-function Rent({ open, onClose }) {
+function Rent({ open, onClose, id }) { // id props 추가
   const [Alc, setAlc] = useState(false);
   const [face, setFace] = useState(false);
   const [memberInfo, setMemberInfo] = useState({});
@@ -122,7 +122,7 @@ function Rent({ open, onClose }) {
         <div className='Rent-All'>
           <div className="Box-1">
             <img className="KickBoardImage" src={KickBoardImage} alt="KickBoardImage" />
-            <h2 className="KickBoardName">{gpsData.length > 0 && gpsData[0].gpsId}</h2>
+            <h2 className="KickBoardName">{id}</h2> {/* 수정된 부분 */}
           </div>
           <div className="Test-Both">
             <Button 
@@ -139,38 +139,37 @@ function Rent({ open, onClose }) {
                 {AuthRentState ? '대여 중 입니다' : (!isLicenseValid ? '면허증 등록이 필요합니다' : '대여하기')}
               </label>
             </Button>
-            <Button className="Bell" style={{backgroundColor: '#e8e8e8' , marginBottom:'20px', marginRight: '20px', marginLeft: '10px', padding:'20px'}} 
-              disabled={AuthRentState}>
-              <FontAwesomeIcon icon={faBell} style={{fontSize: '25px', color:'#000000'}}></FontAwesomeIcon>
-              <label className="Bell-Text">{AuthRentState ? 'X' : '벨 울리기'}</label>
-            </Button>
-          </div>
-        </div>
-        <Button
-          variant="contained"
-          style={{
-            left: isLargeScreen ? '27.5%' :'5%',
-            backgroundColor: AuthRentState ? '#2d2c28' : '#e8e8e8', 
-            color: '#ffffff',
-            height: '10vh',
-            width: isLargeScreen ? '44.2vw' : '90vw'
-          }}
-          disabled={!AuthRentState} 
-        >
-          <Typography variant="h6" onClick={ReturnKickBoard} sx={{fontFamily: 'Pretendard-Bold', fontSize : '20px' }}>반납하기</Typography>
-        </Button>
-      </SwipeableDrawer>
-      <Test
-        isOpen={isTestOpen}
-        onClose={() => setIsTestOpen(false)}
-        onStartTest={handleStartTest}
-        setAuthState={setAuthState} 
-        ws={ws} 
-        handleWebSocketMessage={handleWebSocketMessage} 
-      />
-    </div>
-  );
+            <Button className="Bell" style={{backgroundColor: '#e8e8e8', marginBottom:'20px', marginRight: '20px', marginLeft: '10px', padding:'20px'}}
+disabled={AuthRentState}>
+<FontAwesomeIcon icon={faBell} style={{fontSize: '25px', color:'#000000'}}></FontAwesomeIcon>
+<label className="Bell-Text">{AuthRentState ? 'X' : '벨 울리기'}</label>
+</Button>
+</div>
+</div>
+<Button
+variant="contained"
+style={{
+left: isLargeScreen ? '27.5%' :'5%',
+backgroundColor: AuthRentState ? '#2d2c28' : '#e8e8e8',
+color: '#ffffff',
+height: '10vh',
+width: isLargeScreen ? '44.2vw' : '90vw'
+}}
+disabled={!AuthRentState}
+>
+<Typography variant="h6" onClick={ReturnKickBoard} sx={{fontFamily: 'Pretendard-Bold', fontSize : '20px' }}>반납하기</Typography>
+</Button>
+</SwipeableDrawer>
+<Test
+isOpen={isTestOpen}
+onClose={() => setIsTestOpen(false)}
+onStartTest={handleStartTest}
+setAuthState={setAuthState}
+ws={ws}
+handleWebSocketMessage={handleWebSocketMessage}
+/>
+</div>
+);
 }
 
 export default Rent;
-

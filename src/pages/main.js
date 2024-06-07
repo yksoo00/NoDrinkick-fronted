@@ -28,6 +28,7 @@ const Main = () => {
   const [darkModeEnabled, setDarkModeEnabled] = useState(localStorage.getItem('darkModeEnabled') === 'true');
   const [logoMarker, setLogoMarker] = useState(null);
   const [userRole, setUserRole] = useState('');
+  const [id, setId] = useState(null);
 
   const history = useHistory();
   const location = useLocation();
@@ -49,7 +50,9 @@ const Main = () => {
     setOpen(!open);
   };
 
-  const handleMenuToggle = () => {
+  const handleMenuToggle = (id) => {
+    console.log("id", id);
+    setId(id); // 고유 ID 설정
     setMenuOpen(!menuOpen);
   };
 
@@ -135,8 +138,8 @@ const Main = () => {
           const markers = [];
   
           // gpsId별로 그룹화된 데이터에 대해 반복하여 로고 마커 생성
-          Object.keys(groupedData).forEach(gpsId => {
-            groupedData[gpsId].forEach(data => {
+          Object.keys(groupedData).forEach(id => {
+            groupedData[id].forEach(data => {
               console.log('ID:', data.id, 'gpsId:', data.gpsId, 'Latitude:', data.latitude, 'Longitude:', data.longitude);
   
               // 위도와 경도 값의 유효성 검사
@@ -158,6 +161,7 @@ const Main = () => {
               const logoMarker = new window.kakao.maps.Marker({
                 position: logoPosition,
                 image: logoMarkerImage,
+                
               });
   
               // 로고 마커를 지도에 추가
@@ -165,7 +169,7 @@ const Main = () => {
   
               // 로고 마커 클릭 이벤트 처리
               window.kakao.maps.event.addListener(logoMarker, 'click', function () {
-                handleMenuToggle();
+                handleMenuToggle(data.id);
               });
   
               // 생성된 로고 마커를 배열에 추가
@@ -284,7 +288,7 @@ const Main = () => {
         </List>
       </Drawer>
 
-      <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <LogoDrawer open={menuOpen} onClose={() => setMenuOpen(false)} id={id} />
 
       <Box id="map" className="map"></Box>
 
