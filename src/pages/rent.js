@@ -140,36 +140,36 @@ function Rent({ open, onClose, id }) { // id props 추가
               </label>
             </Button>
             <Button className="Bell" style={{backgroundColor: '#e8e8e8', marginBottom:'20px', marginRight: '20px', marginLeft: '10px', padding:'20px'}}
-disabled={AuthRentState}>
-<FontAwesomeIcon icon={faBell} style={{fontSize: '25px', color:'#000000'}}></FontAwesomeIcon>
-<label className="Bell-Text">{AuthRentState ? 'X' : '벨 울리기'}</label>
-</Button>
-</div>
-</div>
-<Button
-variant="contained"
-style={{
-left: isLargeScreen ? '27.5%' :'5%',
-backgroundColor: AuthRentState ? '#2d2c28' : '#e8e8e8',
-color: '#ffffff',
-height: '10vh',
-width: isLargeScreen ? '44.2vw' : '90vw'
-}}
-disabled={!AuthRentState}
->
-<Typography variant="h6" onClick={ReturnKickBoard} sx={{fontFamily: 'Pretendard-Bold', fontSize : '20px' }}>반납하기</Typography>
-</Button>
-</SwipeableDrawer>
-<Test
-isOpen={isTestOpen}
-onClose={() => setIsTestOpen(false)}
-onStartTest={handleStartTest}
-setAuthState={setAuthState}
-ws={ws}
-handleWebSocketMessage={handleWebSocketMessage}
-/>
-</div>
-);
+              disabled={AuthRentState}>
+              <FontAwesomeIcon icon={faBell} style={{fontSize: '25px', color:'#000000'}}></FontAwesomeIcon>
+              <label className="Bell-Text">{AuthRentState ? 'X' : '벨 울리기'}</label>
+            </Button>
+          </div>
+        </div>
+        <Button
+          variant="contained"
+          style={{
+            left: isLargeScreen ? '27.5%' :'5%',
+            backgroundColor: AuthRentState ? '#2d2c28' : '#e8e8e8',
+            color: '#ffffff',
+            height: '10vh',
+            width: isLargeScreen ? '44.2vw' : '90vw'
+          }}
+          disabled={!AuthRentState}
+        >
+          <Typography variant="h6" onClick={ReturnKickBoard} sx={{fontFamily: 'Pretendard-Bold', fontSize : '20px' }}>반납하기</Typography>
+        </Button>
+      </SwipeableDrawer>
+      <Test
+        isOpen={isTestOpen}
+        onClose={() => setIsTestOpen(false)}
+        onStartTest={handleStartTest}
+        setAuthState={setAuthState}
+        ws={ws}
+        handleWebSocketMessage={handleWebSocketMessage}
+      />
+    </div>
+  );
 }
 
 export default Rent;
