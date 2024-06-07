@@ -13,7 +13,7 @@ import { sendEmergencyMessage } from '../services/rent';
 import { fetchUserData } from '../services/userService';
 import axios from 'axios';
 
-function Rent({ open, onClose, id }) { // id props 추가
+function Rent({ open, onClose, gpsId }) { // id props 추가
   const [Alc, setAlc] = useState(false);
   const [face, setFace] = useState(false);
   const [memberInfo, setMemberInfo] = useState({});
@@ -122,7 +122,7 @@ function Rent({ open, onClose, id }) { // id props 추가
         <div className='Rent-All'>
           <div className="Box-1">
             <img className="KickBoardImage" src={KickBoardImage} alt="KickBoardImage" />
-            <h2 className="KickBoardName">{id}</h2> {/* 수정된 부분 */}
+            <h2 className="KickBoardName">{gpsId}</h2> {/* 수정된 부분 */}
           </div>
           <div className="Test-Both">
             <Button 
