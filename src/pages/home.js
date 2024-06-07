@@ -4,11 +4,18 @@ import Logo2_Dark from '../assets/Logo2_Dark.png';
 import '../styles/App.css';
 import '../styles/home.css';
 import DarkMode from '../component/darkmode';
+import { removeToken } from '../services/loginService.js';
 
 function Home() {
   const [darkModeEnabled, setDarkModeEnabled] = useState(
     localStorage.getItem('darkModeEnabled') === 'true'
   );
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (token) {
+      removeToken();
+    };
+  });
 
   useEffect(() => {
     if (darkModeEnabled) {

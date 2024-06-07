@@ -16,6 +16,14 @@ const LoginForm = () => {
   );
 
   useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (token) {
+      removeToken();
+    };
+  });
+     
+
+  useEffect(() => {
     if (darkModeEnabled) {
       document.body.classList.add('dark-mode');
     } else {

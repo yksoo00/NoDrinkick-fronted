@@ -119,24 +119,63 @@ const Main = () => {
         try {
           const gpsData = await fetchGpsData();
           console.log(gpsData);
-          console.log('Latitude:', gpsData[0].latitude, 'Longitude:', gpsData[0].longitude);
-          const logoPosition = new window.kakao.maps.LatLng(gpsData[0].longitude, gpsData[0].latitude);
-
-          const logoImageSize = new window.kakao.maps.Size(40, 40);
-          const logoMarkerImage = new window.kakao.maps.MarkerImage(LogoImage, logoImageSize);
-          const logoMarker = new window.kakao.maps.Marker({
-            position: logoPosition,
-            image: logoMarkerImage,
+  
+          // gpsData를 gpsId별로 그룹화
+          const groupedData = gpsData.reduce((acc, data) => {
+            if (!acc[data.gpsId]) {
+              acc[data.gpsId] = [];
+            }
+            acc[data.gpsId].push(data);
+            return acc;
+          }, {});
+  
+          console.log(groupedData);
+  
+          // 상태에 저장할 마커 배열
+          const markers = [];
+  
+          // gpsId별로 그룹화된 데이터에 대해 반복하여 로고 마커 생성
+          Object.keys(groupedData).forEach(gpsId => {
+            groupedData[gpsId].forEach(data => {
+              console.log('ID:', data.id, 'gpsId:', data.gpsId, 'Latitude:', data.latitude, 'Longitude:', data.longitude);
+  
+              // 위도와 경도 값의 유효성 검사
+              const latitude = parseFloat(data.latitude);
+              const longitude = parseFloat(data.longitude);
+              if (isNaN(latitude) || isNaN(longitude)) {
+                console.error('유효하지 않은 좌표 값:', data);
+                return;
+              }
+  
+              // 각 킥보드의 위치 정보를 사용하여 로고 마커의 위치 생성
+              const logoPosition = new window.kakao.maps.LatLng(longitude, latitude);
+  
+              // 로고 마커 이미지 크기 및 이미지 생성
+              const logoImageSize = new window.kakao.maps.Size(40, 40);
+              const logoMarkerImage = new window.kakao.maps.MarkerImage(LogoImage, logoImageSize);
+  
+              // 로고 마커 생성
+              const logoMarker = new window.kakao.maps.Marker({
+                position: logoPosition,
+                image: logoMarkerImage,
+              });
+  
+              // 로고 마커를 지도에 추가
+              logoMarker.setMap(newMap);
+  
+              // 로고 마커 클릭 이벤트 처리
+              window.kakao.maps.event.addListener(logoMarker, 'click', function () {
+                handleMenuToggle();
+              });
+  
+              // 생성된 로고 마커를 배열에 추가
+              markers.push(logoMarker);
+            });
           });
-          console.log(gpsData[0].latitude, gpsData[0].longitude);
-
-          logoMarker.setMap(newMap);
-
-          window.kakao.maps.event.addListener(logoMarker, 'click', function () {
-            handleMenuToggle();
-          });
-
-          setLogoMarker(logoMarker);
+  
+          // 상태에 마커 배열 저장
+          setLogoMarker(markers);
+  
         } catch (error) {
           console.error('Error fetching GPS data:', error);
         }
