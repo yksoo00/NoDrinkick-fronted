@@ -59,7 +59,7 @@ function Test({ isOpen, onClose}) {
         setStartReturn(true);
         break;
       case "reset":
-        handlePaymentReset(); // "reset" 케이스가 발생하면 결제 시작 플래그 설정
+        setPaymentStart(true); // 결제 시작 플래그 설정
 
        break;  
 
@@ -76,7 +76,6 @@ function Test({ isOpen, onClose}) {
     setAmount(responseRecord.data.memberId);
     setCustomerName(responseRecord.data.name);
 
-    setPaymentStart(true); // 결제 시작 플래그 설정
     setShowPayment(true); // Payment 컴포넌트 보이도록 설정
   
    } catch (error) {
