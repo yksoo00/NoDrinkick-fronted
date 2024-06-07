@@ -95,7 +95,7 @@ function SignUpPage() {
             //uploadData.append('licenseFile', licenseFile); // 라이선스 이미지 파일 추가
             uploadData.append('id', userInfo.username); // 사용자 이름을 'id' 필드에 추가
 
-            await axios.post('http://192.168.110.176:5000/mypageUpload', uploadData, {
+            await axios.post('http://192.168.141.149:5000/mypageUpload', uploadData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

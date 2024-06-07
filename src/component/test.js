@@ -101,7 +101,7 @@ function Test({ isOpen, onClose}) {
       const memberInfo = await fetchUserData();
       setMemberInfo(memberInfo);
       const username = encodeURIComponent(memberInfo.username);
-      const wsUrl = `ws://192.168.15.197:8765/ws?username=${username}`;
+      const wsUrl = `ws://192.168.141.197:8765/ws?username=${username}`;
       const newWs = new WebSocket(wsUrl);
       newWs.onopen = () => console.log("WebSocket 연결 성공");
       newWs.onmessage = (event) => handleWebSocketMessage(event.data);
@@ -129,9 +129,8 @@ function Test({ isOpen, onClose}) {
     try {
          let response ;
       if (buttonText === "확인") {
-        response = await axios.post('http://13.125.168.244:8080/rent');
-        console.log('대여상태 변경:', response.data);
-        setAuthState(response.data)
+        //response = await axios.post('http://13.125.168.244:8080/rent');
+        //console.log('대여상태 변경:', response.data);
         onClose(); 
       } else {
         sendNumber(); 
@@ -154,6 +153,7 @@ function Test({ isOpen, onClose}) {
 
   const AAA = async ()  => {
     const response = await axios.post('http://13.125.168.244:8080/rent');
+    setAuthState(response.data)
   };
 
 
