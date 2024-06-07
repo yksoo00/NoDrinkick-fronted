@@ -3,16 +3,19 @@ import { loadTossPayments } from '@tosspayments/payment-sdk';
 
 const clientKey = 'test_ck_DnyRpQWGrNWwyL1BeLW08Kwv1M9E';
 
-function Payment() {
+function Payment({ amount, customerName }) { // amount와 customerName props 추가
   const [isTossLoaded, setIsTossLoaded] = useState(false);
 
+
+  console.log(amount);
+  console.log(customerName);
   useEffect(() => {
     let tossPayments;
 
     loadTossPayments(clientKey).then(tp => {
       tossPayments = tp;
-      window.tossPayments = tossPayments; // tossPayments 객체를 전역에 저장
-      setIsTossLoaded(true); // Toss Payments가 로드되었음을 표시
+      window.tossPayments = tossPayments;
+      setIsTossLoaded(true);
     }).catch(error => {
       console.error('Failed to load Toss Payments:', error);
     });
@@ -26,24 +29,21 @@ function Payment() {
 
   useEffect(() => {
     if (isTossLoaded) {
-      handlePayment(); // Toss Payments가 로드된 후에 handlePayment 호출
+      handlePayment();
     }
   }, [isTossLoaded]);
 
   const handlePayment = () => {
-    const random = new Date().getTime() + Math.random(); // 난수 생성
-    const randomId = btoa(random); // 난수를 btoa(base64)로 인코딩한 orderID
+    const random = new Date().getTime() + Math.random();
+    const randomId = btoa(random);
 
-    const amount = 1500;
     const orderId = randomId;
     const orderName = '킥보드 이용 결제 1건';
-    const customerName = '노드링킥 결제';
 
     const convertAppScheme = (url) => {
       const intentRegex = /^intent:\/\/(.+?)#Intent;(.+);end;$/;
       const match = url.match(intentRegex);
       if (match) {
-        // 앱 스킴 URL로 변환
         return `supertoss://${match[1]}`;
       }
       return url;
@@ -55,16 +55,17 @@ function Payment() {
         orderId,
         orderName,
         customerName,
-         // successUrl: `http://nodrinkick.com/success?orderId=${orderId}&amount=${amount}`,
+          // successUrl: `http://nodrinkick.com/success?orderId=${orderId}&amount=${amount}`,
         // failUrl: `http://nodrinkick.com/fail?orderId=${orderId}&amount=${amount}`,
         successUrl: `http://localhost:3000/success?orderId=${orderId}&amount=${amount}`,
         failUrl: `http://localhost:3000/fail?orderId=${orderId}&amount=${amount}`,
+
         flowMode: 'DIRECT',
         easyPay: '토스페이',
       }).then((response) => {
         if (response.paymentUrl) {
-          const appSchemeUrl = convertAppScheme(response.paymentUrl); // URL 변환 함수 호출
-          window.location.href = appSchemeUrl; // 변환된 URL로 이동
+          const appSchemeUrl = convertAppScheme(response.paymentUrl);
+          window.location.href = appSchemeUrl;
         }
       }).catch(function (error) {
         if (error.code === 'USER_CANCEL') {

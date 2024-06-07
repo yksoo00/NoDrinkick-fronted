@@ -29,6 +29,8 @@ function Test({ isOpen, onClose}) {
   const [showFailureMessage, setShowFailureMessage] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [paymentStart, setPaymentStart] = useState(false);
+  const [amount, setAmount] = useState();
+  const [customerName, setCustomerName] = useState();
 
 
   // 메시지 출력
@@ -57,7 +59,8 @@ function Test({ isOpen, onClose}) {
         setStartReturn(true);
         break;
       case "reset":
-        setPaymentStart(true); // 결제 시작 플래그 설정
+        handlePaymentReset(); // "reset" 케이스가 발생하면 결제 시작 플래그 설정
+
        break;  
 
       default:
@@ -65,11 +68,22 @@ function Test({ isOpen, onClose}) {
     }
   };
   
-
     // 결제 로직 실행 함수
-    const handlePaymentReset = () => {
+    const handlePaymentReset = async () => {
+     try {
+    const responseRecord = await axios.get('http://13.125.168.244:8080/members/info');
+    console.log('가져온 결제 정보:', responseRecord.data);
+    setAmount(responseRecord.data.memberId);
+    setCustomerName(responseRecord.data.name);
+
+    setPaymentStart(true); // 결제 시작 플래그 설정
     setShowPayment(true); // Payment 컴포넌트 보이도록 설정
-    };
+  
+   } catch (error) {
+     console.error('API 요청 중 오류 발생:', error);
+  }
+  };
+    
 
     // 반납하기 메시지 전송 
     const sendNumber10 = () => {
@@ -145,7 +159,8 @@ function Test({ isOpen, onClose}) {
 
   const handleBBB = async () => {
     try {
-      setPaymentStart(true); // 결제 시작 플래그 설정
+      handlePaymentReset(); // "reset" 케이스가 발생하면 결제 시작 플래그 설정
+      
     } catch (error) {
         console.error('BBB 함수 실행 중 오류 발생:', error);
       }
@@ -228,6 +243,26 @@ function Test({ isOpen, onClose}) {
       setIsButtonDisabled(false);
     }
   }, [face]);
+
+  const handlePaymentComplete = () => {
+    setPaymentStart(false); // 결제 완료 후 상태를 false로 재설정
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://13.125.168.244:8080/rent');
+        setAuthState(response.data);
+        
+          ConnectWebSocket();
+        
+      } catch (error) {
+        console.error('대여 상태 확인 중 오류 발생:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
 
 
   useEffect(() => {
@@ -340,7 +375,12 @@ function Test({ isOpen, onClose}) {
           {buttonText}
         </Button>
         {/* 결제 컴포넌트 */}
-        {showPayment && <Payment />}
+        {showPayment && <Payment 
+        amount={amount}
+        customerName={customerName}
+        onPaymentComplete={handlePaymentComplete}
+
+        />}
 
 
         <Button
