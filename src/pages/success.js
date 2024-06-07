@@ -24,7 +24,7 @@ const Success = () => {
           },
         });
 
-        // 인스턴스로 요청 보내기
+        // 결제 승인 요청 보내기
         const response = await instance.post('https://api.tosspayments.com/v1/payments/confirm', {
           paymentKey,
           orderId,
@@ -32,6 +32,10 @@ const Success = () => {
         });
 
         console.log('Payment approved:', response.data);
+
+        // 결제 성공 후 대여 API 호출
+        await axios.post('http://13.125.168.244:8080/rent');
+
       } catch (error) {
         console.error('Failed to approve payment:', error);
       }

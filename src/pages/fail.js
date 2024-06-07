@@ -33,7 +33,7 @@ const Fail = () => {
 
     const redirectTimer = setTimeout(() => {
       history.push('/payment');
-    }, 10000);
+    }, 1000);
 
     return () => clearTimeout(redirectTimer);
   }, [paymentKey, orderId, amount, history]);

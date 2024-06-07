@@ -31,7 +31,7 @@ function Test({ isOpen, onClose}) {
   const [paymentStart, setPaymentStart] = useState(false);
   const [amount, setAmount] = useState();
   const [customerName, setCustomerName] = useState();
-
+  
 
   // 메시지 출력
   const handleWebSocketMessage = (data) => {
@@ -47,6 +47,7 @@ function Test({ isOpen, onClose}) {
         setAlc(true);
         break;
       case "2":
+        AAA(); // 대여하기O로 변환
         setFace(true);
         break;
       case "20":
