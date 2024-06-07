@@ -1,15 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 
 const clientKey = 'test_ck_DnyRpQWGrNWwyL1BeLW08Kwv1M9E';
 
 function Payment() {
+  const [isTossLoaded, setIsTossLoaded] = useState(false);
+
   useEffect(() => {
     let tossPayments;
 
     loadTossPayments(clientKey).then(tp => {
       tossPayments = tp;
       window.tossPayments = tossPayments; // tossPayments 객체를 전역에 저장
+      setIsTossLoaded(true); // Toss Payments가 로드되었음을 표시
     }).catch(error => {
       console.error('Failed to load Toss Payments:', error);
     });
@@ -20,6 +23,12 @@ function Payment() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (isTossLoaded) {
+      handlePayment(); // Toss Payments가 로드된 후에 handlePayment 호출
+    }
+  }, [isTossLoaded]);
 
   const handlePayment = () => {
     const random = new Date().getTime() + Math.random(); // 난수 생성
@@ -46,8 +55,10 @@ function Payment() {
         orderId,
         orderName,
         customerName,
-        successUrl: `http://nodrinkick.com/success?orderId=${orderId}&amount=${amount}`,
-        failUrl: `http://nodrinkick.com/fail?orderId=${orderId}&amount=${amount}`,
+         // successUrl: `http://nodrinkick.com/success?orderId=${orderId}&amount=${amount}`,
+        // failUrl: `http://nodrinkick.com/fail?orderId=${orderId}&amount=${amount}`,
+        successUrl: `http://localhost:3000/success?orderId=${orderId}&amount=${amount}`,
+        failUrl: `http://localhost:3000/fail?orderId=${orderId}&amount=${amount}`,
         flowMode: 'DIRECT',
         easyPay: '토스페이',
       }).then((response) => {
@@ -71,8 +82,7 @@ function Payment() {
 
   return (
     <div>
-      <h1>Payment Page</h1>
-      <button onClick={handlePayment}>카드결제</button>
+      <h1>결제 진행 중...</h1>
     </div>
   );
 }

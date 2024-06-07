@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import { sendEmergencyMessage } from '../services/rent';
 import { fetchUserData, fetchUserProfileImage } from '../services/userService';
 import axios from 'axios';
+import Payment from '../pages/payment'; // Payment 컴포넌트 불러오기
 
 
 function Test({ isOpen, onClose}) {
@@ -26,7 +27,9 @@ function Test({ isOpen, onClose}) {
   const [AuthState, setAuthState] = useState();
   const [StartReturn, setStartReturn] = useState(false);
   const [showFailureMessage, setShowFailureMessage] = useState(false);
-  
+  const [showPayment, setShowPayment] = useState(false);
+  const [paymentStart, setPaymentStart] = useState(false);
+
 
   // 메시지 출력
   const handleWebSocketMessage = (data) => {
@@ -53,11 +56,20 @@ function Test({ isOpen, onClose}) {
       case "10":
         setStartReturn(true);
         break;
+      case "reset":
+        setPaymentStart(true); // 결제 시작 플래그 설정
+       break;  
 
       default:
         break;
     }
   };
+  
+
+    // 결제 로직 실행 함수
+    const handlePaymentReset = () => {
+    setShowPayment(true); // Payment 컴포넌트 보이도록 설정
+    };
 
     // 반납하기 메시지 전송 
     const sendNumber10 = () => {
@@ -129,6 +141,16 @@ function Test({ isOpen, onClose}) {
   const AAA = async ()  => {
     const response = await axios.post('http://13.125.168.244:8080/rent');
   };
+
+
+  const handleBBB = async () => {
+    try {
+      setPaymentStart(true); // 결제 시작 플래그 설정
+    } catch (error) {
+        console.error('BBB 함수 실행 중 오류 발생:', error);
+      }
+  };
+
 
   const handleAAA = async () => {
     try {
@@ -207,6 +229,14 @@ function Test({ isOpen, onClose}) {
     }
   }, [face]);
 
+
+  useEffect(() => {
+    if (paymentStart) {
+      setButtonText("결제하기");
+      setIsButtonDisabled(false);
+    }
+  }, [paymentStart]);
+  
   return (
     <Modal
       open={isOpen}
@@ -232,6 +262,13 @@ function Test({ isOpen, onClose}) {
           sx={{ backgroundColor: '#2d2c28', fontSize: 12, fontFamily: 'Pretendard-Bold', width: '50%', marginTop: '10px' }}
           onClick={handleAAA}
           >대여상태 토글
+        </Button>
+
+        <Button
+          variant="contained"
+          sx={{ backgroundColor: '#2d2c28', fontSize: 12, fontFamily: 'Pretendard-Bold', width: '50%', marginTop: '10px' }}
+          onClick={handleBBB}
+          >결제 플래그 토글
         </Button>
 
         <Typography variant="h5" id="auth-modal-title" sx={{ fontSize: 20, fontFamily: 'Pretendard-Bold', marginBottom: '20px', textAlign: 'center' }}>
@@ -295,13 +332,16 @@ function Test({ isOpen, onClose}) {
 
         <div className='testButton' >
         <Button
-          variant="contained"
-          sx={{ position: 'absolute', backgroundColor: '#2d2c28', fontSize: 12, fontFamily: 'Pretendard-Bold', width: '40%', left: '20px',top:'360px'}}
-          onClick={handleStartAuth}
-          disabled={isButtonDisabled}
+             variant="contained"
+            sx={{ position: 'absolute', backgroundColor: '#2d2c28', fontSize: 12, fontFamily: 'Pretendard-Bold', width: '40%', left: '20px',top:'360px'}}
+            onClick={buttonText === "결제하기" ? handlePaymentReset : handleStartAuth}
+            disabled={isButtonDisabled}
         >
           {buttonText}
         </Button>
+        {/* 결제 컴포넌트 */}
+        {showPayment && <Payment />}
+
 
         <Button
           variant="contained"
@@ -312,6 +352,8 @@ function Test({ isOpen, onClose}) {
          반납하기 인증시작
         </Button>
         </div>
+
+
       </div>
     </Modal>
   );
