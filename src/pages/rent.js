@@ -85,18 +85,22 @@ function Rent({ open, onClose, gpsId }) { // id props 추가
         break;
     }
   };
-
-  const handleBellClick = async () => {
+  const raspi = async () => {
     try {
-      const response = await axios.post('http://13.125.168.244:8080/status', { status: true }, {
+      const response = await axios.post('http://13.125.168.244:8080/status', true , {
         headers: {
           'Content-Type': 'application/json',
         },
       });
+      console.log("ss");
     } catch (error) {
-      console.error('Error saving status:', error);
+      console.error('상태를 저장하는 중 오류가 발생했습니다:', error);
     }
+  };
+const handleBellClick = () => {
+  raspi();
 };
+
 
   const sendMessageToAll = async () => {
     try {
@@ -158,7 +162,7 @@ function Rent({ open, onClose, gpsId }) { // id props 추가
               </label>
             </Button>
             <Button className="Bell" style={{backgroundColor: '#e8e8e8', marginBottom:'20px', marginRight: '20px', marginLeft: '10px', padding:'20px'}}
-              onclick={handleBellClick}
+              onClick={handleBellClick}
               disabled={AuthRentState}>
               <FontAwesomeIcon icon={faBell} style={{fontSize: '25px', color:'#000000'}}></FontAwesomeIcon>
               <label className="Bell-Text">{AuthRentState ? 'X' : '벨 울리기'}</label>
