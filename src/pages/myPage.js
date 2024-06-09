@@ -22,7 +22,6 @@ function UserList() {
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({});
   const [editedUserData, setEditedUserData] = useState({});
-  const [memberInfo, setMemberInfo] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -30,7 +29,6 @@ function UserList() {
   const [showEditConfirmation, setShowEditConfirmation] = useState(false);
   const [profileImageUrl, setProfileImageUrl] = useState('');
   const [licenseImageUrl, setLicenseImageUrl] = useState('');
-  const [AuthRentState, setAuthRentState] = useState(false); 
   const history = useHistory();
   const [darkModeEnabled, setDarkModeEnabled] = useState(localStorage.getItem('darkModeEnabled') === 'true');
   
@@ -131,6 +129,12 @@ function UserList() {
 
   const handleEditProfile = () => {
     setIsEditing(true);
+    setEditedUserData({
+      ...userData,
+      email: '',
+      phoneNum: '',
+      password: ''
+    });
   };
 
   const handleFileChange = (event) => {
@@ -154,15 +158,11 @@ function UserList() {
       uploadData.append('id', data.username); // 업데이트된 사용자 데이터의 username을 사용합니다.
   
       // 추가 업로드 요청을 보냅니다.
-      await axios.post('http://192.168.141.149:5000/mypageUpload', uploadData, {
-        
+      await axios.post('http://192.168.15.176:5000/mypageUpload', uploadData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
-        
-      }
-    
-    );
+      });
       
     } catch (error) {
       console.error('프로필 사진 업데이트 오류:', error);
@@ -192,23 +192,6 @@ function UserList() {
       alert('회원 탈퇴 중 오류가 발생했습니다.');
     }
   };
-  
-
-  const fetchRentState = async () => {
-    try {
-      const response = await axios.get('http://13.125.168.244:8080/rent');
-      setAuthRentState(response.data);
-    } catch (error) {
-      console.error('API 서버 오류', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchRentState();
-}, []);
-
-
-
 
   useEffect(() => {
     const token = localStorage.getItem('jwtToken');
@@ -285,9 +268,7 @@ function UserList() {
             <p className='UserText2'>{editedUserData.name} 님<br />환영합니다</p>
           </div>
           <div className='LogoutAndEdit'>
-          <button onClick={handleEditImage} className="profile-edit-button" disabled={AuthRentState}>
-          <FontAwesomeIcon icon={faCamera} /> 프로필 사진 수정
-          </button>
+          <button onClick={handleEditImage} className="profile-edit-button"><FontAwesomeIcon icon={faCamera} /> 프로필 사진 수정</button>
           <button className="user-logout-button" onClick={handleLogout}  >로그아웃</button>
           <button className='ExitButton' onClick={() => setShowConfirmation(true)}>회원 탈퇴</button>
           </div>
@@ -295,9 +276,9 @@ function UserList() {
         <div className="user-profile_details">
           {isEditing ? (
             <div className='user-profile_details-all'>
-              <input type="text" name="email" value={editedUserData.email} onChange={handleInputChange} />
-              <input type="text" name="phoneNum" value={editedUserData.phoneNum} onChange={handleInputChange} />
-              <input type="password" name="password" value={editedUserData.password} onChange={handleInputChange} />
+              <input placeholder="e-mail" type="text" name="email" value={editedUserData.email} onChange={handleInputChange} />
+              <input placeholder="Phone-Num"type="text" name="phoneNum" value={editedUserData.phoneNum} onChange={handleInputChange} />
+              <input placeholder="Password"type="password" name="password" value={editedUserData.password} onChange={handleInputChange} />
                 <div className='StoreAndCancelButton'>
               <button className="StoreEdit" onClick={handleSaveProfile}><FontAwesomeIcon icon={faSave} /> 저장</button>
               <button className="CancelEdit" onClick={handleCancelEdit}><FontAwesomeIcon icon={faTimes} /> 취소</button>

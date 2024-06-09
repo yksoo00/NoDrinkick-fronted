@@ -15,10 +15,13 @@ import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import axios from 'axios';
+import Modal from 'react-modal'; // 추가된 부분
 import '../styles/Admin.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHouse, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell } from '@fortawesome/free-solid-svg-icons';
+
+Modal.setAppElement('#root'); // Modal 사용을 위한 설정
 
 function Admin() {
   const history = useHistory();
@@ -28,6 +31,8 @@ function Admin() {
   const [darkModeEnabled, setDarkModeEnabled] = useState(localStorage.getItem('darkModeEnabled') === 'true');
   const [userData, setUserData] = useState(null);
   const [licenseImages, setLicenseImages] = useState({});
+  const [modalIsOpen, setModalIsOpen] = useState(false); // 모달 상태 추가
+  const [modalImage, setModalImage] = useState(null); // 모달에 표시할 이미지 상태 추가
 
   const fetchData = async () => {
     try {
@@ -38,9 +43,11 @@ function Admin() {
       console.error('사용자 정보 가져오기 오류:', error);
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);
+
   const fetchFalseList = async () => {
     try {
       const response = await axios.get('http://13.125.168.244:8080/members/falselist');
@@ -67,8 +74,6 @@ function Admin() {
       console.error('API 서버오류', error);
     }
   };
-
-  
 
   useEffect(() => {
     if (userData) {
@@ -148,31 +153,36 @@ function Admin() {
     }
   };
 
+  const handleImageClick = (image) => {
+    setModalImage(image);
+    setModalIsOpen(true);
+  };
+
   return (
     <div className="AdminContainer">
       <CssBaseline />
-             <AppBar position="fixed" sx={{
+      <AppBar position="fixed" sx={{
         zIndex: 9999,
         backgroundColor: darkModeEnabled ? '#F2F2F2' : '#2d2c28',
         transition: 'background-color 0.5s ease'
       }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2,  color: darkModeEnabled ? '#2d2c28' : '#FFFFFF'}}>
+            <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2, color: darkModeEnabled ? '#2d2c28' : '#FFFFFF' }}>
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" sx={{fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 관리자 승인 모드 </Typography>
+            <Typography variant="h6" sx={{ fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease' }} component="div"> 관리자 승인 모드 </Typography>
           </Box>
           <Box />
           <Box>
-          <IconButton 
-          color="inherit" 
-          onClick={() => history.push('/main')}
-          style={{ color: darkModeEnabled ? '#000000' : '#ffffff' }}
-        >
-          <FontAwesomeIcon icon={faHouse} />
-        </IconButton>
-                    </Box>
+            <IconButton
+              color="inherit"
+              onClick={() => history.push('/main')}
+              style={{ color: darkModeEnabled ? '#000000' : '#ffffff' }}
+            >
+              <FontAwesomeIcon icon={faHouse} />
+            </IconButton>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -180,7 +190,7 @@ function Admin() {
         open={open}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
-        sx={{zIndex: 999}}
+        sx={{ zIndex: 999 }}
       >
         <List>
           {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
@@ -203,44 +213,51 @@ function Admin() {
               </Typography>
             </ListItem>
           ))}
-         
         </List>
       </Drawer>
       <div className="Admin">
         <div className="AdminContent">
           {users.map((user) => (
             <div
-            className={`Records ${selectedUsers.some((u) => u.memberId === user.memberId) ? 'selected' : ''}`}
-            key={user.memberId}
-            onClick={() => handleSelectUser(user)}
-          >
+              className={`Records ${selectedUsers.some((u) => u.memberId === user.memberId) ? 'selected' : ''}`}
+              key={user.memberId}
+              onClick={() => handleSelectUser(user)}
+            >
               <Checkbox
                 checked={selectedUsers.some((u) => u.memberId === user.memberId)}
                 readOnly
               />
-              <Typography variant="body1" sx={{ fontSize: 12, fontFamily: 'Pretendard-SemiBold', marginLeft: 3, marginRight: 7,  display: 'flex', alignItems: 'center' }}>
+              <Typography variant="body1" sx={{ fontSize: 12, fontFamily: 'Pretendard-SemiBold', marginLeft: 3, marginRight: 7, display: 'flex', alignItems: 'center' }}>
                 이름 : {user.name}<br></br>아이디 : {user.username}
               </Typography>
-             
-              {licenseImages[user.memberId] && <img src={licenseImages[user.memberId]} alt="License" className="license-image3" />}
+
+              {licenseImages[user.memberId] && <img src={licenseImages[user.memberId]} alt="License" className="license-image3" onClick={() => handleImageClick(licenseImages[user.memberId])} />}
             </div>
           ))}
         </div>
         {selectedUsers.length > 0 && (
           <div className="SelectedUser">
-          <h2>선택된 사용자</h2>
-          <div className="user-list">
-            {selectedUsers.map((user, index) => (
-              <p key={index}>{user.name}</p>
-            ))}
+            <h2>선택된 사용자</h2>
+            <div className="user-list">
+              {selectedUsers.map((user, index) => (
+                <p key={index}>{user.name}</p>
+              ))}
+            </div>
+            <button className='SelectUserButton' onClick={handleApproveSelectedUsers}>운전면허증 권한 지급</button>
           </div>
-          <button className='SelectUserButton' onClick={handleApproveSelectedUsers}>운전면허증 권한 지급</button>
-        </div>
         )}
       </div>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        contentLabel="License Image Modal"
+        className="Modal"
+        overlayClassName="Overlay"
+      >
+        <img src={modalImage} alt="License" className="modal-image" />
+      </Modal>
     </div>
   );
-  
-  
 }
+
 export default Admin;

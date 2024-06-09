@@ -15,141 +15,121 @@ import Box from '@mui/material/Box';
 import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons'; 
-import { faHouse } from '@fortawesome/free-solid-svg-icons';
-import { faClipboard } from '@fortawesome/free-solid-svg-icons'; 
-import { faUserPlus } from '@fortawesome/free-solid-svg-icons'; 
-import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; 
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'; 
-import { faBell } from '@fortawesome/free-solid-svg-icons'; 
+import { faUser, faHouse, faClipboard, faUserPlus, faAddressBook, faCircleInfo, faBell } from '@fortawesome/free-solid-svg-icons';
 
 function UserRecord() {
+  const history = useHistory();
+  const [open, setOpen] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [records, setRecords] = useState([]);
+  const [darkModeEnabled, setDarkModeEnabled] = useState(localStorage.getItem('darkModeEnabled') === 'true');
 
-    const history = useHistory();
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get('http://13.125.168.244:8080/members/info');
+        setUsers([response.data]);
+      } catch (error) {
+        console.error('API 서버오류', error);
+      }
+    };
+    fetchUser();
+  }, []);
 
-    const [open, setOpen] = useState(false); // 좌측 메뉴 상태
-    const [users, setUsers] = useState([]);
-    const [records, setrecords] = useState([]);
-    const [darkModeEnabled, setDarkModeEnabled] = useState(
-        localStorage.getItem('darkModeEnabled') === 'true'
-      );
 
-      useEffect(() => {
-        const fetchUser = async () => {
-          try {
-            const response = await axios.get('http://13.125.168.244:8080/members/info');
-            setUsers([response.data]); 
-          } catch (error) {
-            console.error('API 서버오류', error);
-          }
-        };
-    
-        fetchUser();
-      }, []);
 
-      // 백엔드에서 받아오기 
-      const fetchRecords = async () => {
-        const response = await axios.get('http://13.125.168.244:8080/records');
-        setrecords(response.data);
-      };
-
-    useEffect(() => {
-        // darkModeEnabled에 따라 body 클래스를 업데이트합니다.
-        if (darkModeEnabled) {
-          document.body.classList.add('dark-mode');
-        } else {
-          document.body.classList.remove('dark-mode');
-        }
-        // 다크 모드 상태를 localStorage에 저장합니다.
-        localStorage.setItem('darkModeEnabled', darkModeEnabled);
-      }, [darkModeEnabled]);
-
-      useEffect(() => {
+  useEffect(() => {
+    const fetchRecords = async () => {
+      try {
         const token = localStorage.getItem('jwtToken');
         if (!token) {
-          history.push('/');
+          console.error('JWT 토큰이 없습니다');
+          return;
         }
-      }, [history]);
-
-
-    const toggleDrawer = () => {
-        setOpen(!open);
+        const response = await axios.get('http://13.125.168.244:8080/record/all', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setRecords(response.data);
+      } catch (error) {
+        console.error('API 서버오류', error);
+      }
     };
+    fetchRecords();
+  }, []);
 
+  useEffect(() => {
+    if (darkModeEnabled) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+    localStorage.setItem('darkModeEnabled', darkModeEnabled);
+  }, [darkModeEnabled]);
 
-    const handleClickPage = (pageName) => {
-        let path;
-        switch (pageName) {
-            case '마이페이지':
-              path = '/myPage';
-              break;
-            case 'SOS 추가':
-              path = '/addEmergency';
-              break;
-            case 'SOS 목록':
-              path = '/Emergency';
-              break;
-            case '이용약관':
-              path = '/use';
-              break;
-            case '공지사항':
-              path = '/notice';
-              break;
-            case '이용기록':
-              path = '/UserRecord';
-              break;
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      history.push('/');
+    }
+  }, [history]);
 
-            default:
-                path = '/';
-                break;
-        }
-        history.push(path);
-    };
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
 
-    return (
-        <div style={{
-            backgroundColor: '#e8e8e8', 
-        }}>
-            <CssBaseline />
-            <AppBar position="fixed" sx={{
-        zIndex: 9999,
-        backgroundColor: darkModeEnabled ? '#F2F2F2' : '#2d2c28',
-        transition: 'background-color 0.5s ease'
-      }}>
+  const handleClickPage = (pageName) => {
+    let path;
+    switch (pageName) {
+      case '마이페이지':
+        path = '/myPage';
+        break;
+      case 'SOS 추가':
+        path = '/addEmergency';
+        break;
+      case 'SOS 목록':
+        path = '/Emergency';
+        break;
+      case '이용약관':
+        path = '/use';
+        break;
+      case '공지사항':
+        path = '/notice';
+        break;
+      case '이용기록':
+        path = '/UserRecord';
+        break;
+      default:
+        path = '/';
+        break;
+    }
+    history.push(path);
+  };
+
+  return (
+    <div style={{ backgroundColor: '#e8e8e8' }}>
+      <CssBaseline />
+      <AppBar position="fixed" sx={{ zIndex: 9999, backgroundColor: darkModeEnabled ? '#F2F2F2' : '#2d2c28', transition: 'background-color 0.5s ease' }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2,  color: darkModeEnabled ? '#2d2c28' : '#FFFFFF'}}>
+            <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={toggleDrawer} sx={{ mr: 2, color: darkModeEnabled ? '#2d2c28' : '#FFFFFF' }}>
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" sx={{fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease'}} component="div"> 이용기록 </Typography>
+            <Typography variant="h6" sx={{ fontSize: 12, fontFamily: 'Pretendard-Bold', textAlign: 'center', color: darkModeEnabled ? '#2d2c28' : '#FFFFFF', transition: 'color 0.5s ease' }} component="div">
+              이용기록
+            </Typography>
           </Box>
           <Box />
           <Box>
-          <IconButton 
-          color="inherit" 
-          onClick={() => history.push('/main')}
-          style={{ color: darkModeEnabled ? '#000000' : '#ffffff' }}
-        >
-          <FontAwesomeIcon icon={faHouse} />
-        </IconButton>
-                    </Box>
+            <IconButton color="inherit" onClick={() => history.push('/main')} style={{ color: darkModeEnabled ? '#000000' : '#ffffff' }}>
+              <FontAwesomeIcon icon={faHouse} />
+            </IconButton>
+          </Box>
         </Toolbar>
       </AppBar>
-      <Drawer
-        anchor="left"
-        open={open}
-        onClose={() => setOpen(false)}
-        onOpen={() => setOpen(true)}
-        sx={{ zIndex: 999 }}
-      >
+      <Drawer anchor="left" open={open} onClose={() => setOpen(false)} onOpen={() => setOpen(true)} sx={{ zIndex: 999 }}>
         <List>
           {['마이페이지', '이용기록', 'SOS 추가', 'SOS 목록', '이용약관', '공지사항'].map((text, index) => (
-            <ListItem
-              button
-              key={text}
-              sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center' }}
-              onClick={() => handleClickPage(text)}
-            >
+            <ListItem button key={text} sx={{ width: 150, paddingTop: index === 0 ? 10 : 3, paddingBottom: 3, display: 'flex', alignItems: 'center', textAlign: 'center' }} onClick={() => handleClickPage(text)}>
               <ListItemIcon>
                 {text === '마이페이지' && <FontAwesomeIcon icon={faUser} style={{ marginLeft: 3 }} />}
                 {text === '이용기록' && <FontAwesomeIcon icon={faClipboard} style={{ marginLeft: 4 }} />}
@@ -163,26 +143,42 @@ function UserRecord() {
               </Typography>
             </ListItem>
           ))}
-        
         </List>
       </Drawer>
 
-          <div className="Record-userinfo-container">
-          {users.map((user) => (
-            <div key={user.username} className="Record-userinfo-area">
-              <p><span>{user.name}</span>님 이용기록</p>
-              </div>
-                 ))}
+      <div className="Record-userinfo-container">
+        {users.map((user) => (
+          <div key={user.username} className="Record-userinfo-area">
+            <p><span>{user.name}</span>님 이용기록</p>
           </div>
-          <div className="Record-Full">
-          {records.map((record) => (
-             <div className="Records" key={record.id}>
-                 </div>
-             ))}
-          </div>
+        ))}
       </div>
-    )
-
+      <div className="Record-Full">
+        <table className="Record-Table">
+          <thead>
+            <tr>
+              <th>인덱스</th>
+              <th>총 이동 거리</th>
+              <th>지불 비용</th>
+              <th>빌린 시각</th>
+              <th>반납 시각</th>
+            </tr>
+          </thead>
+          <tbody>
+            {records.map((record, index) => (
+              <tr key={record.recordId}>
+                <td>{index + 1}</td>
+                <td>{record.totalDistance}</td>
+                <td>{record.price}</td>
+                <td>{new Date(record.rentTime).toLocaleString()}</td>
+                <td>{new Date(record.returnTime).toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 }
 
 export default UserRecord;
