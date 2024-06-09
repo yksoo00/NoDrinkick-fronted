@@ -16,7 +16,7 @@ export const checkLoginId = async (username) => {
     const response = await axios.get(`http://13.125.168.244:8080/members/check?username=${username}`);
     return response.data;
   } catch (error) {
-    console.error('로그인 ID 확인 오류:', error);
+    console.error('로그인 ID 확인 오류:', error); 
     throw error;
   }
 };

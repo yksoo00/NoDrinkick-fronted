@@ -26,17 +26,22 @@ function Rent({ open, onClose, gpsId }) { // id props 추가
   const isLargeScreen = useMediaQuery('(min-width:1440px) and (max-height:1440px)');
   const [AuthRentState, setAuthRentState] = useState(false); 
   const [gpsData, setGpsData] = useState([]);
-
+ 
+  
   useEffect(() => {
     fetchUserData().then(userData => {
       setMemberInfo(userData);
     }).catch(error => {
       console.error('사용자 정보 가져오기 오류', error);
     });
-
+    
+    
     fetchRentState();
     fetchGpsData();
+    
   }, []);
+
+
 
   const fetchRentState = async () => {
     try {
@@ -81,6 +86,18 @@ function Rent({ open, onClose, gpsId }) { // id props 추가
     }
   };
 
+  const handleBellClick = async () => {
+    try {
+      const response = await axios.post('http://13.125.168.244:8080/status', { status: true }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (error) {
+      console.error('Error saving status:', error);
+    }
+};
+
   const sendMessageToAll = async () => {
     try {
       const response = await sendEmergencyMessage();
@@ -92,6 +109,7 @@ function Rent({ open, onClose, gpsId }) { // id props 추가
 
   const ReturnKickBoard = () => {
     setIsTestOpen(true);
+
   };
   
   const handleFaceButtonClick = () => {
@@ -140,6 +158,7 @@ function Rent({ open, onClose, gpsId }) { // id props 추가
               </label>
             </Button>
             <Button className="Bell" style={{backgroundColor: '#e8e8e8', marginBottom:'20px', marginRight: '20px', marginLeft: '10px', padding:'20px'}}
+              onclick={handleBellClick}
               disabled={AuthRentState}>
               <FontAwesomeIcon icon={faBell} style={{fontSize: '25px', color:'#000000'}}></FontAwesomeIcon>
               <label className="Bell-Text">{AuthRentState ? 'X' : '벨 울리기'}</label>
@@ -157,7 +176,9 @@ function Rent({ open, onClose, gpsId }) { // id props 추가
           }}
           disabled={!AuthRentState}
         >
-          <Typography variant="h6" onClick={ReturnKickBoard} sx={{fontFamily: 'Pretendard-Bold', fontSize : '20px' }}>반납하기</Typography>
+          <Typography variant="h6" onClick={ReturnKickBoard} sx={{ fontFamily: 'Pretendard-Bold', fontSize: '20px' }}>
+        반납하기
+      </Typography>
         </Button>
       </SwipeableDrawer>
       <Test
@@ -167,6 +188,7 @@ function Rent({ open, onClose, gpsId }) { // id props 추가
         setAuthState={setAuthState}
         ws={ws}
         handleWebSocketMessage={handleWebSocketMessage}
+        gpsId={gpsData}
       />
     </div>
   );

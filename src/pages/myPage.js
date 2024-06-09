@@ -130,7 +130,7 @@ function UserList() {
   const handleEditProfile = () => {
     setIsEditing(true);
     setEditedUserData({
-      ...userData,
+      ...userData,  
       email: '',
       phoneNum: '',
       password: ''

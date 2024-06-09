@@ -8,7 +8,7 @@ import axios from 'axios';
 import Payment from '../pages/payment'; // Payment 컴포넌트 불러오기
 
 
-function Test({ isOpen, onClose}) {
+function Test({ isOpen, onClose, gpsId}) {
   const [showMessage, setShowMessage] = useState(false);
   const [countdown, setCountdown] = useState(3);
   const [showBreathMessage, setShowBreathMessage] = useState(false);
@@ -54,6 +54,7 @@ function Test({ isOpen, onClose}) {
         setReturnAlc(true);
         break;
       case "50":
+
         setReturnFace(true);
         break;
       case "10":
@@ -74,6 +75,7 @@ function Test({ isOpen, onClose}) {
      try {
     const responseRecord = await axios.get('http://13.125.168.244:8080/members/info');
     console.log('가져온 결제 정보:', responseRecord.data);
+    await deleteGpsData();
     setAmount(responseRecord.data.memberId);
     setCustomerName(responseRecord.data.name);
 
@@ -156,6 +158,25 @@ function Test({ isOpen, onClose}) {
     setAuthState(response.data)
   };
 
+  
+  const deleteGpsData = async () => {
+   
+    try {
+      const response = await axios.delete(`http://13.125.168.244:8080/gps/${gpsId}`);
+      
+      if (response.status === 204) {
+        console.log(gpsId)
+        console.log('GPS 데이터가 성공적으로 삭제되었습니다.');
+      } else {
+        console.log(gpsId)
+        console.error('GPS 데이터 삭제 실패:', response.status);
+      }
+    } catch (error) {
+      console.log(gpsId)
+      console.error('GPS 데이터 삭제 오류:', error);
+    }
+  };
+
 
   const handleBBB = async () => {
     try {
@@ -170,6 +191,7 @@ function Test({ isOpen, onClose}) {
   const handleAAA = async () => {
     try {
       await AAA();
+      
     } catch (error) {
       console.error('AAA 함수 실행 중 오류 발생:', error);
     }
@@ -398,6 +420,7 @@ function Test({ isOpen, onClose}) {
     </Modal>
   );
 }
+
 
 export default Test;
 

@@ -28,7 +28,7 @@ const Main = () => {
   const [darkModeEnabled, setDarkModeEnabled] = useState(localStorage.getItem('darkModeEnabled') === 'true');
   const [logoMarker, setLogoMarker] = useState(null);
   const [userRole, setUserRole] = useState('');
-  const [gpsId, setId] = useState(null);
+  const [gpsId, setId] = useState();
 
   const history = useHistory();
   const location = useLocation();
