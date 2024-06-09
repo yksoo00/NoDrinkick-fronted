@@ -7,6 +7,7 @@ import Logo2 from '../assets/Logo2.png';
 import Logo2_Dark from '../assets/Logo2_Dark.png';
 import DarkMode from '../component/darkmode'; 
 import addMembers from '../services/addMembers';
+import {checkLoginId} from '../services/userService';
 
 function SignUpPage() {
     const [darkModeEnabled, setDarkModeEnabled] = useState(
@@ -60,43 +61,61 @@ function SignUpPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+      
+        const { username } = userInfo;
+      
+        // 사용자 이름 중복 확인
+        try {
+          const isUnique = await checkLoginId(username);
+          if (isUnique) {
+            alert('이미 사용 중인 아이디입니다. 다른 아이디를 입력해주세요.');
+            return;
+          }
+        } catch (error) {
+          console.error('아이디 중복 확인 오류:', error);
+          alert('아이디 중복 확인에 실패했습니다.');
+          return;
+        }
+      
         const memberDto = {
-            name: userInfo.name,
-            username: userInfo.username,
-            password: userInfo.password,
-            phoneNum: userInfo.phoneNum,
-            email: userInfo.email,
-            license: userInfo.license === "true"
+          name: userInfo.name,
+          username: userInfo.username,
+          password: userInfo.password,
+          phoneNum: userInfo.phoneNum,
+          email: userInfo.email,
+          license: userInfo.license === "true"
         };
-
+      
         const formData = new FormData();
         formData.append('imgFile', imageFile);
         formData.append('licenseFile', licenseFile); // 라이선스 파일 추가
         formData.append('memberDto', new Blob([JSON.stringify(memberDto)], { type: 'application/json' }));
-        
+      
         try {
-            // 회원가입 요청
-            await addMembers(formData);
+          // 회원가입 요청
+          await addMembers(formData);
 
-            history.push('/home'); 
-        
-            // 회원가입이 성공하면 이미지 파일과 사용자 이름을 /mypageUpload로 전송
-            const uploadData = new FormData();
-            uploadData.append('file', imageFile);
-            //uploadData.append('licenseFile', licenseFile); // 라이선스 이미지 파일 추가
-            uploadData.append('id', userInfo.username); // 사용자 이름을 'id' 필드에 추가
-        
-            await axios.post('http://192.168.110.176:5000/mypageUpload', uploadData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+          alert('회원가입에 성공했습니다!');
+      
+          history.push('/home');
+      
+          // 회원가입이 성공하면 이미지 파일과 사용자 이름을 /mypageUpload로 전송
+          const uploadData = new FormData();
+          uploadData.append('file', imageFile);
+          //uploadData.append('licenseFile', licenseFile); // 라이선스 이미지 파일 추가
+          uploadData.append('id', userInfo.username); // 사용자 이름을 'id' 필드에 추가
+      
+          await axios.post('http://192.168.110.176:5000/mypageUpload', uploadData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
         } catch (error) {
-            console.error('회원가입 에러:', error.response?.data || error.message);
-            // 에러 처리 로직
-        } 
-    };
+          console.error('회원가입 에러:', error.response?.data || error.message);
+          // 에러 처리 로직
+        }
+      };
+    
         
     
     const handleRedirectToHome = () => {
