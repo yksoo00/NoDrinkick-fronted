@@ -225,14 +225,14 @@ const NoticeDetail = () => {
               삭제
             </button>
           </div>
-          <input
-            className="notice-detail-edit-text"
-            type="text"
-            placeholder="수정할 내용 (관리자용)"
-            value={editedNotice.content}
-            onChange={(e) => setEditedNotice({ ...editedNotice, content: e.target.value })}
-            disabled={userRole !== 'ADMIN'}
-          />
+          <textarea
+  className="notice-detail-edit-text"
+  placeholder="수정할 내용 (관리자용)"
+  value={editedNotice.content}
+  onChange={(e) => setEditedNotice({ ...editedNotice, content: e.target.value })}
+  disabled={userRole !== 'ADMIN'}
+  rows={10} // 여러 줄 입력을 위해 텍스트 영역의 높이를 조정합니다.
+/>
         </div>
       </div>
     </div>

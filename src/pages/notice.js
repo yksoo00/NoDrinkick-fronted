@@ -198,12 +198,12 @@ const Notices = () => {
                 value={newNotice.title} 
                 onChange={(e) => setNewNotice({ ...newNotice, title: e.target.value })}
               />
-              <input 
+              <textarea
                 className="notice-text"
-                type="text"
-                placeholder="내용 (관리자만 작성 가능)" 
-                value={newNotice.content} 
+                placeholder="내용 (관리자만 작성 가능)"
+                value={newNotice.content}
                 onChange={(e) => setNewNotice({ ...newNotice, content: e.target.value })}
+                rows={10} // 여러 줄 입력을 위해 텍스트 영역의 높이를 조정합니다.
               />
             </div>
             <button 

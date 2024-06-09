@@ -41,22 +41,21 @@
     }
   
     .NoticeContent {
-      display: flex;
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
       width: 80%;
       height: 52%;
-      margin-top: 180px;
+      margin: 180px auto 0;
       padding: 10px;
       background-color: #FFFFFF;
       border-radius: 5px;
+      font-size: 12px;
+      font-family: 'Pretendard-Semibold';
+      display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
-      font-family: 'Pretendard-Semibold'; 
     }
+    
+    
   
     .notice-detail-edit-title {
       display: flex;
